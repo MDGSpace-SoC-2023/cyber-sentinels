@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Password</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined">
+    <link rel="stylesheet" href="eye.css">
+</head>
+
+<body>
+    <div class="popup">
+        <div class="header">
+            <span id="backButton" class="material-icons-outlined">
+                arrow_back_ios_new
+            </span>
+            <h2>View Password</h2>
+            <span id="done" class="material-icons-outlined">
+                done
+            </span>
+        </div>
+        <div class="popup-container">
+            <form class="form">
+                <div class="form-group form-group-domain">
+                    <label for="domain">Domain:</label>
+                    <input type="text" id="domain" name="domain" value="example.com" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="username123" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="password-container">
+                        <input type="text" id="passwordField" name="password" value="password123" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sync">Sync:</label>
+                    <input type="checkbox" id="sync" name="sync">
+                </div>
+
+                <div class="form-group">
+                    <label for="device">Device:</label>
+                    <input type="checkbox" id="device" name="device">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="eye.js"></script>
+
+</body>
+
+</html>
