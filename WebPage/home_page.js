@@ -6,42 +6,33 @@ document.addEventListener("DOMContentLoaded", function () {
     togglePasswordVisibilityOpen.addEventListener("click", function () {
         passwordField.type = "text";
         togglePasswordVisibilityOpen.style.display = "none";
-        togglePasswordVisibilityClosed.style.display = "inline-block"; // Change to inline-block to adjust layout
+        togglePasswordVisibilityClosed.style.display = "inline-block"; 
 
     });
 
     togglePasswordVisibilityClosed.addEventListener("click", function () {
         passwordField.type = "password";
         togglePasswordVisibilityClosed.style.display = "none";
-        togglePasswordVisibilityOpen.style.display = "inline-block"; // Change to inline-block to adjust layout
+        togglePasswordVisibilityOpen.style.display = "inline-block"; 
     });
 });
-
-
 const showBtn = document.querySelectorAll(".editbtn");
 const modalBox = document.querySelector(".modal-box");
 const overlay = document.querySelector(".overlay");
 const cancelButton = document.querySelector("#cancelButton");
-
-// Function to show the modal box and overlay
 function showModal() {
   modalBox.style.display = "block";
   overlay.style.display = "block";
 }
-
-// Function to hide the modal box and overlay
 function hideModal() {
   modalBox.style.display = "none";
   overlay.style.display = "none";
 }
-
 showBtn.forEach(btn => {
   btn.addEventListener("click", showModal);
 });
-
 overlay.addEventListener("click", hideModal);
 cancelButton.addEventListener("click", hideModal);
-
 /**
  * Parse a password string into a numeric value.
  * This function evaluates password strength based on various criteria.
@@ -366,16 +357,3 @@ for (var i = 0; i < eyeicons.length; i++) {
     });
 }
 var editbtns = document.getElementsByClassName("editbtn");
-// for (var i = 0; i < editbtns.length; i++) {
-//     editbtns[i].addEventListener("click", function () {
-//         var popup = this.nextElementSibling;
-//         var content = this.parentElement;
-//         var username = content.querySelector(".usrnme");
-//         var password = content.querySelector(".passwords");
-//         var passwordinedit = popup.querySelector(".form-group .password-container .passwor");
-//         passwordinedit.value = password.value;
-//         var usernameinedit = popup.querySelector(".form-group .usernam");
-//         usernameinedit.value = username.innerHTML;
-//         popup.classList.toggle("showing");
-//     })
-// }
