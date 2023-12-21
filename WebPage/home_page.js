@@ -214,10 +214,12 @@ for (var i = 0; i < coll.length; i++) {
         var content = this.nextElementSibling;
         if (content.classList.contains("content")) {
             while (content && !content.classList.contains("filterDiv")) {
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
+                if(content.classList.contains("content")){
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
                 }
                 content = content.nextElementSibling;
             }
@@ -249,11 +251,11 @@ function SelectOptions() {
     var contentCheckboxes = document.getElementsByClassName("contentCheckboxes");
     var domains = document.getElementsByClassName("filterDiv");
     var editbuttons = document.getElementsByClassName("editbtn");
-    for (var i = 0; i < Checkboxes.length; i++) {
+     for (var i = 0; i < Checkboxes.length; i++) {
         Checkboxes[i].checked = false;
         var computedStyle = window.getComputedStyle(domains[i]);
         if (computedStyle.display === "flex" || computedStyle.getPropertyValue('display') === 'flex') {
-            Checkboxes[i].classList.toggle("available");
+             Checkboxes[i].classList.toggle("available");
         }
     }
     for (var i = 0; i < contentCheckboxes.length; i++) {
@@ -356,4 +358,15 @@ for (var i = 0; i < eyeicons.length; i++) {
         }
     });
 }
-var editbtns = document.getElementsByClassName("editbtn");
+var account=document.getElementById("Account");
+account.addEventListener("click",function(){
+    var accountOptions=document.getElementsByClassName("accnt");
+    for(var i=0;i<accountOptions.length;i++){
+        var cmptdStyle = window.getComputedStyle(accountOptions[i]);
+        if(cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none'){
+            accountOptions[i].style.display="block";
+        }else{
+            accountOptions[i].style.display="none";
+        }
+    }
+});

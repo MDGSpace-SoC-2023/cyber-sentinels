@@ -244,3 +244,7 @@ body {
     font-size:18px;
     cursor:pointer;
 }
+
+.accnt{
+    display:none;
+}

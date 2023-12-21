@@ -681,3 +681,7 @@ body {
 .editbtn.not-available {
     display: none;
 }
+
+.accnt{
+    display:none;
+}

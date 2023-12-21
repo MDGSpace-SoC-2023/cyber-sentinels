@@ -239,3 +239,7 @@ body {
 .drkwebntfcation p{
     word-wrap: break-word; 
 }
+
+.accnt{
+    display:none;
+}

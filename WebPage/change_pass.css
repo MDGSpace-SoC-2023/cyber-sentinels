@@ -135,126 +135,30 @@ body {
     transition: left 0.3s ease;
 }
 
-#passgentxt {
-    font-family: 'Silkscreen', sans-serif;
-    text-align: center;
-}
-
-.copy-message {
-    display: none;
-    color: #00ff00;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-
-label {
-    font-family: 'Roboto', sans-serif;
-    font-size: 25px;
-}
-
-p {
-    margin: 5px 0;
-    font-family: 'Roboto', sans-serif;
-}
-
-input[type=checkbox] {
-    align-items: center;
-}
-
-.container {
-    background-color: #000000;
-    box-shadow: 0px 2px 10px rgba(255, 0, 0, 0.2);
-    padding: 20px;
-    width: 400px;
-    max-width: 100%;
-    position:absolute;
-    left:28%;
-    top:2%;
-    transition: left 0.3s ease;
-}
-
-.result-container {
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    font-size: 25px;
-    letter-spacing: 1px;
-    padding: 12px 10px;
-    height: 50px;
-    width: 100%;
-}
-
-.result-container #result {
-    word-wrap: break-word;
-    max-width: calc(100% - 40px);
-}
-
-.result-container .btn {
-    font-size: 20px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    height: 40px;
-    width: 40px;
-}
-
-.btn {
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 30px;
-    padding: 8px 12px;
-    background-color: black;
-}
-
-.btn-large {
-    display: block;
-    width: 100%;
-}
-
-.material-symbols-outlined {
-    font-size: 16px;
-}
-
-
-.setting {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 40px 0;
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-}
-
-.setting input[type="number"] {
-    padding-left:15%;
-    padding-top:5px;
-    padding-bottom:5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 80px;
-}
-
-.setting input[type="number"]:focus {
-    outline: none;
-    border-color: #555;
-    box-shadow: 0 0 5px rgba(85, 85, 85, 0.7);
-}
-
-@media screen and (max-width: 400px) {
-    .result-container {
-        font-size: 14px;
-    }
-}
-
-#clipboard{
-    margin-top: 3%;
-}
-
 .accnt{
-    display:none;
+    display:block;
+}
+
+.psswrdcontainer{
+    height:70%;
+    font-size:25px;
+    width:69%;
+    position: absolute;
+    top:15%;
+    left:30%;
+}
+
+.psswrdcontainer input{
+    font-size:25px;
+}
+
+.eyeicon {
+    position: relative;
+    cursor: pointer;
+}
+
+.Updatebtns input{
+    margin-left:23%;
+    margin-top:3%;
+    font-size:30px;
 }

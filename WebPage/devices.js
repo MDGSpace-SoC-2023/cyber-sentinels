@@ -14,22 +14,6 @@ collapsibles[0].addEventListener("click", function () {
         Heading.style.left = "22%";
     }
 });
-function search_Domain() {
-    var domains=document.getElementsByClassName("Domains");
-    var darkwbntfctns=document.getElementsByClassName("drkwebntfcation");
-    var input = document.getElementById("searchbar").value.toLowerCase();
-    for(var i=0;i<darkwbntfctns.length;i++){
-        if(domains[i].innerHTML.toLowerCase().includes(input.toLowerCase())){
-            if(darkwbntfctns[i].classList.contains("hide")){
-                darkwbntfctns[i].classList.toggle("hide");
-            }
-        }else{
-            if(!darkwbntfctns[i].classList.contains("hide")){
-                darkwbntfctns[i].classList.toggle("hide");
-            }
-        }
-    }
-}
 var account=document.getElementById("Account");
 account.addEventListener("click",function(){
     var accountOptions=document.getElementsByClassName("accnt");
