@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Password Usage</title>
-    <link rel="stylesheet" href="pass_usage.css">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="../../styles/Webpage.styles/home_page.css">
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -12,7 +12,7 @@
 
 <body>
     <div class="Header">
-        <img src="a.jpeg" height="80%" alt="B">
+        <img src="#" height="80%" alt="B">
         <p>BitSafe</p>
     </div>
     <div class="Menu">
@@ -21,6 +21,7 @@
             <a href="#" style="padding-left: 15%;">Notifications</a>
             <a href="#" style="padding-left: 12%;">Password usage</a>
             <a href="#" style="padding-left: 2%;">Dark Web monitoring</a>
+            <a href="#" style="padding-left: 5%;">Password Generator</a>
             <a href="#" style="padding-left:30%;" id="Account">Account</a>
             <a href="#" style="padding-left:30%;" class="accnt">Profile</a>
             <a href="#" style="padding-left:6%;" class="accnt">Change Password</a>
@@ -37,20 +38,32 @@
         </div>
     </div>
     <div class="heading">
-        <h2>Password Usage</h2>
+        <h2>DASHBOARD</h2>
     </div>
     <div class="Main">
         <button class="Arrow">&#706;</button>
-
+        <span class="material-symbols-outlined" id="Filter" style="font-size: 30px; margin-top:1.15%;">
+            menu
+        </span>
+        <div class="FilterOptions">
+            <button id="close" onclick="Filters()">&#10005;</button>
+            <button class="btn active" onclick="filterSelection('all')">All Passwords</button>
+            <button class="btn" onclick="filterSelection('OnDev')">On Device</button>
+            <button class="btn" onclick="filterSelection('ClouSync')">Cloud Synced</button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchbar" onkeyup="search_Domain()" name="search" placeholder="Search..."
+                class="search-input">
+            <div class="pre-hover-placeholder">
+                Search something
+            </div>
+        </div>
+        <button id="Selector" class="button">Select</button>
+        <button id="Adder" class="button">Add</button>
         <div class="UsrnmeNPasswrds">
             <input type="checkbox" class="Checkboxes" value="www.amazon.com" onclick="tglAllcntntchckbxs(this)">
-            <button class="filterDiv full-width">
-                <span class="Insidenote">
-                    <h4 id="h1Insidenote">Password Note:</h4> This is a dummy note text.
-                </span>
-                <span class="Insideusage">Your password has been used 5 times.</span>
-                <h5 class="actionRequired">Action Required</h5>
-            </button>
+            <button class="filterDiv full-width">www.amazon.com<span class="color-box"><span class="tooltiptext">Tooltip
+                        text</span></span></button>
             <div class="content visible OnDev">
                 <input type="checkbox" value="username" class="contentCheckboxes www.amazon.com"
                     onclick="updtMsterChckBx(this)">
@@ -69,20 +82,15 @@
                 <p class="tag">Tag</p>
                 <span id="color-boxes" class="color-boxes"><span id="tooltiptext"
                         class="tooltiptext">Tooltiptext</span></span>
-                <svg data-domain="www.amazon.com" class="editbtn" xmlns="http://www.w3.org/2000/svg" height="30px"
-                    width="20px" viewBox="0 0 576 512">
+                <svg data-domain="www.amazon.com" class="editbtn" xmlns="http://www.w3.org/2000/svg" height="30px" width="20px"
+                    viewBox="0 0 576 512">
                     <path fill="#ffffff"
                         d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
                 </svg>
             </div>
             <input type="checkbox" class="Checkboxes" value="www.google.com" onclick="tglAllcntntchckbxs(this)">
-            <button class="filterDiv full-width">
-                <span class="Insidenote">
-                    <h4 id="h1Insidenote">Password Note:</h4> This is a dummy note text.
-                </span>
-                <span class="Insideusage">Your password has been used 5 times.</span>
-                <h5 class="actionRequired">Action Required</h5>
-            </button>
+            <button class="filterDiv  full-width">www.google.com<span class="color-box"><span
+                        class="tooltiptext">Tooltip text</span></span></button>
             <div class="content visible ClouSync">
                 <input type="checkbox" value="username" class="contentCheckboxes www.google.com"
                     onclick="updtMsterChckBx(this)">
@@ -153,8 +161,7 @@
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <div class="password-container">
-                        <input type="password" id="passwordField" name="password" value="example@123" required
-                            maxlength="20">
+                        <input type="password" id="passwordField" name="password" value="example@123" required maxlength="20">
                         <span class="material-symbols-outlined eye-icon eye-closed" id="togglePasswordVisibilityClosed">
                             visibility
                         </span>
@@ -172,7 +179,7 @@
                         </div>
                     </label>
                 </div>
-
+    
                 <div class="form-group">
                     <label for="device">Device:</label>
                     <label class="toggler-wrapper style-7" for="device">
@@ -182,22 +189,25 @@
                         </div>
                     </label>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="customText">Custom:</label>
                     <input type="text" id="customText" name="customText">
                 </div>
                 <div class="form-buttons">
                     <button class="cancel-button" id="cancelButton">Cancel</button>
-
+    
                     <button class="save-button">Update</button>
                 </div>
             </form>
         </div>
-    </div>
-    <!-- if no password is there some text -->
 
-    <script src="pass_usage.js"></script>
+        <!-- if no passwords,a message should be displayed -->
+        <!-- add button functionality -->
+        <!-- search for username too -->
+
+    </div>
+    <script src="../../js/Webpage.js/home_page.js"></script>
 </body>
 
 </html>
