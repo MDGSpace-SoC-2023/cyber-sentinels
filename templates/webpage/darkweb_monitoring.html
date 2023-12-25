@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Devices</title>
-    <link rel="stylesheet" href="../../styles/Webpage.styles/devices.css">
+    <title>Dark Web Monitoring</title>
+    <link rel="stylesheet" href="../../styles/webpage/darkweb_monitoring.css">
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -38,26 +38,32 @@
         </div>
     </div>
     <div class="heading">
-        <h2>DEVICES</h2>
+        <h2>DARK WEB MONITORING</h2>
     </div>
     <div class="Main">
         <button class="Arrow">&#706;</button>
-        <table class="tbl">
-            <tr>
-                <th>Date and Time</th>
-                <th>Browser</th>
-                <th>OS</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>October 13,2020 05:30GMT</td>
-                <td>Mozilla Firefox</td>
-                <td>MacOS</td>
-                <td><button>Terminate</button></td>
-            </tr>
-        </table>
+        <div class="search-container">
+            <input type="text" id="searchbar" onkeyup="search_Domain()" name="search" placeholder="Search..."
+                class="search-input">
+            <div class="pre-hover-placeholder">
+                Search something
+            </div>
+        </div>
+        <div class="drkwebntfcations">
+            <div class="drkwebntfcation">
+                <p>Username: <a href="#">username</a></p>
+                <p>Domain: <a class="Domains" href="#">Domain</a></p>
+                <p>
+                    some text.
+                </p>
+            </div>     
+
+        </div>
+
+        <!-- <p>no compromised passwords</p> -->
+        
     </div>
-    <script src="../../js/Webpage.js/devices.js"></script>
+    <script src="../../js/webpage/darkweb_monitoring.js"></script>
 </body>
 
 </html>

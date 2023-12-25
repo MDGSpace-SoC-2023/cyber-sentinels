@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Credentials</title>
+    <title>Auto Capture</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="../../styles/Popup.styles/addcred.css">
+    <link rel="stylesheet" href="../../styles/popup/autocap.css">
     <style>
         .password-container .eye-closed {
             display: inline;
@@ -29,11 +29,7 @@
 <body>
     <div class="popup-container">
         <form class="form">
-            <h2>Add Credentials</h2>
-            <div class="form-group form-group-domain">
-                <label for="domain">Domain:</label>
-                <input type="text" id="domain" name="domain" value="example.com" disabled>
-            </div>
+            <h2>Auto Capture</h2>
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -75,13 +71,13 @@
                 <input type="text" id="customText" name="customText">
             </div>
             <div class="form-buttons">
-                <button class="cancel-button" id="cancelButton">Cancel</button>
+                <button class="cancel-button" id="cancelButton">Never</button>
 
-                <button class="save-button">Save</button>
+                <button class="save-button">Save/Update</button>
             </div>
         </form>
     </div>
-    <script src="../../js/Popup.js/addcred.js"></script>
+    <script src="../../js/popup/autocap.js"></script>
 
 </body>
 
