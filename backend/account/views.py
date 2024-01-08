@@ -11,6 +11,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib import messages
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 
 def index(request):
@@ -59,3 +63,18 @@ def user_logout(request):
             return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            register_url = reverse('auth')
+            error_message = 'Email address not found. Please  <a style="color: #0000FF" href="{}">Register</a>'.format(register_url)
+            messages.error(self.request, mark_safe(error_message))
+            return self.form_invalid(form)
+
+        return super().form_valid(form)

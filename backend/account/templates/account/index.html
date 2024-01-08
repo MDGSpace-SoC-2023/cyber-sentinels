@@ -40,7 +40,7 @@
                 <input type="password" placeholder="Password" class="passwordField" id="passwordField"
                     autocomplete="new-password" name="password" />
                 <ul id="errorlistLogin"></ul>
-                <a href="#">Forgot your password?</a>
+                <a href="{% url 'password_reset' %}">Forgot your password?</a>
             
                 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
                 <div class="g-recaptcha" data-sitekey="6Lel4Z4UAAAAAOa8LO1Q9mqKRUiMYl_00o5mXJrR" id="recaptchaContainer"></div>

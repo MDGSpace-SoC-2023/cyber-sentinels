@@ -5,11 +5,9 @@ const container = document.getElementById("container");
 function get_action(form) {
   var response = grecaptcha.getResponse();
   if (response.length === 0) {
-      // If reCAPTCHA not verified, display an error message
       document.getElementById('captchaError').textContent = "Please verify the reCAPTCHA.";
-      return false; // Prevent form submission
+      return false; 
   } else {
-      // If reCAPTCHA verified, clear any previous error message and allow form submission
       document.getElementById('captchaError').textContent = "";
       return true;
   }
@@ -146,7 +144,7 @@ function registerUser(event) {
             errorlistRegister.appendChild(listItem);
           });
         }
-        if (errors.password) {
+        else if (errors.password) {
           document.getElementById('password1').classList.add('error');
           document.getElementById('password2').classList.add('error');
           errors.password.forEach(error => {
