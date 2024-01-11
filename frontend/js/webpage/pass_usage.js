@@ -1,23 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//     const passwordField = document.getElementById("passwordField");
-//     const togglePasswordVisibilityOpen = document.getElementById("togglePasswordVisibilityOpen");
-//     const togglePasswordVisibilityClosed = document.getElementById("togglePasswordVisibilityClosed");
-
-//     togglePasswordVisibilityOpen.addEventListener("click", function () {
-//         passwordField.type = "text";
-//         togglePasswordVisibilityOpen.style.display = "none";
-//         togglePasswordVisibilityClosed.style.display = "inline-block"; // Change to inline-block to adjust layout
-
-//     });
-
-//     togglePasswordVisibilityClosed.addEventListener("click", function () {
-//         passwordField.type = "password";
-//         togglePasswordVisibilityClosed.style.display = "none";
-//         togglePasswordVisibilityOpen.style.display = "inline-block"; // Change to inline-block to adjust layout
-//     });
-// });
-
-
 const showBtn = document.querySelectorAll(".editbtn");
 const modalBox = document.querySelector(".modal-box");
 const overlay = document.querySelector(".overlay");
@@ -25,18 +5,18 @@ const cancelButton = document.querySelector("#cancelButton");
 
 // Function to show the modal box and overlay
 function showModal() {
-  modalBox.style.display = "block";
-  overlay.style.display = "block";
+    modalBox.style.display = "block";
+    overlay.style.display = "block";
 }
 
 // Function to hide the modal box and overlay
 function hideModal() {
-  modalBox.style.display = "none";
-  overlay.style.display = "none";
+    modalBox.style.display = "none";
+    overlay.style.display = "none";
 }
 
 showBtn.forEach(btn => {
-  btn.addEventListener("click", showModal);
+    btn.addEventListener("click", showModal);
 });
 
 overlay.addEventListener("click", hideModal);
@@ -201,15 +181,15 @@ for (var i = 0; i < eyeicons.length; i++) {
         }
     });
 }
-var account=document.getElementById("Account");
-account.addEventListener("click",function(){
-    var accountOptions=document.getElementsByClassName("accnt");
-    for(var i=0;i<accountOptions.length;i++){
+var account = document.getElementById("Account");
+account.addEventListener("click", function () {
+    var accountOptions = document.getElementsByClassName("accnt");
+    for (var i = 0; i < accountOptions.length; i++) {
         var cmptdStyle = window.getComputedStyle(accountOptions[i]);
-        if(cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none'){
-            accountOptions[i].style.display="block";
-        }else{
-            accountOptions[i].style.display="none";
+        if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
+            accountOptions[i].style.display = "block";
+        } else {
+            accountOptions[i].style.display = "none";
         }
     }
 });

@@ -17,14 +17,15 @@
     </div>
     <div class="Menu">
         <div class="NavBar">
-            <a href="#" style="padding-left: 25%;">Dashboard</a>
-            <a href="#" style="padding-left: 15%;">Notifications</a>
-            <a href="#" style="padding-left: 12%;">Password usage</a>
-            <a href="#" style="padding-left: 2%;">Dark Web monitoring</a>
-            <a href="#" style="padding-left:30%;" id="Account">Account</a>
-            <a href="#" style="padding-left:30%;" class="accnt">Profile</a>
-            <a href="#" style="padding-left:6%;" class="accnt">Change Password</a>
-            <a href="#" style="padding-left:30%;" class="accnt">Devices</a>
+            <a href="#" style="padding-left: 29%;">Dashboard</a>
+            <a href="#" style="padding-left: 27%;">Notifications</a>
+            <a href="#" style="padding-left: 20%;">Password usage</a>
+            <a href="#" style="padding-left: 12%;">Dark Web monitoring</a>
+            <a href="#" style="padding-left: 13%;">Password Generator</a>
+            <a href="#" style="padding-left:32%;" id="Account">Account</a>
+            <a href="#" style="padding-left:34%;" class="accnt">Profile</a>
+            <a href="#" style="padding-left:14%;" class="accnt">Change Password</a>
+            <a href="#" style="padding-left:31%;" class="accnt">Devices</a>
         </div>
         <div class="logout">
             <svg class="svg-icon" style="height: 60%;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024"
@@ -50,86 +51,99 @@
                     </div>
                 </div>
                 <div class="message">
-                    <p>Username: <a href="#">username</a></p>
-                    <p>Domain: <a href="#">Domain</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Username:</span> <a href="#">username</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Domain:</span> <a href="#">Domain</a></p>
                     <p>
                         some text.Addition.
                     </p>
                 </div>
-            </div> 
+            </div>
             <div class="ntfcation Del">
                 <div class="dttm">
                     <p>December 13,2023</p>
+                    <div class="severity1">
+                        <span>NULL</span>
+                    </div>
                 </div>
                 <div class="message">
-                    <p>Username: <a href="#">username</a></p>
-                    <p>Domain: <a href="#">Domain</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Username:</span> <a href="#">username</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Domain:</span> <a href="#">Domain</a></p>
                     <p>
                         some text.Deletion.
                     </p>
                 </div>
-            </div>       
+            </div>
             <div class="ntfcation Upd">
                 <div class="dttm">
                     <p>December 13,2023</p>
+                    <div class="severity1">
+                        <span>NULL</span>
+                    </div>
                 </div>
                 <div class="message">
-                    <p>Username: <a href="#">username</a></p>
-                    <p>Domain: <a href="#">Domain</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Username:</span> <a href="#">username</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Domain:</span> <a href="#">Domain</a></p>
                     <p>
                         some text.Updation.
                     </p>
                 </div>
-            </div>       
+            </div>
             <div class="ntfcation Dep">
                 <div class="dttm">
                     <p>December 13,2023</p>
+                    <div class="severity1">
+                        <span>NULL</span>
+                    </div>
                 </div>
                 <div class="message">
-                    <p>Username: <a href="#">username</a></p>
-                    <p>Domain: <a href="#">Domain</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Username:</span> <a href="#">username</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Domain:</span> <a href="#">Domain</a></p>
                     <p>
                         some text.Deprecated.
                     </p>
                 </div>
-            </div>       
+            </div>
             <div class="ntfcation Del">
                 <div class="dttm">
                     <p>December 13,2023</p>
+                    <div class="severity1">
+                        <span>NULL</span>
+                    </div>
                 </div>
                 <div class="message">
-                    <p>Username: <a href="#">username</a></p>
-                    <p>Domain: <a href="#">Domain</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Username:</span> <a href="#">username</a></p>
+                    <p><span style="font-family: 'Silkscreen', sans-serif;color:#ffe66b;">Domain:</span> <a href="#">Domain</a></p>
                     <p>
                         some text.Deletion.
                     </p>
                 </div>
-            </div>           
+            </div>
         </div>
         <div class="FilterArea">
             <h2>Filter By:</h2>
             <div class="FilterDate">
                 <h3>Date:</h3>
                 <label>Start Date:</label>
-                <input type="date" id="startDate">
+                <input type="date" id="startDate" class="datepicker">
                 <br>
                 <label>End Date:&nbsp;</label>
-                <input type="date" id="endDate">
+                <input type="date" id="endDate" class="datepicker">
             </div>
             <div class="FilterAction">
                 <h3>Action Type:</h3>
-                <button onclick="Filterntfctns('All')">All</button>
-                <button onclick="Filterntfctns('Add')">Addition</button>
-                <button onclick="Filterntfctns('Del')">Deletion</button>
-                <button onclick="Filterntfctns('Upd')">Updated</button>
-                <button onclick="Filterntfctns('Dep')">Deprecated</button>
+                <button onclick="Filterntfctns('All')" id="AllAct" class="Act" style="color:#ffe66b;">All</button>
+                <button onclick="Filterntfctns('Add')" id="AddAct" class="Act">Addition</button>
+                <button onclick="Filterntfctns('Del')" id="DelAct" class="Act">Deletion</button>
+                <button onclick="Filterntfctns('Upd')" id="UpdAct" class="Act">Updated</button>
+                <button onclick="Filterntfctns('Dep')" id="DepAct" class="Act">Deprecated</button>
             </div>
             <div class="FilterSeverity">
                 <h3>Severity Type:</h3>
-                <button onclick="FilterSevere('All')">All</button>
-                <button onclick="FilterSevere('Sev')">Severe</button>
-                <button onclick="FilterSevere('notSev')">Not Severe</button>
+                <button onclick="FilterSevere('All')" style="color:#ffe66b;" id="AllSev" class="Sev">All</button>
+                <button onclick="FilterSevere('Sev')" id="SevSev" class="Sev">Severe</button>
+                <button onclick="FilterSevere('notSev')" id="notSevSev" class="Sev">Not Severe</button>
             </div>
+            <button class="clrfltr" id="Selector" onclick="clrfilter()" role="button">Clear All</button>
         </div>
     </div>
     <!-- add clear filters button -->
@@ -137,6 +151,7 @@
     <!-- add text if no notifications -->
     <!-- add delete notifications -->
     <script src="../../js/webpage/notifications.js"></script>
+
 </body>
 
 </html>

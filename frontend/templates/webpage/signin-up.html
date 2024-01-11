@@ -2,102 +2,106 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../../styles/webpage/signin-up.css">
-    <title>SISU</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../../styles/webpage/signin-up.css">
+  <title>SISU</title>
 </head>
 
 <body>
 
-    <div class="container" id="container">
-        <div class="form-container sign-up-container">
-            <form method="post" action="#">
-                <input type="hidden" name="csrfmiddlewaretoken" value="iQmEKYJc2vHRr4l2X9NjZSIA05dvHbFQtm0xu9ra8UBsd8VxHnEUnzE0CrxEXBGo">
-                <h1>Create Account</h1>
-                <tr>
-    <th></th>
-    <td>
-      
-      <input type="text" name="username" maxlength="150" autofocus placeholder="Username" required id="id_username">
-      
-      
-    </td>
-  </tr>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form method="post" action="#">
+        <input type="hidden" name="csrfmiddlewaretoken"
+          value="iQmEKYJc2vHRr4l2X9NjZSIA05dvHbFQtm0xu9ra8UBsd8VxHnEUnzE0CrxEXBGo">
+        <h1>Create Account</h1>
+        <tr>
+          <th></th>
+          <td>
 
-  <tr>
-    <th></th>
-    <td>
-      
-      <input type="email" name="email" maxlength="254" placeholder="Email" id="id_email">
-      
-      
-    </td>
-  </tr>
-
-  <tr>
-    <th></th>
-    <td>
-      
-      <input type="text" name="first_name" maxlength="150" placeholder="Name" id="id_first_name">
-      
-      
-    </td>
-  </tr>
-
-  <tr>
-    <th></th>
-    <td>
-      
-      <input type="password" name="password1" autocomplete="new-password" placeholder="Password" required id="id_password1">
-      
-      
-    </td>
-  </tr>
-
-  <tr>
-    <th></th>
-    <td>
-      
-      <input type="password" name="password2" autocomplete="new-password" placeholder="Confirm Password" required id="id_password2">
-      
-      
-        
-      
-    </td>
-  </tr>
-                <button type="submit" name="submit">Sign Up</button>
-            </form>
-        </div>
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Sign in</h1>
-
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" class="passwordField" id="passwordField" />
+            <input type="text" name="username" maxlength="150" autofocus placeholder="Username" required
+              id="id_username">
 
 
-                <a href="#">Forgot your password?</a>
-                <button>Sign In</button>
-            </form>
-        </div>
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>Welcome Back!</h1>
-                    <p>To keep connected with us please login with your personal info</p>
-                    <button class="ghost" id="signIn">Sign In</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Enter your personal details and start journey with us</p>
-                    <button class="ghost" id="signUp">Sign Up</button>
-                </div>
-            </div>
-        </div>
+          </td>
+        </tr>
+
+        <tr>
+          <th></th>
+          <td>
+
+            <input type="email" name="email" maxlength="254" placeholder="Email" id="id_email">
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <th></th>
+          <td>
+
+            <input type="text" name="first_name" maxlength="150" placeholder="Name" id="id_first_name">
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <th></th>
+          <td>
+
+            <input type="password" name="password1" autocomplete="new-password" placeholder="Password" required
+              id="id_password1">
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <th></th>
+          <td>
+
+            <input type="password" name="password2" autocomplete="new-password" placeholder="Confirm Password" required
+              id="id_password2">
+
+
+
+
+          </td>
+        </tr>
+        <button type="submit" name="submit">Sign Up</button>
+      </form>
     </div>
-    <script src="../../js/webpage/signin-up.js"></script>
+    <div class="form-container sign-in-container">
+      <form action="#">
+        <h1>Sign in</h1>
+
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" class="passwordField" id="passwordField" />
+
+
+        <a href="#">Forgot your password?</a>
+        <button>Sign In</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/webpage/signin-up.js"></script>
 </body>
 
 </html>

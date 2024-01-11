@@ -17,15 +17,15 @@
     </div>
     <div class="Menu">
         <div class="NavBar">
-            <a href="#" style="padding-left: 25%;">Dashboard</a>
-            <a href="#" style="padding-left: 15%;">Notifications</a>
-            <a href="#" style="padding-left: 12%;">Password usage</a>
-            <a href="#" style="padding-left: 2%;">Dark Web monitoring</a>
-            <a href="#" style="padding-left: 5%;">Password Generator</a>
-            <a href="#" style="padding-left:30%;" id="Account">Account</a>
-            <a href="#" style="padding-left:30%;display:block;" class="accnt">Profile</a>
-            <a href="#" style="padding-left:6%;display:block;" class="accnt">Change Password</a>
-            <a href="#" style="padding-left:30%;display:block;" class="accnt">Devices</a>
+            <a href="#" style="padding-left: 29%;">Dashboard</a>
+            <a href="#" style="padding-left: 27%;">Notifications</a>
+            <a href="#" style="padding-left: 20%;">Password usage</a>
+            <a href="#" style="padding-left: 12%;">Dark Web monitoring</a>
+            <a href="#" style="padding-left: 13%;">Password Generator</a>
+            <a href="#" style="padding-left:32%;" id="Account">Account</a>
+            <a href="#" style="padding-left:34%;display:block;" class="accnt">Profile</a>
+            <a href="#" style="padding-left:14%;display:block;" class="accnt">Change Password</a>
+            <a href="#" style="padding-left:31%;display:block;" class="accnt">Devices</a>
         </div>
         <div class="logout">
             <svg class="svg-icon" style="height: 60%;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024"
@@ -45,11 +45,11 @@
         <div class="psswrdcontainer">
             <div class="crrntpsswrd">
                 <p>
-                    Enter Current Password:
-                    <input type="password" value="password" style="margin-left: 2%;" readonly>
+                    <span class="passhead">Enter Current Password:</span>
+                    <input type="password" value="password" style="margin-left: 2%;padding:1%;" readonly class="passinpts">
                     <svg height="10%" width="2.5%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="eyeicon">
-                        <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <g stroke="#ffe66b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <path
                                 d="m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z" />
                             <path
@@ -61,11 +61,11 @@
             <div class="newpsswrd">
                 <form>
                     <p>
-                        Enter New Password:
-                        <input type="password" style="margin-left: 5.5%;">
+                        <span class="passhead">Enter New Password:</span>
+                        <input type="password" style="margin-left: 6%;padding:1%;" id="input1" class="passinpts">
                         <svg height="10%" width="2.5%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         class="eyeicon">
-                            <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <g stroke="#ffe66b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                 <path
                                     d="m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z" />
                                 <path
@@ -74,11 +74,20 @@
                         </svg>
                     </p>
                     <p>
-                        Re-enter New Password:
-                        <input type="password" style="margin-left: 1.75%;">
+                        <span class="passhead">Re-enter New Password:</span>
+                        <input type="password" style="margin-left: 1.75%;padding:1%;" class="passinpts">
+                        <svg height="10%" width="2.5%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="eyeicon">
+                            <g stroke="#ffe66b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path
+                                    d="m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z" />
+                                <path
+                                    d="m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z" />
+                            </g>
+                        </svg>
                     </p>
                     <div class="Updatebtns">
-                        <input type="submit" value="Update">
+                        <button class="button-17" role="button" type="submit">Update</button>
                     </div>
                 </form>
             </div>

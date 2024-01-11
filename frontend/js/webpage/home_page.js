@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
     togglePasswordVisibilityOpen.addEventListener("click", function () {
         passwordField.type = "text";
         togglePasswordVisibilityOpen.style.display = "none";
-        togglePasswordVisibilityClosed.style.display = "inline-block"; 
+        togglePasswordVisibilityClosed.style.display = "inline-block";
 
     });
 
     togglePasswordVisibilityClosed.addEventListener("click", function () {
         passwordField.type = "password";
         togglePasswordVisibilityClosed.style.display = "none";
-        togglePasswordVisibilityOpen.style.display = "inline-block"; 
+        togglePasswordVisibilityOpen.style.display = "inline-block";
     });
 });
 const showBtn = document.querySelectorAll(".editbtn");
@@ -21,15 +21,15 @@ const modalBox = document.querySelector(".modal-box");
 const overlay = document.querySelector(".overlay");
 const cancelButton = document.querySelector("#cancelButton");
 function showModal() {
-  modalBox.style.display = "block";
-  overlay.style.display = "block";
+    modalBox.style.display = "block";
+    overlay.style.display = "block";
 }
 function hideModal() {
-  modalBox.style.display = "none";
-  overlay.style.display = "none";
+    modalBox.style.display = "none";
+    overlay.style.display = "none";
 }
 showBtn.forEach(btn => {
-  btn.addEventListener("click", showModal);
+    btn.addEventListener("click", showModal);
 });
 overlay.addEventListener("click", hideModal);
 cancelButton.addEventListener("click", hideModal);
@@ -124,12 +124,19 @@ collapsibles[0].addEventListener("click", function () {
     mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
     var Heading = document.getElementsByClassName("heading")[0];
     var arrow = document.getElementsByClassName("Arrow")[0];
+    var colorboxes = document.getElementsByClassName("color-boxes");
     if (menu.classList.contains('hidden')) {
         arrow.innerHTML = "&#707;";
         Heading.style.left = "2%";
+        for (var i = 0; i < colorboxes.length; i++) {
+            colorboxes[i].style.left = "17.85%";
+        }
     } else {
         arrow.innerHTML = "&#706;";
         Heading.style.left = "22%";
+        for (var i = 0; i < colorboxes.length; i++) {
+            colorboxes[i].style.left = "13.75%";
+        }
     }
 });
 var Filter = document.getElementById("Filter");
@@ -214,7 +221,7 @@ for (var i = 0; i < coll.length; i++) {
         var content = this.nextElementSibling;
         if (content.classList.contains("content")) {
             while (content && !content.classList.contains("filterDiv")) {
-                if(content.classList.contains("content")){
+                if (content.classList.contains("content")) {
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                     } else {
@@ -251,11 +258,11 @@ function SelectOptions() {
     var contentCheckboxes = document.getElementsByClassName("contentCheckboxes");
     var domains = document.getElementsByClassName("filterDiv");
     var editbuttons = document.getElementsByClassName("editbtn");
-     for (var i = 0; i < Checkboxes.length; i++) {
+    for (var i = 0; i < Checkboxes.length; i++) {
         Checkboxes[i].checked = false;
         var computedStyle = window.getComputedStyle(domains[i]);
         if (computedStyle.display === "flex" || computedStyle.getPropertyValue('display') === 'flex') {
-             Checkboxes[i].classList.toggle("available");
+            Checkboxes[i].classList.toggle("available");
         }
     }
     for (var i = 0; i < contentCheckboxes.length; i++) {
@@ -358,15 +365,15 @@ for (var i = 0; i < eyeicons.length; i++) {
         }
     });
 }
-var account=document.getElementById("Account");
-account.addEventListener("click",function(){
-    var accountOptions=document.getElementsByClassName("accnt");
-    for(var i=0;i<accountOptions.length;i++){
+var account = document.getElementById("Account");
+account.addEventListener("click", function () {
+    var accountOptions = document.getElementsByClassName("accnt");
+    for (var i = 0; i < accountOptions.length; i++) {
         var cmptdStyle = window.getComputedStyle(accountOptions[i]);
-        if(cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none'){
-            accountOptions[i].style.display="block";
-        }else{
-            accountOptions[i].style.display="none";
+        if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
+            accountOptions[i].style.display = "block";
+        } else {
+            accountOptions[i].style.display = "none";
         }
     }
 });

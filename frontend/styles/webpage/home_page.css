@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 .modal-box {
-    display: none; 
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -29,17 +29,17 @@
     transform: translate(-50%, -50%);
 }
 
-
-.save-button{
-    font-family: 'Silkscreen', sans-serif; 
+.save-button {
+    font-family: 'Silkscreen', sans-serif;
 }
-.cancel-button{
-    font-family: 'Silkscreen', sans-serif; 
+
+.cancel-button {
+    font-family: 'Silkscreen', sans-serif;
 }
 
 .form {
     max-width: 300px;
-    margin: 0 auto; 
+    margin: 0 auto;
 }
 
 .form-group {
@@ -50,10 +50,10 @@
 
 label {
     display: inline-block;
-    width: 100px; 
+    width: 100px;
     margin-right: 10px;
     color: #4caf50;
-    font-family: 'Silkscreen', sans-serif; 
+    font-family: 'Silkscreen', sans-serif;
     font-size: medium;
 }
 
@@ -63,24 +63,24 @@ input#passwordField[type="password"],
 input#sync[type="checkbox"],
 input#device[type="checkbox"],
 input#customText[type="text"] {
-    flex: 1; 
+    flex: 1;
     padding: 8px;
     border-radius: 3px;
     background-color: #555;
     color: #ffffff;
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 input#passwordField[type="password"] {
-    width: 169px; 
+    width: 169px;
 }
 
 .form-buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px; 
+    margin-top: 15px;
 }
 
 .save-button,
@@ -100,7 +100,7 @@ h2 {
 
 .password-container {
     position: relative;
-    display: flex; 
+    display: flex;
 }
 
 .password-container .material-symbols-outlined {
@@ -111,7 +111,6 @@ h2 {
     cursor: pointer;
 }
 
-
 .toggler-wrapper {
     display: block;
     width: 45px;
@@ -119,15 +118,15 @@ h2 {
     cursor: pointer;
     position: relative;
 }
-  
+
 .toggler-wrapper input[type="checkbox"] {
     display: none;
 }
-  
+
 .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
     background-color: #44cc66;
 }
-  
+
 .toggler-wrapper .toggler-slider {
     background-color: #ccc;
     position: absolute;
@@ -139,30 +138,29 @@ h2 {
     -webkit-transition: all 300ms ease;
     transition: all 300ms ease;
 }
-  
+
 .toggler-wrapper .toggler-knob {
     position: absolute;
     -webkit-transition: all 300ms ease;
     transition: all 300ms ease;
 }
-  
-  
+
 .toggler-wrapper.style-7 input[type="checkbox"]:checked+.toggler-slider {
     background-color: #555;
 }
-  
+
 .toggler-wrapper.style-7 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
     left: calc(100% - 19px - 3px);
     background-color: #44cc66;
 }
-  
+
 .toggler-wrapper.style-7 .toggler-slider {
     background-color: #555;
     -webkit-box-shadow: 2px 4px 8px rgba(200, 200, 200, 0.5);
     box-shadow: 2px 4px 8px rgba(200, 200, 200, 0.5);
     border-radius: 5px;
 }
-  
+
 .toggler-wrapper.style-7 .toggler-knob {
     width: calc(25px - 6px);
     height: calc(25px - 6px);
@@ -172,12 +170,11 @@ h2 {
     background-color: #e6e6e6;
 }
 
-
 .search-container {
     position: relative;
     margin-top: 0.85%;
     margin-left: 1.5%;
-    width: 80%;
+    width: 72%;
     height: 30px;
     border-radius: 30px;
     padding: 5px 20px;
@@ -199,7 +196,7 @@ h2 {
     transform: translate(-50%, -50%);
     font-family: 'Silkscreen', sans-serif;
     font-size: 16px;
-    color: green;
+    color: #ffe66b;
     pointer-events: none;
 }
 
@@ -225,8 +222,8 @@ h2 {
     font-family: 'Silkscreen', sans-serif;
     position: relative;
     margin-top: 3px;
-    color: green;
-    left:42%;
+    color: #ffe66b;
+    left: 42%;
 }
 
 .search-container:hover>.search-input {
@@ -238,7 +235,7 @@ h2 {
     background: transparent;
     position: relative;
     top: -2px;
-    color: green;
+    color: #ffe66b;
     border: none;
     outline: none;
     width: 0px;
@@ -246,9 +243,8 @@ h2 {
     font-size: 16px;
 }
 
-
 body {
-    background-color: black;
+    background-color: #111;
     color: white;
 }
 
@@ -274,6 +270,7 @@ body {
     margin-bottom: auto;
     font-size: 40px;
     font-family: 'Silkscreen', sans-serif;
+    color: #ffe66b;
 }
 
 .Menu.hidden {
@@ -284,10 +281,14 @@ body {
 .Menu {
     display: flex;
     position: fixed;
+    background-color: #18181b;
     top: 12%;
     left: 0%;
     height: 88%;
     width: 20%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: #ffe66b;
 }
 
 .Menu h2 {
@@ -310,9 +311,18 @@ body {
     text-decoration: none;
     color: white;
     font-size: x-large;
-    padding-top: 2.5%;
-    padding-bottom: 2.5%;
-    font-family: 'Roboto Mono', monospace;
+    padding-top: 3.5%;
+    padding-bottom: 3.5%;
+    font-family: 'Opensans', sans-serif;
+    color: #ffe66b;
+}
+
+.NavBar a:active {
+    background-color: #aaa;
+}
+
+.NavBar a:hover {
+    background-color: #aaa;
 }
 
 .logout {
@@ -322,6 +332,7 @@ body {
     width: 100%;
     height: 8%;
     font-family: 'Roboto Mono', monospace;
+    color: #ffe66b;
 }
 
 .logout a {
@@ -332,7 +343,7 @@ body {
     top: 25%;
     font-size: x-large;
     text-decoration: none;
-    color: white;
+    color: #ffe66b;
 }
 
 .logout svg {
@@ -357,7 +368,7 @@ body {
 }
 
 .Arrow {
-    background-color: black;
+    background-color: #111;
     color: white;
     border: none;
     font-size: x-large;
@@ -396,7 +407,7 @@ body {
     height: 7%;
     cursor: pointer;
     background-color: black;
-    color: green;
+    color: #ffe66b;
     border: none;
     font-size: large;
     font-family: 'Silkscreen', sans-serif;
@@ -415,7 +426,9 @@ body {
 
 .filterDiv {
     display: flex;
-    background-color: white;
+    background-color: #272727;
+    color: #FBFBFB;
+    font-family: "Opensans", sans-serif;
     border: 1px solid black;
     cursor: pointer;
     height: 8%;
@@ -424,6 +437,7 @@ body {
     padding-bottom: 5%;
     padding-left: 2%;
     transition: left 0.3s ease;
+    border-radius: 12px;
 }
 
 .filterDiv.full-width {
@@ -459,7 +473,7 @@ body {
 }
 
 .UsrnmeNPasswrds.partial-height {
-    height: 71%;
+    height: 68%;
 }
 
 .content {
@@ -468,6 +482,7 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: 0.3s ease;
+    color: #FBFBFB;
 }
 
 .content.visible {
@@ -479,13 +494,42 @@ body {
 }
 
 .button {
+    align-items: center;
     height: 4%;
     margin-left: 1%;
-    margin-top: 1%;
+    margin-top: 0.65%;
+    appearance: none;
+    background-color: #18181b;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .3),
+        -4px -4px 6px 0 rgba(116, 125, 136, .2),
+        inset -4px -4px 6px 0 rgba(255, 255, 255, .2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    color: #ffe66b;
     cursor: pointer;
-    background-color: white;
-    border: none;
-    font-size: 120%;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    letter-spacing: .25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: auto;
+    will-change: transform, opacity;
+    z-index: 0;
+    padding: 1.75%;
 }
 
 .Checkboxes {
@@ -502,21 +546,14 @@ body {
 
 .Deletebuttons {
     position: absolute;
-    left: 87.5%;
-    top: 82%;
+    left: 80.5%;
+    top: 79%;
     height: 4%;
     display: none;
 }
 
 .Deletebuttons.not-hidden {
     display: flex;
-}
-
-.Deletebuttons button {
-    background-color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 120%;
 }
 
 .contentCheckboxes {
@@ -534,7 +571,7 @@ body {
 
 .passwords {
     border: none;
-    background-color: black;
+    background-color: #111;
     color: white;
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -587,7 +624,7 @@ body {
     width: 16px;
     height: 16px;
     position: relative;
-    left: 16.45%;
+    left: 13.75%;
     margin-top: 1.7%;
     border-radius: 50%;
 }
@@ -597,7 +634,7 @@ body {
     top: 8.7%;
     left: 22%;
     font-family: 'Silkscreen', sans-serif;
-    color: green;
+    color: #ffe66b;
     font-size: 24px;
     transition: left 0.3s ease;
 }
@@ -665,6 +702,95 @@ body {
     display: none;
 }
 
-.accnt{
-    display:none;
+.accnt {
+    display: none;
+}
+
+.buttonDel {
+    margin-right: 15px;
+    align-items: center;
+    appearance: none;
+    background-color: #18181b;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .3),
+        -4px -4px 6px 0 rgba(116, 125, 136, .2),
+        inset -4px -4px 6px 0 rgba(255, 255, 255, .2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    color: #ffe66b;
+    cursor: pointer;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    letter-spacing: .25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100px;
+    will-change: transform, opacity;
+    z-index: 0;
+}
+
+.buttonCanc {
+    margin-right: 15px;
+    align-items: center;
+    appearance: none;
+    background-color: #18181b;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .3),
+        -4px -4px 6px 0 rgba(116, 125, 136, .2),
+        inset -4px -4px 6px 0 rgba(255, 255, 255, .2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    color: #ffe66b;
+    cursor: pointer;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    justify-content: center;
+    letter-spacing: .25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100px;
+    will-change: transform, opacity;
+    z-index: 0;
+    padding: 1.75%;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }
