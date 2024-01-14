@@ -189,10 +189,10 @@ body {
     width: 350px;
     margin-bottom: 10.5px;
     background-color: #18181b;
-    color:#fff;
-    border:none;
-    font-size:18px;
-    padding:3%;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    padding: 3%;
 }
 
 /* .updatebtn input {
@@ -227,12 +227,12 @@ h1[welcome-name="N"] {
     color: #ffe66b;
 }
 
-.inputname{
+.inputname {
     font-family: 'Silkscreen', sans-serif;
     color: #ffe66b;
 }
 
-.settng b{
+.settng b {
     color: #ffe66b;
     font-family: 'Silkscreen', sans-serif;
     font-size: 18px;
@@ -274,4 +274,65 @@ h1[welcome-name="N"] {
     padding: 1.75%;
     margin-top: 5%;
     margin-left: 37%;
+}
+
+.checkbox.style-d {
+    display: inline-block;
+    position: absolute;
+    padding-left: 30px;
+    margin-top:0.35%;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox.style-d input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox.style-d input:checked~.checkbox__checkmark {
+    background-color: #f7cb15;
+}
+
+.checkbox.style-d input:checked~.checkbox__checkmark:after {
+    opacity: 1;
+}
+
+.checkbox.style-d:hover input~.checkbox__checkmark {
+    background-color: #eee;
+}
+
+.checkbox.style-d:hover input:checked~.checkbox__checkmark {
+    background-color: #f7cb15;
+}
+
+.checkbox.style-d .checkbox__checkmark {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    transition: background-color 0.25s ease;
+    border-radius: 11px;
+}
+
+.checkbox.style-d .checkbox__checkmark:after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 3.5px;
+    width: 5px;
+    height: 10px;
+    border: solid #333;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }

@@ -254,19 +254,21 @@ function search_Domain() {
     }
 }
 function SelectOptions() {
-    var Checkboxes = document.getElementsByClassName("Checkboxes");
-    var contentCheckboxes = document.getElementsByClassName("contentCheckboxes");
+    var Checkboxes = document.getElementsByClassName("checkbox");
+    var Checkboxes1 = document.getElementsByClassName("Checkboxes");
+    var contentCheckboxes = document.getElementsByClassName("checkbox1");
+    var contentCheckboxes1 = document.getElementsByClassName("contentCheckboxes");
     var domains = document.getElementsByClassName("filterDiv");
     var editbuttons = document.getElementsByClassName("editbtn");
     for (var i = 0; i < Checkboxes.length; i++) {
-        Checkboxes[i].checked = false;
+        Checkboxes1[i].checked = false;
         var computedStyle = window.getComputedStyle(domains[i]);
         if (computedStyle.display === "flex" || computedStyle.getPropertyValue('display') === 'flex') {
             Checkboxes[i].classList.toggle("available");
         }
     }
     for (var i = 0; i < contentCheckboxes.length; i++) {
-        contentCheckboxes[i].checked = false;
+        contentCheckboxes1[i].checked = false;
         contentCheckboxes[i].classList.toggle("available");
     }
     for (var i = 0; i < domains.length; i++) {

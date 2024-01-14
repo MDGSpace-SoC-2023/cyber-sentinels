@@ -6,15 +6,15 @@ collapsibles[0].addEventListener("click", function () {
     mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
     var Heading = document.getElementsByClassName("heading")[0];
     var arrow = document.getElementsByClassName("Arrow")[0];
-    var containers=document.getElementsByClassName("container")[0];
+    var containers = document.getElementsByClassName("container")[0];
     if (menu.classList.contains('hidden')) {
         arrow.innerHTML = "&#707;";
         Heading.style.left = "2%";
-        containers.style.left="40%";
+        containers.style.left = "40%";
     } else {
         arrow.innerHTML = "&#706;";
         Heading.style.left = "22%";
-        containers.style.left="28%";
+        containers.style.left = "28%";
     }
 });
 
@@ -120,15 +120,15 @@ function getRandomSymbol() {
     const symbols = '!@#$%^&*(){}[]=<>/,.'
     return symbols[Math.floor(Math.random() * symbols.length)];
 }
-var account=document.getElementById("Account");
-account.addEventListener("click",function(){
-    var accountOptions=document.getElementsByClassName("accnt");
-    for(var i=0;i<accountOptions.length;i++){
+var account = document.getElementById("Account");
+account.addEventListener("click", function () {
+    var accountOptions = document.getElementsByClassName("accnt");
+    for (var i = 0; i < accountOptions.length; i++) {
         var cmptdStyle = window.getComputedStyle(accountOptions[i]);
-        if(cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none'){
-            accountOptions[i].style.display="block";
-        }else{
-            accountOptions[i].style.display="none";
+        if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
+            accountOptions[i].style.display = "block";
+        } else {
+            accountOptions[i].style.display = "none";
         }
     }
 });
