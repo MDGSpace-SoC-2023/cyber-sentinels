@@ -2,14 +2,14 @@
 *.pyc
 *~
 __pycache__
-
+py_client/
 # Env
 .env
-myvenv/
 venv/
 
 # Database
 db.sqlite3
+migrations/
 
 # Static folder at project root
 /static/
