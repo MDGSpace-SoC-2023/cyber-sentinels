@@ -4,6 +4,11 @@ from .views import *
 
 urlpatterns = [
     path("", home, name="home"),
+    path("generate/", passwordGenerator, name="passwordGenerator"),
+    path("notifications/", notifications, name="notifications"),
+    path("usage", passwordUsage, name="usage"),
+    path("monitor", darkwebMonitoring, name="darkweb"),
+    path("devices/", devices, name="devices"),
     path("view/", PasswordListView.as_view()),
     path("<int:pk>/view/", PasswordRetrieveView.as_view()),
     path("create/", PasswordCreateView.as_view()),

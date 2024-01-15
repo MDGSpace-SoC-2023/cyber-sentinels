@@ -10,6 +10,26 @@ def home(request):
     return render(request, "passManager/home.html")
 
 
+def passwordGenerator(request):
+    return render(request, "passManager/passwordGenerator.html")
+
+
+def notifications(request):
+    return render(request, "passManager/notifications.html")
+
+
+def passwordUsage(request):
+    return render(request, "passManager/passwordUsage.html")
+
+
+def darkwebMonitoring(request):
+    return render(request, "passManager/darkwebMonitoring.html")
+
+
+def devices(request):
+    return render(request, "passManager/devices.html")
+
+
 class PasswordListView(generics.ListAPIView):
     serializer_class = PasswordSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -44,6 +64,7 @@ class PasswordRetrieveView(generics.RetrieveAPIView):
             return Password.objects.none()
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
+
         return queryset
 
 
@@ -66,7 +87,6 @@ class PasswordCreateView(generics.CreateAPIView):
         user = self.request.user
         print(self.request)
         domain_name = self.request.data.get("domain_name", "")
-        url = self.request.data.get("url", "")
         vault, vault_created = PasswordVault.objects.get_or_create(user=user)
         domain, domain_created = Domain.objects.get_or_create(
             vault=vault, name=domain_name

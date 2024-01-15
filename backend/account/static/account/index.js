@@ -5,11 +5,11 @@ const container = document.getElementById("container");
 function get_action(form) {
   var response = grecaptcha.getResponse();
   if (response.length === 0) {
-      document.getElementById('captchaError').textContent = "Please verify the reCAPTCHA.";
-      return false; 
+    document.getElementById('captchaError').textContent = "Please verify the reCAPTCHA.";
+    return false;
   } else {
-      document.getElementById('captchaError').textContent = "";
-      return true;
+    document.getElementById('captchaError').textContent = "";
+    return true;
   }
 }
 
@@ -183,7 +183,7 @@ function loginUser(event) {
   const recaptchaResponse = grecaptcha.getResponse();
   if (recaptchaResponse.length === 0) {
     document.getElementById('captchaError').textContent = "Please verify the reCAPTCHA.";
-    return; 
+    return;
   }
 
   if (!username || !password) {
@@ -220,6 +220,7 @@ function loginUser(event) {
       return response.json();
     })
     .then(response => {
+      
       localStorage.setItem('token', response.token)
       console.log('Login Initiated:', response);
     })
