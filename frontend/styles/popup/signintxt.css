@@ -13,14 +13,14 @@ h2 {
 
 body {
     font-family: 'Silkscreen', sans-serif;
-    background-color: #000000;
+    background-color: #111;
     margin: 0;
     padding: 0;
 }
 
 .popup {
     width: 400px;
-    background-color: #000000;
+    background-color: #111;
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@ body {
 
 .header h1 {
     font-size: 24px;
-    color: #ffffff;
+    color: #ffe66b;
 }
 
 .domain-name {
@@ -50,8 +50,8 @@ body {
     width: 10px;
     height: 10px;
     border-radius: 5px;
-    background-color: #4f4;
-    color: #4f4;
+    background-color: rgb(164, 255, 164);
+    color: rgb(165, 255, 165);
     animation: dot-elastic 1s infinite linear;
 }
 

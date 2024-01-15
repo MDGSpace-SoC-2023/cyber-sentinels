@@ -4,28 +4,48 @@
 .popup-container {
     width: 400px;
     font-family: Arial, sans-serif;
-    background-color: #000;
+    background-color: #111;
     color: #fff;
-    border: 2px solid #000;
+    border: 2px solid #111;
     transform: scale(1.05);
+}
+
+.title p {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 30px;
+    color: #ffe66b;
+
+}
+
+#welbelow {
+    color: #fff;
+
 }
 
 #passwordGeneratorBtn {
     font-family: 'Silkscreen', sans-serif;
 }
 
+#passwordGeneratorBtn:hover {
+    background-color: #111;
+    color: #ffe66b;
+}
+
 #welcome {
     font-family: 'Silkscreen', sans-serif;
+    color: #ffe66b;
 }
 
 #passgtxt {
     font-family: 'Silkscreen', sans-serif;
     font-size: 15px;
+    color: #ffe66b;
 }
 
 #signintxt {
     font-family: 'Silkscreen', sans-serif;
     font-size: 15px;
+    color: #ffe66b;
 }
 
 #welbelow {
@@ -35,6 +55,11 @@
 
 #signInBtn {
     font-family: 'Silkscreen', sans-serif;
+}
+
+#signInBtn:hover {
+    background-color: #111;
+    color: #ffe66b;
 }
 
 .popup-container .navbar {
@@ -70,9 +95,9 @@
 
 .popup-container .option {
     padding: 10px;
-    background-color: #000000;
+    background-color: #111;
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 1px solid #111;
     transition: background-color 0.3s ease;
 }
 
@@ -111,4 +136,10 @@
 
 .popup-container a:hover {
     text-decoration: underline;
+}
+
+.content p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #fff;
 }

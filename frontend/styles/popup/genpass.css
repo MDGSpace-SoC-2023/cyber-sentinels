@@ -10,8 +10,8 @@
 
 body {
     width: 400px;
-    background-color: #000000;
-    color: #fff;
+    background-color: #111;
+    color: #ffe66b;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,8 +20,17 @@ body {
     overflow: hidden;
 }
 
+#result {
+    color: white;
+}
+
 #passgentxt {
     font-family: 'Silkscreen', sans-serif;
+    text-align: center;
+}
+
+.setting input[type="number"] {
+    width: 20px;
     text-align: center;
 }
 
@@ -53,7 +62,7 @@ input[type=checkbox] {
 }
 
 .container {
-    background-color: #000000;
+    background-color: #111;
     box-shadow: 0px 2px 10px rgba(255, 0, 0, 0.2);
     padding: 20px;
     width: 350px;
@@ -61,7 +70,7 @@ input[type=checkbox] {
 }
 
 .result-container {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: #18181b;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -92,8 +101,16 @@ input[type=checkbox] {
     color: #fff;
     cursor: pointer;
     font-size: 16px;
-    padding: 8px 12px;
+    padding: 12px 12px;
     background-color: #18181b;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 8px;
+    font-family: 'Silkscreen', sans-serif;
+}
+
+.btn:hover {
+    background-color: #111;
+    color: #ffe66b;
 }
 
 .btn-large {
