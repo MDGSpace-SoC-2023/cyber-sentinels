@@ -220,6 +220,7 @@ function loginUser(event) {
       return response.json();
     })
     .then(response => {
+      localStorage.setItem('token', response.token)
       console.log('Login Initiated:', response);
     })
     .catch(error => {
