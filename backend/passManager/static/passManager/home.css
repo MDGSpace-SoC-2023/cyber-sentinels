@@ -574,7 +574,8 @@ body {
 
 .tag {
     position: relative;
-    left: 7%;
+    left: 4%;
+    width:40px;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -599,7 +600,7 @@ body {
     width: 16px;
     height: 16px;
     position: relative;
-    left: 13.75%;
+    left: 12.25%;
     margin-top: 1.7%;
     border-radius: 50%;
 }
@@ -669,7 +670,7 @@ body {
     position: relative;
     margin-top: auto;
     margin-bottom: auto;
-    left: 22%;
+    left: 20%;
     cursor: pointer;
 }
 
