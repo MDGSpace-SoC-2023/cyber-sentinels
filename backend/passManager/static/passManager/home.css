@@ -20,7 +20,7 @@
     background-color: #000000;
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: #ffffff;
+    color: #ffe66b;
     padding: 20px;
     border-radius: 8px;
     position: absolute;
@@ -52,7 +52,7 @@ label {
     display: inline-block;
     width: 100px;
     margin-right: 10px;
-    color: #4caf50;
+    color: #ffe66b;
     font-family: 'Silkscreen', sans-serif;
     font-size: medium;
 }
@@ -62,7 +62,8 @@ input#username[type="text"],
 input#passwordField[type="password"],
 input#sync[type="checkbox"],
 input#device[type="checkbox"],
-input#customText[type="text"] {
+input#customText[type="text"],
+input#passwordField[type="text"] {
     flex: 1;
     padding: 8px;
     border-radius: 3px;
@@ -70,6 +71,12 @@ input#customText[type="text"] {
     color: #ffffff;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
+}
+
+.modal-box input[type="text"] {
+    width: 190px;
+    box-sizing: border-box;
+    background-color: #555;
 }
 
 input#passwordField[type="password"] {
@@ -90,7 +97,22 @@ input#passwordField[type="password"] {
     border-radius: 3px;
     cursor: pointer;
     color: #4caf50;
-    background-color: #555;
+}
+
+.password-container .eye-closed {
+    display: inline;
+}
+
+.password-container .eye-open {
+    display: none;
+}
+
+.password-container.show-password .eye-closed {
+    display: none;
+}
+
+.password-container.show-password .eye-open {
+    display: inline;
 }
 
 h2 {
@@ -104,10 +126,9 @@ h2 {
 }
 
 .password-container .material-symbols-outlined {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 60%;
+    margin-left: -26px;
+    transform: translateY(21%);
     cursor: pointer;
 }
 
@@ -575,7 +596,7 @@ body {
 .tag {
     position: relative;
     left: 4%;
-    width:40px;
+    width: 40px;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -900,4 +921,36 @@ body {
 
 .checkbox1.style-d1.available {
     display: block;
+}
+
+.addcred {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    transform: scale(1.25);
+}
+
+input#domain1[type="text"],
+input#username1[type="text"],
+input#passwordField1[type="password"],
+input#sync1[type="checkbox"],
+input#device1[type="checkbox"],
+input#customText1[type="text"],
+input#passwordField1[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #555;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+input#passwordField1[type="password"] {
+    width: 169px;
 }

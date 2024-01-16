@@ -1,23 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const passwordField = document.getElementById("passwordField");
-  const togglePasswordVisibilityOpen = document.getElementById(
-    "togglePasswordVisibilityOpen"
-  );
-  const togglePasswordVisibilityClosed = document.getElementById(
-    "togglePasswordVisibilityClosed"
-  );
-
-  togglePasswordVisibilityOpen.addEventListener("click", function () {
-    passwordField.type = "text";
-    togglePasswordVisibilityOpen.style.display = "none";
-    togglePasswordVisibilityClosed.style.display = "inline-block";
-  });
-
-  togglePasswordVisibilityClosed.addEventListener("click", function () {
-    passwordField.type = "password";
-    togglePasswordVisibilityClosed.style.display = "none";
-    togglePasswordVisibilityOpen.style.display = "inline-block";
-  });
+const passwordField = document.getElementById("passwordField");
+const togglePasswordVisibilityOpen = document.getElementById(
+  "togglePasswordVisibilityOpen"
+);
+const togglePasswordVisibilityClosed = document.getElementById(
+  "togglePasswordVisibilityClosed"
+);
+togglePasswordVisibilityOpen.addEventListener("click", function () {
+  passwordField.type = "password";
+  togglePasswordVisibilityOpen.style.display = "none";
+  togglePasswordVisibilityClosed.style.display = "inline-block";
+});
+togglePasswordVisibilityClosed.addEventListener("click", function () {
+  passwordField.type = "text";
+  togglePasswordVisibilityClosed.style.display = "none";
+  togglePasswordVisibilityOpen.style.display = "inline-block";
 });
 const showBtn = document.querySelectorAll(".editbtn");
 const modalBox = document.querySelector(".modal-box");
@@ -27,28 +23,27 @@ function showModal(event) {
   modalBox.style.display = "block";
   overlay.style.display = "block";
   var clickedBtn = event.currentTarget;
-  var conElem=clickedBtn.parentElement;
-  var Username=conElem.querySelector(".usrnme");
-  var usrinmodalBox=modalBox.querySelector("#username");
-  usrinmodalBox.value=Username.textContent;
-  var Password=conElem.querySelector(".passwords").value;
-  var pswdinmodalBox=modalBox.querySelector("#passwordField");
-  pswdinmodalBox.value=Password;
-  var Syncchek=modalBox.querySelector("#sync");
-  Syncchek.checked=false;
-  var Devchek=modalBox.querySelector("#device");
-  Devchek.checked=false;
-  if(conElem.classList.contains("ClouSync")){
-    Syncchek.checked=true;
-  }else{
-    Devchek.checked=true;
+  var conElem = clickedBtn.parentElement;
+  var Username = conElem.querySelector(".usrnme");
+  var usrinmodalBox = modalBox.querySelector("#username");
+  usrinmodalBox.value = Username.textContent;
+  var Password = conElem.querySelector(".passwords").value;
+  var pswdinmodalBox = modalBox.querySelector("#passwordField");
+  pswdinmodalBox.value = Password;
+  var Syncchek = modalBox.querySelector("#sync");
+  Syncchek.checked = false;
+  var Devchek = modalBox.querySelector("#device");
+  Devchek.checked = false;
+  if (conElem.classList.contains("ClouSync")) {
+    Syncchek.checked = true;
+  } else {
+    Devchek.checked = true;
   }
-  var customText=modalBox.querySelector("#customText");
-  var tag=conElem.querySelector(".tag");
-  customText.value=tag.textContent;
-  console.log(usrinmodalBox.value);
-  console.log(Username.textContent);
-  console.log(conElem);
+  var customText = modalBox.querySelector("#customText");
+  var tag = conElem.querySelector(".tag");
+  var domainelem = modalBox.querySelector("#domain");
+  domainelem.value = conElem.querySelector(".contentCheckboxes").classList[1];
+  customText.value = tag.textContent;
 }
 function hideModal() {
   modalBox.style.display = "none";
@@ -152,17 +147,24 @@ collapsibles[0].addEventListener("click", function () {
   var Heading = document.getElementsByClassName("heading")[0];
   var arrow = document.getElementsByClassName("Arrow")[0];
   var colorboxes = document.getElementsByClassName("color-boxes");
+  var editbtns = document.getElementsByClassName("editbtn");
   if (menu.classList.contains("hidden")) {
     arrow.innerHTML = "&#707;";
     Heading.style.left = "2%";
     for (var i = 0; i < colorboxes.length; i++) {
       colorboxes[i].style.left = "16.85%";
     }
+    for (var i = 0; i < editbtns.length; i++) {
+      editbtns[i].style.left = "25%";
+    }
   } else {
     arrow.innerHTML = "&#706;";
     Heading.style.left = "22%";
     for (var i = 0; i < colorboxes.length; i++) {
       colorboxes[i].style.left = "12.25%";
+    }
+    for (var i = 0; i < editbtns.length; i++) {
+      editbtns[i].style.left = "20%";
     }
   }
 });
@@ -266,7 +268,7 @@ function search_Domain() {
   var domains = Array.from(document.getElementsByClassName("filterDiv"));
   var input = document.getElementById("searchbar").value.toLowerCase();
   for (var i = 0; i < domains.length; i++) {
-    if (!domains[i].innerHTML.toLowerCase().includes(input)) {
+    if (!domains[i].textContent.toLowerCase().includes(input.trim().toLowerCase())) {
       var computedStyle = window.getComputedStyle(domains[i]);
       if (
         computedStyle.display === "flex" ||
@@ -323,12 +325,12 @@ Cancel.addEventListener("click", SelectOptions);
 var deleteButton = document.getElementById("Delete");
 deleteButton.addEventListener("click", function () {
   var Checkboxes = document.getElementsByClassName("Checkboxes");
-  var domids=document.getElementsByClassName("domids");
+  var domids = document.getElementsByClassName("domids");
   var result = [];
   for (var i = 0; i < Checkboxes.length; i++) {
     if (Checkboxes[i].checked) {
       let data = {
-        domain_id : domids[i].textContent,
+        domain_id: domids[i].textContent,
       };
       result.push(data);
       continue;
@@ -336,8 +338,8 @@ deleteButton.addEventListener("click", function () {
     var contentCheckboxes = document.getElementsByClassName(
       Checkboxes[i].value
     );
-    var s="idelem"+Checkboxes[i].value;
-    var idelems=document.getElementsByClassName(s);
+    var s = "idelem" + Checkboxes[i].value;
+    var idelems = document.getElementsByClassName(s);
     for (var i = 0; i < contentCheckboxes.length; i++) {
       if (contentCheckboxes[i].checked) {
         let data = {
@@ -352,6 +354,7 @@ deleteButton.addEventListener("click", function () {
     ids: result.map((item) => item.id).filter(Boolean),
   };
   var finalResultJSON = JSON.stringify(finalResult);
+  console.log(finalResultJSON);
 });
 function tglAllcntntchckbxs(checkbox) {
   var contentCheckboxes = document.getElementsByClassName(checkbox.value);
@@ -423,4 +426,63 @@ account.addEventListener("click", function () {
       accountOptions[i].style.display = "none";
     }
   }
+});
+var synchecker = document.querySelector("#sync");
+var devchecker = document.querySelector("#device");
+synchecker.addEventListener("change", function () {
+  if (synchecker.checked) {
+    devchecker.checked = false;
+  } else {
+    devchecker.checked = true;
+  }
+});
+devchecker.addEventListener("change", function () {
+  if (devchecker.checked) {
+    synchecker.checked = false;
+  } else {
+    synchecker.checked = true;
+  }
+});
+var addbtn = document.getElementById("Adder");
+addbtn.addEventListener("click", function () {
+  var addcred = document.getElementsByClassName("addcred")[0];
+  addcred.style.display = "block";
+});
+const passwordField1 = document.getElementById("passwordField1");
+const togglePasswordVisibilityOpen1 = document.getElementById(
+  "togglePasswordVisibilityOpen1"
+);
+const togglePasswordVisibilityClosed1 = document.getElementById(
+  "togglePasswordVisibilityClosed1"
+);
+togglePasswordVisibilityOpen1.addEventListener("click", function () {
+  passwordField1.type = "password";
+  togglePasswordVisibilityOpen1.style.display = "none";
+  togglePasswordVisibilityClosed1.style.display = "inline-block";
+});
+togglePasswordVisibilityClosed1.addEventListener("click", function () {
+  passwordField1.type = "text";
+  togglePasswordVisibilityClosed1.style.display = "none";
+  togglePasswordVisibilityOpen1.style.display = "inline-block";
+});
+var synchecker1 = document.querySelector("#sync1");
+var devchecker1 = document.querySelector("#device1");
+synchecker1.addEventListener("change", function () {
+  if (synchecker1.checked) {
+    devchecker1.checked = false;
+  } else {
+    devchecker1.checked = true;
+  }
+});
+devchecker1.addEventListener("change", function () {
+  if (devchecker1.checked) {
+    synchecker1.checked = false;
+  } else {
+    synchecker1.checked = true;
+  }
+});
+var cancelbutton = document.getElementById("cancelButton1");
+cancelButton.addEventListener("click", function () {
+  var addcred = document.getElementsByClassName("addcred")[0];
+  addcred.style.display = "none";
 });
