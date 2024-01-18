@@ -25,19 +25,22 @@
     </div>
     <div class="Menu">
       <div class="NavBar">
-        <a href="#" style="padding-left: 29%">Dashboard</a>
-        <a href="#" style="padding-left: 27%">Notifications</a>
-        <a href="#" style="padding-left: 20%">Password usage</a>
-        <a href="#" style="padding-left: 12%">Dark Web monitoring</a>
-        <a href="#" style="padding-left: 13%">Password Generator</a>
+        <a href="{% url 'home' %}" style="padding-left: 29%">Dashboard</a>
+        <a href="{% url 'notifications' %}" style="padding-left: 27%"
+        >Notifications</a
+        >        <a href="{% url 'usage'%}" style="padding-left: 20%">Password usage</a>
+        <a href="{% url 'darkweb' %}" style="padding-left: 12%">Dark Web monitoring</a>
+        <a href="{% url 'passwordGenerator' %}" style="padding-left: 13%"
+          >Password Generator</a
+        >
         <a href="#" style="padding-left: 32%" id="Account">Account</a>
-        <a href="#" style="padding-left: 34%; display: block" class="accnt"
+        <a href="{% url 'profile' %}" style="padding-left: 34%; display: block" class="accnt"
           >Profile</a
         >
-        <a href="#" style="padding-left: 14%; display: block" class="accnt"
+        <a href="{% url 'changepassword' %}" style="padding-left: 14%; display: block" class="accnt"
           >Change Password</a
         >
-        <a href="#" style="padding-left: 31%; display: block" class="accnt"
+        <a href="{% url 'devices' %}" style="padding-left: 31%; display: block" class="accnt"
           >Devices</a
         >
       </div>

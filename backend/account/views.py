@@ -38,12 +38,12 @@ def user_login(request):
 
             if user:
                 if user.check_password(password):
+                    login(request,user)
                     token, _ = Token.objects.get_or_create(user=user)
                     return Response({'token': token.key}, status=status.HTTP_200_OK)
 
         else:
             user = authenticate(username=username, password=password)
-
             if user:
                 login(request,user)
                 token, _ = Token.objects.get_or_create(user=user)
