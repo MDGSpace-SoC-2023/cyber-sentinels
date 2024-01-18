@@ -19,7 +19,14 @@ from .models import *
 
 class PasswordSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source="domain.vault.user.username", read_only=True)
+
     class Meta:
         model = Password
         fields = "__all__"
         depth = 1
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = "__all__"

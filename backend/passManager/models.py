@@ -33,3 +33,22 @@ class Password(models.Model):
 
     def __str__(self):
         return f"{self.domain.vault.user.username}'s Domain: {self.domain.name} Password for: {self.username}"
+
+
+class Notification(models.Model):
+    STATUS_CHOICES = [
+        ("deprecated", "Deprecated"),
+        ("created", "Created"),
+        ("deleted", "Deleted"),
+        ("updated", "Updated"),
+    ]
+    vault = models.ForeignKey(PasswordVault, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    created_at = models.DateField(default=timezone.now)
+
+    username = models.CharField(max_length=255, null=True, blank=True)
+    domain = models.CharField(max_length=255, null=True, blank=True)
+    tag = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.pk_field} - {self.status}"

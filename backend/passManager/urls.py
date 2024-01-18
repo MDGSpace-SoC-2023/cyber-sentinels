@@ -16,4 +16,5 @@ urlpatterns = [
     path("create/", PasswordCreateView.as_view()),
     path("<int:pk>/update/", PasswordUpdateView.as_view()),
     path("<int:pk>/delete/", PasswordDeleteView.as_view()),
+    path("notificationslist/", NotificationListView.as_view()),
 ]

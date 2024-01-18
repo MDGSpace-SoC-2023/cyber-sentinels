@@ -9,6 +9,7 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework import generics
+from datetime import timedelta
 
 
 def home(request):
@@ -191,6 +192,13 @@ class PasswordCreateView(generics.CreateAPIView):
             vault=vault, name=domain_name
         )
         serializer.save(domain=domain)
+        Notification.objects.create(
+            vault=vault,
+            username=serializer.instance.username,
+            domain=serializer.instance.domain.name,
+            tag=serializer.instance.notes,
+            status="Created",
+        )
         return super().perform_create(serializer)
 
 
@@ -210,6 +218,21 @@ class PasswordUpdateView(generics.RetrieveUpdateAPIView):
         queryset = Password.objects.filter(domain__in=domains)
         return queryset
 
+    def perform_update(self, serializer):
+        user = self.request.user
+        try:
+            vault = PasswordVault.objects.get(user=user)
+        except PasswordVault.DoesNotExist:
+            return None
+        Notification.objects.create(
+            vault=vault,
+            username=serializer.instance.username,
+            domain=serializer.instance.domain.name,
+            tag=serializer.instance.notes,
+            status="Updated",
+        )
+        serializer.save()
+
 
 class PasswordDeleteView(generics.RetrieveDestroyAPIView):
     serializer_class = PasswordSerializer
@@ -221,8 +244,55 @@ class PasswordDeleteView(generics.RetrieveDestroyAPIView):
         user = self.request.user
         try:
             vault = PasswordVault.objects.get(user=user)
-        except:
+        except PasswordVault.DoesNotExist:
             return Password.objects.none()
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
         return queryset
+
+    def perform_destroy(self, instance):
+        user = self.request.user
+        try:
+            vault = PasswordVault.objects.get(user=user)
+        except PasswordVault.DoesNotExist:
+            return None
+        Notification.objects.create(
+            vault=vault,
+            username=instance.username,
+            domain=instance.domain.name,
+            tag=instance.notes,
+            status="Deleted",
+        )
+        instance.delete()
+
+
+class NotificationListView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            vault = PasswordVault.objects.get(user=user)
+        except PasswordVault.DoesNotExist:
+            return None
+
+        cutoff_date = timezone.now() - timedelta(days=90)
+        outdated_passwords = Password.objects.filter(
+            domain__vault=vault, updated_at__lte=cutoff_date
+        )
+
+        for outdated_password in outdated_passwords:
+            existing_notification = Notification.objects.filter(vault=vault).first()
+
+            if not existing_notification:
+                new_notification = Notification.objects.create(
+                    vault=vault,
+                    username=outdated_password.username,
+                    domain=outdated_password.domain.name,
+                    tag=outdated_password.instance.notes,
+                    status="deprecated",
+                )
+        notifications = Notification.objects.filter(vault=vault)
+        return notifications
