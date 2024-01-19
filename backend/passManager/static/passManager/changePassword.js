@@ -7,28 +7,28 @@ collapsibles[0].addEventListener("click", function () {
     var Heading = document.getElementsByClassName("heading")[0];
     var arrow = document.getElementsByClassName("Arrow")[0];
     var Updatebtn = document.getElementsByClassName("Updatebtns")[0];
-    var input1=document.getElementById("input1");
+    var input1 = document.getElementById("input1");
     if (menu.classList.contains('hidden')) {
         arrow.innerHTML = "&#707;";
         Heading.style.left = "2%";
         Updatebtn.style.left = "15%";
-        input1.style.marginLeft="5.5%";
+        input1.style.marginLeft = "5.5%";
     } else {
         arrow.innerHTML = "&#706;";
         Heading.style.left = "22%";
         Updatebtn.style.left = "22%";
-        input1.style.marginLeft="6%";
+        input1.style.marginLeft = "6%";
     }
 });
-var account=document.getElementById("Account");
-account.addEventListener("click",function(){
-    var accountOptions=document.getElementsByClassName("accnt");
-    for(var i=0;i<accountOptions.length;i++){
+var account = document.getElementById("Account");
+account.addEventListener("click", function () {
+    var accountOptions = document.getElementsByClassName("accnt");
+    for (var i = 0; i < accountOptions.length; i++) {
         var cmptdStyle = window.getComputedStyle(accountOptions[i]);
-        if(cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none'){
-            accountOptions[i].style.display="block";
-        }else{
-            accountOptions[i].style.display="none";
+        if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
+            accountOptions[i].style.display = "block";
+        } else {
+            accountOptions[i].style.display = "none";
         }
     }
 });
@@ -51,4 +51,3 @@ for (var i = 0; i < eyeicons.length; i++) {
         }
     });
 }
-

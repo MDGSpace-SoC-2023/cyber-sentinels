@@ -113,6 +113,19 @@
                 <td><input type="text" name="email" value="{{email}}" /></td>
               </tr>
             </table>
+            <span id="messages">
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == 'error' %}
+                    <span style="color: red">{{ message }}</span>
+                  {% elif message.tags == 'success' %}
+                    <span style="color: green">{{ message }}</span>
+                  {% else %}
+                    {{ message }}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </span>   
             <div class="updatebtn">
               <button type="submit" class="button" id="Selector" role="button">
                 Update

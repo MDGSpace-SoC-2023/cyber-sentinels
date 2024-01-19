@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.db.models import Count
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import *
 from .serializers import *
@@ -36,7 +39,40 @@ def devices(request):
     return render(request, "passManager/devices.html")
 
 
+def changepwd(request):
+    return render(request, "user/change_pwd.html", {"user": request.user})
+
+
 def changePassword(request):
+    if request.method == "POST":
+        user = request.user
+        old_password = request.POST.get("currentpwd")
+        new_password = request.POST.get("newpwd")
+        confirm_password = request.POST.get("confirmpwd")
+
+        try:
+            validate_password(new_password, user=user)
+        except ValidationError as e:
+            messages.error(request, ", ".join(e.messages))
+            return redirect("changepassword")
+
+        if check_password(old_password, user.password):
+            if new_password == old_password:
+                messages.error(request, "Password already in use")
+                return redirect("changepassword")
+            if new_password == confirm_password:
+                hashed_password = make_password(new_password)
+                user.password = hashed_password
+                user.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password Updated Successfully")
+                return redirect("changepassword")
+            else:
+                messages.error(
+                    request, "New Password and Confirm Password do not match"
+                )
+        else:
+            messages.error(request, "Current Password Not Matching")
     return render(request, "passManager/changePassword.html")
 
 
@@ -287,7 +323,7 @@ class DomainDelete(generics.DestroyAPIView):
             vault = PasswordVault.objects.get(user=user)
         except PasswordVault.DoesNotExist:
             return None
-        passwords = Password.objects.filter(domain = instance)
+        passwords = Password.objects.filter(domain=instance)
         for password in passwords:
             Notification.objects.create(
                 vault=vault,
