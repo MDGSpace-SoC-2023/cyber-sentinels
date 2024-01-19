@@ -16,6 +16,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     />
+    <script src="{% static 'passManager/fetch_for_notifications.js' %}"></script>
   </head>
 
   <body>
@@ -87,7 +88,7 @@
     <div class="Main">
       <button class="Arrow">&#706;</button>
       <div class="nofctions">
-        <div class="ntfcation Add">
+        <!-- <div class="ntfcation Add">
           <div class="dttm">
             <p>October 13,2023</p>
             <div class="severity">
@@ -211,7 +212,7 @@
             </p>
             <p>some text.Deletion.</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="FilterArea">
         <h2>Filter By:</h2>
@@ -273,11 +274,10 @@
         </button>
       </div>
     </div>
-    <!-- add clear filters button -->
     <!-- add custom tags to notifications -->
     <!-- add text if no notifications -->
     <!-- add delete notifications -->
-    <script src="{% static 'passManager/notifications.js' %}"></script>
+    <script defer src="{% static 'passManager/notifications.js' %}"></script>
     <script defer src="{% static 'passManager/logout.js' %}"></script>
 
   </body>

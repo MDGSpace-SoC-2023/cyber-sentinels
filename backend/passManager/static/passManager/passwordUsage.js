@@ -1,34 +1,182 @@
-const showBtn = document.querySelectorAll(".editbtn");
-const modalBox = document.querySelector(".modal-box");
-const overlay = document.querySelector(".overlay");
-const cancelButton = document.querySelector("#cancelButton");
-
-// Function to show the modal box and overlay
-function showModal() {
-    modalBox.style.display = "block";
-    overlay.style.display = "block";
-}
-
-// Function to hide the modal box and overlay
-function hideModal() {
-    modalBox.style.display = "none";
-    overlay.style.display = "none";
-}
-
-showBtn.forEach(btn => {
-    btn.addEventListener("click", showModal);
-});
-
-overlay.addEventListener("click", hideModal);
-cancelButton.addEventListener("click", hideModal);
-
+token = localStorage.getItem.token;
+fetch("http://127.0.0.1:8000/view/?usage=usage", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token ${token}",
+    },
+})
+    .then((response) => {
+        return response.json();
+    })
+    .then((jsonData) => {
+        const passwordMap = new Map();
+        jsonData.forEach(item => {
+            const password = item.encrypted_password;
+            if (passwordMap.has(password)) {
+                const passwordInfo = passwordMap.get(password);
+                passwordInfo.count++;
+                passwordInfo.details.push({
+                    id: item.id,
+                    username: item.username,
+                    notes: item.notes,
+                    created_at: item.updated_at,
+                    domain_name: item.domain.name,
+                    domain_id: item.domain.id,
+                    sync: item.sync,
+                });
+            } else {
+                passwordMap.set(password, {
+                    count: 1,
+                    details: [{
+                        id: item.id,
+                        username: item.username,
+                        notes: item.notes,
+                        created_at: item.updated_at,
+                        domain_name: item.domain.name,
+                        domain_id: item.domain.id,
+                        sync: item.sync,
+                    }]
+                });
+            }
+        });
+        passwordMap.forEach((passwordInfo, password) => {
+            var button = document.createElement("button");
+            button.className = "filterDiv full-width";
+            var spanInsidenote = document.createElement("span");
+            spanInsidenote.className = "Insidenote";
+            var h5Insidenote = document.createElement("h5");
+            h5Insidenote.id = "h1Insidenote";
+            h5Insidenote.innerHTML = "Password Note:&nbsp;";
+            var spanNote = document.createElement("span");
+            spanNote.style.fontSize = "20px";
+            spanNote.textContent = " ";
+            const domainNames = [];
+            passwordInfo.details.forEach(detail => {
+                domainNames.push(detail.domain_name);
+            });
+            spanNote.textContent = domainNames.join(', ');
+            spanInsidenote.appendChild(h5Insidenote);
+            spanInsidenote.appendChild(spanNote);
+            var spanInsideusage = document.createElement("span");
+            spanInsideusage.className = "Insideusage";
+            spanInsideusage.textContent = `Your password has been used ${passwordInfo.count} times.`;
+            var h5ActionRequired = document.createElement("h5");
+            h5ActionRequired.className = "actionRequired";
+            h5ActionRequired.textContent = "Action Required";
+            button.appendChild(spanInsidenote);
+            button.appendChild(spanInsideusage);
+            button.appendChild(h5ActionRequired);
+            var container = document.getElementsByClassName("UsrnmeNPasswrds")[0];
+            container.appendChild(button);
+            passwordInfo.details.forEach(detail => {
+                var divContent = document.createElement("div");
+                var idelem = document.createElement("p");
+                idelem.style.display = "none";
+                idelem.textContent = detail.id;
+                divContent.appendChild(idelem);
+                var domelem = document.createElement("p");
+                domelem.style.display = "none";
+                domelem.textContent = detail.domain_name;
+                divContent.appendChild(domelem);
+                divContent.className = "content visible OnDev";
+                var pUsername = document.createElement("p");
+                pUsername.className = "usrnme";
+                pUsername.textContent = detail.username;
+                var inputPassword = document.createElement("input");
+                inputPassword.type = "password";
+                inputPassword.value = password;
+                inputPassword.className = "passwords";
+                inputPassword.readOnly = true;
+                var eyeIconSvg = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "svg"
+                );
+                eyeIconSvg.setAttribute("height", "10%");
+                eyeIconSvg.setAttribute("width", "2.5%");
+                eyeIconSvg.setAttribute("viewBox", "0 0 24 24");
+                eyeIconSvg.setAttribute("fill", "none");
+                eyeIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                eyeIconSvg.classList.add("eyeicon");
+                var groupElement = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "g"
+                );
+                groupElement.setAttribute("stroke", "#fff");
+                groupElement.setAttribute("stroke-linecap", "round");
+                groupElement.setAttribute("stroke-linejoin", "round");
+                groupElement.setAttribute("stroke-width", "2");
+                var path1Element = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+                path1Element.setAttribute(
+                    "d",
+                    "m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z"
+                );
+                var path2Element = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+                path2Element.setAttribute(
+                    "d",
+                    "m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z"
+                );
+                groupElement.appendChild(path1Element);
+                groupElement.appendChild(path2Element);
+                eyeIconSvg.appendChild(groupElement);
+                divContent.appendChild(pUsername);
+                divContent.appendChild(inputPassword);
+                divContent.appendChild(eyeIconSvg);
+                var pCategory = document.createElement("p");
+                pCategory.className = "ctgry";
+                if (detail.sync) {
+                    pCategory.textContent = "Cloud Synced";
+                } else {
+                    pCategory.textContent = "On Device";
+                }
+                var pTag = document.createElement("p");
+                pTag.className = "tag";
+                pTag.textContent = detail.notes;
+                var spanColorBoxes = document.createElement("span");
+                spanColorBoxes.id = "color-boxes";
+                spanColorBoxes.className = "color-boxes";
+                var spanTooltipText = document.createElement("span");
+                spanTooltipText.id = "tooltiptext";
+                spanTooltipText.className = "tooltiptext";
+                spanTooltipText.textContent = "Tooltiptext";
+                spanColorBoxes.appendChild(spanTooltipText);
+                var editButtonSvg = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "svg"
+                );
+                editButtonSvg.setAttribute("height", "30px");
+                editButtonSvg.setAttribute("width", "20px");
+                editButtonSvg.setAttribute("viewBox", "0 0 576 512");
+                editButtonSvg.classList.add("editbtn");
+                var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathElement.setAttribute('fill', '#ffffff');
+                pathElement.setAttribute('d', 'M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z');
+                editButtonSvg.appendChild(pathElement);
+                divContent.appendChild(pCategory);
+                divContent.appendChild(pTag);
+                divContent.appendChild(spanColorBoxes);
+                divContent.appendChild(editButtonSvg);
+                container.appendChild(divContent);
+            });
+        });
+        runRemainingCode();
+    })
+    .catch((error) => {
+        console.log("Error:", error);
+    });
 /**
- * Parse a password string into a numeric value.
- * This function evaluates password strength based on various criteria.
- *
- * @param {string} password - The password string to evaluate.
- * @return {number} - Numeric score representing the password strength.
- */
+     * Parse a password string into a numeric value.
+     * This function evaluates password strength based on various criteria.
+     *
+     * @param {string} password - The password string to evaluate.
+     * @return {number} - Numeric score representing the password strength.
+     */
 let evaluatePassword = (password) => {
     let score = 0;
     score += password.length;
@@ -69,77 +217,68 @@ let scoreToData = (score) => {
         };
     }
 };
-window.addEventListener('DOMContentLoaded', () => {
-    let passwords = document.querySelectorAll('.passwords');
-    let colorBoxes = document.querySelectorAll('.color-boxes');
-    passwords.forEach((passwordElement, index) => {
-        let data = scoreToData(evaluatePassword(passwordElement.value));
-        colorBoxes[index].style.background = data.color;
-        let tooltipText = passwordElement.parentElement.querySelector('.tooltiptext');
-        if (tooltipText) {
-            tooltipText.innerHTML = data.label;
+function runRemainingCode() {
+    const showBtn = document.querySelectorAll(".editbtn");
+    const modalBox = document.querySelector(".modal-box");
+    const overlay = document.querySelector(".overlay");
+    const cancelButton = document.querySelector("#cancelButton");
+    function showModal(event) {
+        modalBox.style.display = "block";
+        overlay.style.display = "block";
+        var clickedBtn = event.currentTarget;
+        var conElem = clickedBtn.parentElement;
+        var Username = conElem.querySelector(".usrnme");
+        var usrinmodalBox = modalBox.querySelector("#username");
+        usrinmodalBox.value = Username.textContent;
+        var Password = conElem.querySelector(".passwords").value;
+        var pswdinmodalBox = modalBox.querySelector("#passwordField");
+        pswdinmodalBox.value = Password;
+        var Syncchek = modalBox.querySelector("#sync");
+        Syncchek.checked = false;
+        var Devchek = modalBox.querySelector("#device");
+        Devchek.checked = false;
+        if (conElem.classList.contains("ClouSync")) {
+            Syncchek.checked = true;
+        } else {
+            Devchek.checked = true;
+        }
+        var customText = modalBox.querySelector("#customText");
+        var tag = conElem.querySelector(".tag");
+        var domainelem = modalBox.querySelector("#domain");
+        domainelem.value = conElem.firstChild.nextElementSibling.textContent;
+        customText.value = tag.textContent;
+        var id = conElem.firstChild.textContent;
+        var updtid = modalBox.querySelector(".updateid");
+        updtid.textContent = id;
+    }
+    function hideModal() {
+        modalBox.style.display = "none";
+        overlay.style.display = "none";
+    }
+    showBtn.forEach(btn => {
+        btn.addEventListener("click", showModal);
+    });
+    overlay.addEventListener("click", hideModal);
+    cancelButton.addEventListener("click", hideModal);
+    var collapsibles = document.getElementsByClassName("Arrow");
+    collapsibles[0].addEventListener("click", function () {
+        var menu = document.getElementsByClassName("Menu")[0];
+        menu.classList.toggle("hidden");
+        var mainSection = document.getElementsByClassName("Main")[0];
+        mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
+        var Heading = document.getElementsByClassName("heading")[0];
+        var arrow = document.getElementsByClassName("Arrow")[0];
+        if (menu.classList.contains('hidden')) {
+            arrow.innerHTML = "&#707;";
+            Heading.style.left = "2%";
+        } else {
+            arrow.innerHTML = "&#706;";
+            Heading.style.left = "22%";
         }
     });
-    let domains = document.querySelectorAll('.filterDiv');
-    let colorboxfordomain = document.querySelectorAll('.color-box');
-    domains.forEach((domain, index) => {
-        var content = domain.nextElementSibling;
-        var i = 0;
-        var score = 0;
-        if (content.classList.contains("content")) {
-            while (content && !content.classList.contains("filterDiv")) {
-                let passwordElement = content.querySelector('.passwords');
-                if (passwordElement) {
-                    score = score + evaluatePassword(passwordElement.value);
-                    i++;
-                }
-                content = content.nextElementSibling;
-            }
-        }
-        score = score / i;
-        let data = scoreToData(score);
-        colorboxfordomain[index].style.background = data.color;
-        let tooltipText = domain.querySelector(".tooltiptext");
-        if (tooltipText) {
-            tooltipText.innerHTML = data.label;
-        }
-    });
-});
-var collapsibles = document.getElementsByClassName("Arrow");
-collapsibles[0].addEventListener("click", function () {
-    var menu = document.getElementsByClassName("Menu")[0];
-    menu.classList.toggle("hidden");
-    var mainSection = document.getElementsByClassName("Main")[0];
-    mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
-    var Heading = document.getElementsByClassName("heading")[0];
-    var arrow = document.getElementsByClassName("Arrow")[0];
-    if (menu.classList.contains('hidden')) {
-        arrow.innerHTML = "&#707;";
-        Heading.style.left = "2%";
-    } else {
-        arrow.innerHTML = "&#706;";
-        Heading.style.left = "22%";
-    }
-});
-
-var coll = document.getElementsByClassName("filterDiv");
-function contentOpenNclose(filterDiv) {
-    var content = filterDiv.nextElementSibling;
-    if (content.classList.contains("content")) {
-        while (content && !content.classList.contains("filterDiv")) {
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-            content = content.nextElementSibling;
-        }
-    }
-    filterDiv.classList.toggle("altContent");
-}
-for (var i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
-        var content = this.nextElementSibling;
+    var coll = document.getElementsByClassName("filterDiv");
+    function contentOpenNclose(filterDiv) {
+        var content = filterDiv.nextElementSibling;
         if (content.classList.contains("content")) {
             while (content && !content.classList.contains("filterDiv")) {
                 if (content.style.maxHeight) {
@@ -150,46 +289,137 @@ for (var i = 0; i < coll.length; i++) {
                 content = content.nextElementSibling;
             }
         }
-        this.classList.toggle("altContent");
-    });
-}
-
-function Showpassword(eyeicon) {
-    var passwrd = eyeicon.previousElementSibling;
-    if (passwrd.getAttribute('type') === 'password') {
-        passwrd.setAttribute('type', 'text');
-    } else {
-        passwrd.setAttribute('type', 'password');
+        filterDiv.classList.toggle("altContent");
     }
-}
-var eyeicons = document.getElementsByClassName("eyeicon");
-for (var i = 0; i < eyeicons.length; i++) {
-    eyeicons[i].addEventListener("click", function () {
-        var passwrd = this.previousElementSibling;
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            var content = this.nextElementSibling;
+            if (content.classList.contains("content")) {
+                while (content && !content.classList.contains("filterDiv")) {
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                    content = content.nextElementSibling;
+                }
+            }
+            this.classList.toggle("altContent");
+        });
+    }
+    function Showpassword(eyeicon) {
+        var passwrd = eyeicon.previousElementSibling;
         if (passwrd.getAttribute('type') === 'password') {
             passwrd.setAttribute('type', 'text');
-            this.innerHTML = `
-            <path d="M2 2L22 22" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            `;
         } else {
             passwrd.setAttribute('type', 'password');
-            this.innerHTML = `
-            <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z"/><path d="m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z"/></g>
-            `;
-        }
-    });
-}
-var account = document.getElementById("Account");
-account.addEventListener("click", function () {
-    var accountOptions = document.getElementsByClassName("accnt");
-    for (var i = 0; i < accountOptions.length; i++) {
-        var cmptdStyle = window.getComputedStyle(accountOptions[i]);
-        if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
-            accountOptions[i].style.display = "block";
-        } else {
-            accountOptions[i].style.display = "none";
         }
     }
-});
+    var eyeicons = document.getElementsByClassName("eyeicon");
+    for (var i = 0; i < eyeicons.length; i++) {
+        eyeicons[i].addEventListener("click", function () {
+            var passwrd = this.previousElementSibling;
+            if (passwrd.getAttribute('type') === 'password') {
+                passwrd.setAttribute('type', 'text');
+                this.innerHTML = `
+                <path d="M2 2L22 22" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                `;
+            } else {
+                passwrd.setAttribute('type', 'password');
+                this.innerHTML = `
+                <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z"/><path d="m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z"/></g>
+                `;
+            }
+        });
+    }
+    var account = document.getElementById("Account");
+    account.addEventListener("click", function () {
+        var accountOptions = document.getElementsByClassName("accnt");
+        for (var i = 0; i < accountOptions.length; i++) {
+            var cmptdStyle = window.getComputedStyle(accountOptions[i]);
+            if (cmptdStyle.display === "none" || cmptdStyle.getPropertyValue('display') === 'none') {
+                accountOptions[i].style.display = "block";
+            } else {
+                accountOptions[i].style.display = "none";
+            }
+        }
+    });
+    let passwords = document.querySelectorAll('.passwords');
+    let colorBoxes = document.querySelectorAll('.color-boxes');
+    passwords.forEach((passwordElement, index) => {
+        let data = scoreToData(evaluatePassword(passwordElement.value));
+        colorBoxes[index].style.background = data.color;
+        let tooltipText = passwordElement.parentElement.querySelector('.tooltiptext');
+        if (tooltipText) {
+            tooltipText.innerHTML = data.label;
+        }
+    });
+    var synchecker = document.querySelector("#sync");
+    var devchecker = document.querySelector("#device");
+    synchecker.addEventListener("change", function () {
+        if (synchecker.checked) {
+            devchecker.checked = false;
+        } else {
+            devchecker.checked = true;
+        }
+    });
+    devchecker.addEventListener("change", function () {
+        if (devchecker.checked) {
+            synchecker.checked = false;
+        } else {
+            synchecker.checked = true;
+        }
+    });
+    const passwordField = document.getElementById("passwordField");
+    const togglePasswordVisibilityOpen = document.getElementById(
+        "togglePasswordVisibilityOpen"
+    );
+    const togglePasswordVisibilityClosed = document.getElementById(
+        "togglePasswordVisibilityClosed"
+    );
+    togglePasswordVisibilityOpen.addEventListener("click", function () {
+        passwordField.type = "password";
+        togglePasswordVisibilityOpen.style.display = "none";
+        togglePasswordVisibilityClosed.style.display = "inline-block";
+    });
+    togglePasswordVisibilityClosed.addEventListener("click", function () {
+        passwordField.type = "text";
+        togglePasswordVisibilityClosed.style.display = "none";
+        togglePasswordVisibilityOpen.style.display = "inline-block";
+    });
+}
+function updatePassword(event) {
+    event.preventDefault();
+    var modalBox = document.getElementsByClassName("modal-box")[0];
+    const csrfToken = modalBox.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
+    var updateId = modalBox.querySelector('.updateid').textContent;
+    var username = modalBox.querySelector("#username").value;
+    var password = modalBox.querySelector("#passwordField").value;
+    var sync = modalBox.querySelector("#sync").checked;
+    var notes = modalBox.querySelector("#customText").value;
+    var token = localStorage.getItem.token;
+    fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+            'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({
+            username: username,
+            encrypted_password: password,
+            sync: sync,
+            notes: notes,
+            device_identifier: "asdfasd"
+        }),
+    }).then(response => {
+        if (!response.ok) {
+            return response.json().then(errors => {
+                throw new Error(JSON.stringify(errors));
+            });
+        }
+        window.location.href = 'http://127.0.0.1:8000/usage';
+    }).catch(error => console.log(error));
+}
