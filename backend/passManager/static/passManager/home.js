@@ -44,6 +44,10 @@ function showModal(event) {
   var domainelem = modalBox.querySelector("#domain");
   domainelem.value = conElem.querySelector(".contentCheckboxes").classList[1];
   customText.value = tag.textContent;
+  var id = conElem.firstChild.textContent;
+  var updtid = modalBox.querySelector(".updateid");
+  updtid.textContent = id;
+
 }
 function hideModal() {
   modalBox.style.display = "none";
@@ -323,12 +327,13 @@ Selector.addEventListener("click", SelectOptions);
 var Cancel = document.getElementById("Cancel");
 Cancel.addEventListener("click", SelectOptions);
 var deleteButton = document.getElementById("Delete");
-deleteButton.addEventListener("click", function () {
-  var Checkboxes = document.getElementsByClassName("Checkboxes");
+deleteButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  var Checkboxes1 = document.getElementsByClassName("Checkboxes");
   var domids = document.getElementsByClassName("domids");
   var result = [];
-  for (var i = 0; i < Checkboxes.length; i++) {
-    if (Checkboxes[i].checked) {
+  for (var i = 0; i < Checkboxes1.length; i++) {
+    if (Checkboxes1[i].checked) {
       let data = {
         domain_id: domids[i].textContent,
       };
@@ -336,14 +341,14 @@ deleteButton.addEventListener("click", function () {
       continue;
     }
     var contentCheckboxes = document.getElementsByClassName(
-      Checkboxes[i].value
+      Checkboxes1[i].value
     );
-    var s = "idelem" + Checkboxes[i].value;
+    var s = "idelem" + Checkboxes1[i].value;
     var idelems = document.getElementsByClassName(s);
-    for (var i = 0; i < contentCheckboxes.length; i++) {
-      if (contentCheckboxes[i].checked) {
+    for (var j = 0; j < contentCheckboxes.length; j++) {
+      if (contentCheckboxes[j].checked) {
         let data = {
-          id: idelems[i].textContent,
+          id: idelems[j].textContent,
         };
         result.push(data);
       }
@@ -354,7 +359,7 @@ deleteButton.addEventListener("click", function () {
     ids: result.map((item) => item.id).filter(Boolean),
   };
   var finalResultJSON = JSON.stringify(finalResult);
-  console.log(finalResultJSON);
+  deletePassword(finalResult);
 });
 function tglAllcntntchckbxs(checkbox) {
   var contentCheckboxes = document.getElementsByClassName(checkbox.value);
@@ -482,7 +487,115 @@ devchecker1.addEventListener("change", function () {
   }
 });
 var cancelbutton = document.getElementById("cancelButton1");
-cancelButton.addEventListener("click", function () {
+cancelbutton.addEventListener("click", function () {
   var addcred = document.getElementsByClassName("addcred")[0];
   addcred.style.display = "none";
 });
+
+function updatePassword(event) {
+  event.preventDefault();
+  const csrfToken = modalBox.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
+  var updateId = modalBox.querySelector('.updateid').textContent;
+  var username = modalBox.querySelector("#username").value;
+  var password = modalBox.querySelector("#passwordField").value;
+  var sync = modalBox.querySelector("#sync").checked;
+  var notes = modalBox.querySelector("#customText").value;
+  var token = localStorage.getItem.token;
+  fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,
+      'Authorization': `Token ${token}`,
+    },
+    body: JSON.stringify({
+      username: username,
+      encrypted_password: password,
+      sync: sync,
+      notes: notes,
+      device_identifier: "asdfasd"
+    }),
+  }).then(response => {
+    if (!response.ok) {
+      return response.json().then(errors => {
+        throw new Error(JSON.stringify(errors));
+      });
+    }
+    window.location.href = 'http://127.0.0.1:8000/';
+  }).catch(error => console.log(error));
+}
+const addcred = document.querySelector(".addcred");
+function createPassword(event) {
+  event.preventDefault();
+  const csrfToken = addcred.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
+  var domain = addcred.querySelector('#domain1').value;
+  var username = addcred.querySelector("#username1").value;
+  var password = addcred.querySelector("#passwordField1").value;
+  var sync = addcred.querySelector("#sync1").checked;
+  var notes = addcred.querySelector("#customText1").value;
+  var token = localStorage.getItem.token;
+  fetch(`http://127.0.0.1:8000/create/`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,
+      'Authorization': `Token ${token}`,
+    },
+    body: JSON.stringify({
+      domain_name: domain,
+      username: username,
+      encrypted_password: password,
+      sync: sync,
+      notes: notes,
+      device_identifier: "asdfasd"
+    }),
+  }).then(response => {
+    if (!response.ok) {
+      return response.json().then(errors => {
+        throw new Error(JSON.stringify(errors));
+      });
+    }
+    window.location.href = 'http://127.0.0.1:8000/';
+  }).catch(error => console.log(error));
+}
+
+function deletePassword(finalResult) {
+  const deletebtn = document.querySelector(".Deletebuttons");
+  const csrfToken = deletebtn.querySelector("form.formdelete input[name='csrfmiddlewaretoken']").value;
+  finalResult.domain_ids.forEach(function (domainId) {
+    fetch(`http://127.0.0.1:8000/${domainId}/deletedomain`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+        'Authorization': `Token ${token}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(`Data for domain_id ${domainId}:`, data);
+      })
+      .catch(error => {
+        console.error(`Error for domain_id ${domainId}:`, error);
+      });
+  });
+
+  finalResult.ids.forEach(function (id) {
+    fetch(`http://127.0.0.1:8000/${id}/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+        'Authorization': `Token ${token}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(`Data for id ${id}:`, data);
+      })
+      .catch(error => {
+        console.error(`Error for id ${id}:`, error);
+      });
+  });
+  window.location.href = 'http://127.0.0.1:8000/';
+}

@@ -57,8 +57,22 @@
             fill=""
           />
         </svg>
-        <a href="#">Logout</a>
-      </div>
+        <form class="logoutform">
+          {% csrf_token %}
+          <a
+            href="#"
+            onclick="document.getElementById('hidden-logout-button').click();"
+            >Logout</a
+          >
+          <button
+            id="hidden-logout-button"
+            type="button"
+            class="hidden-button"
+            onclick="logout(event)"
+          >
+            Logout
+          </button>
+        </form>     </div>
     </div>
     <div class="heading">
       <h2>DEVICES</h2>
@@ -105,5 +119,6 @@
       </table>
     </div>
     <script src="{% static 'passManager/devices.js'%}"></script>
+    <script defer src="{% static 'passManager/logout.js' %}"></script>
   </body>
 </html>

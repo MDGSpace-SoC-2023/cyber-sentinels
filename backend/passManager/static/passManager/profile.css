@@ -12,6 +12,11 @@ body {
     color: white;
 }
 
+
+.hidden-button {
+    display: none;
+}
+
 .Header {
     display: flex;
     position: fixed;
@@ -280,7 +285,7 @@ h1[welcome-name="N"] {
     display: inline-block;
     position: absolute;
     padding-left: 30px;
-    margin-top:0.35%;
+    margin-top: 0.35%;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;

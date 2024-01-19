@@ -6,15 +6,11 @@ from .models import *
 #         model = PasswordVault
 #         fields = '__all__'
 
-# class DomainSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Domain
-#         fields = '__all__'
 
-# class URLSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = URL
-#         fields = '__all__'
+class DomainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Domain
+        fields = "__all__"
 
 
 class PasswordSerializer(serializers.ModelSerializer):
@@ -22,8 +18,16 @@ class PasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Password
-        fields = "__all__"
+        exclude = ["created_at"]
         depth = 1
+
+    def create(self, validated_data):
+        validated_data["created_at"] = timezone.now()
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        validated_data.pop("created_at", None)
+        return super().update(instance, validated_data)
 
 
 class NotificationSerializer(serializers.ModelSerializer):

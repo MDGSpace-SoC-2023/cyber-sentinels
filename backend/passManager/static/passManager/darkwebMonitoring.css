@@ -7,6 +7,10 @@ h2 {
     font-family: 'Silkscreen', sans-serif;
 }
 
+.hidden-button {
+    display: none;
+}
+
 .search-container {
     position: relative;
     margin-top: 0.85%;

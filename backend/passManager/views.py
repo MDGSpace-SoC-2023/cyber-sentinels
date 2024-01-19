@@ -266,6 +266,39 @@ class PasswordDeleteView(generics.RetrieveDestroyAPIView):
         instance.delete()
 
 
+class DomainDelete(generics.DestroyAPIView):
+    serializer_class = PasswordSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    lookup_field = "pk"
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            vault = PasswordVault.objects.get(user=user)
+        except PasswordVault.DoesNotExist:
+            return Domain.objects.none()
+        queryset = Domain.objects.filter(vault=vault)
+        return queryset
+
+    def perform_destroy(self, instance):
+        user = self.request.user
+        try:
+            vault = PasswordVault.objects.get(user=user)
+        except PasswordVault.DoesNotExist:
+            return None
+        passwords = Password.objects.filter(domain = instance)
+        for password in passwords:
+            Notification.objects.create(
+                vault=vault,
+                username=password.username,
+                domain=password.domain.name,
+                tag=password.notes,
+                status="Deleted",
+            )
+        instance.delete()
+
+
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
