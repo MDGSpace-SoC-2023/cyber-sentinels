@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Silkscreen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+body{
+  overflow: scroll !important;
+  margin: 0%;
+  padding: 0%;
+}
+
 .popup {
   width: 400px;
   transform: scale(1.05);
@@ -10,10 +16,10 @@
 }
 
 .content {
-  max-height: 150px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
+  /* overflow: scroll; */
   color: #111;
+
 }
 
 .content::-webkit-scrollbar {
@@ -29,16 +35,17 @@
 }
 
 .add-credentials-button {
-  bottom: 0;
-  position: fixed;
+  /* bottom: 0%; */
+  top: auto !important;
+  position: fixed !important;
   width: 400px;
-  padding: 10px;
+  padding: 8px 10px;
   border: none;
   background-color: #111;
   color: #ffe66b;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 999;
+  z-index: 100;
   font-family: 'Silkscreen', sans-serif;
   font-size: medium;
 }
@@ -61,7 +68,28 @@
 .dummy-text {
   font-family: 'Roboto', sans-serif;
   font-size: medium;
+  max-width: 90px; 
+  white-space: nowrap; 
+  overflow-x: auto;
+  overflow-y: hidden; 
+
 }
+
+
+.dummy-text::-webkit-scrollbar {
+  width: 0; 
+}
+
+.dummy-text::-webkit-scrollbar-track {
+  background-color: #111;
+  width: 0%;
+}
+
+.dummy-text::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
+
+
 
 .header h1 {
   margin-left: 2%;
@@ -82,6 +110,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Silkscreen', sans-serif;
+  /* overflow: scroll; */
 }
 
 .box {
@@ -98,10 +127,14 @@
 }
 
 .orange {
+  width: 60px;
+  border: 2px solid blue;
   color: orange;
 }
 
 .green {
+  width: 60px;
+  border: 2px solid blue;
   color: #4caf50;
 }
 

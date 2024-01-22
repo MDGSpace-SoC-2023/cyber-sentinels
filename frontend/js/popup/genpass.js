@@ -105,3 +105,27 @@ function getRandomSymbol() {
     const symbols = '!@#$%^&*(){}[]=<>/,.'
     return symbols[Math.floor(Math.random() * symbols.length)];
 }
+
+var lengthInput = document.getElementById('length');
+        var generateButton = document.getElementById('generate');
+        var errorSpan = document.getElementById('error');
+        var resultSpan = document.getElementById('result');
+
+        lengthInput.addEventListener('input', function () {
+            var enteredValue = parseInt(this.value, 10);
+
+            if (enteredValue < 8) {
+                errorSpan.textContent = 'Minimum 8 characters required';
+                generateButton.disabled = true;
+                resultSpan.textContent = '';
+                errorSpan.style.color = '#ff0000';
+            } else if (enteredValue > 20) {
+                errorSpan.textContent = 'Length should not be more than 20';
+                generateButton.disabled = true;
+                resultSpan.textContent = '';
+                errorSpan.style.color = '#ff0000';
+            } else {
+                errorSpan.textContent = '';
+                generateButton.disabled = false;
+            }
+        });

@@ -1,4 +1,14 @@
-
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutBtn = document.getElementById('logoutBtn');
+  
+    logoutBtn.addEventListener('click', function () {
+      localStorage.removeItem('token');
+  
+      window.location.href = '../../templates/popup/popup.html';
+    });
+  
+  });
+  
 const passwordGeneratorBtn = document.getElementById('passwordGeneratorBtn');
 passwordGeneratorBtn.addEventListener('click', () => {
     fetch('genpass.html')

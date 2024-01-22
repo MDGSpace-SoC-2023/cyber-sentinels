@@ -1,29 +1,19 @@
 {
-    "name": "BitSafe",
-    "version": "0.0.1",
-    "manifest_version": 2,
-    "browser_action": {
-        "default_popup": "templates/popup/edit.html",
-        "default_title": "BitSafe"
-    },
-    "description": "BitSafe is a password manager extension that keeps your passwords secure while offering easy access whenever you need them.",
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "js/BitSafe_cs.js"
-            ]
-        }
-    ],
-    "background": {
-        "scripts": [
-            "js/BitSafe_bs.js"
-        ]
-    },
-    "permissions": [
-        "activeTab",
-        "tabs"
-    ]
+  "manifest_version": 3,
+  "name": "Bitsafe",
+  "description": "BitSafe is a password manager extension that keeps your passwords secure while offering easy access whenever you need them.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "templates/popup/listview.html"
+  },
+  "permissions": [
+    "identity", 
+    "storage", 
+    "activeTab",
+    "http://*/",
+    "https://*/"
+  ],
+  "background": {
+    "service_worker": "bs.js"
+  }
 }

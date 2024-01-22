@@ -101,3 +101,11 @@ def my_view(request):
         return HttpResponse(f"Hello, {user.username}! You are logged in.")
     else:
         return HttpResponse("You are not logged in.")
+
+
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrf_token': csrf_token})

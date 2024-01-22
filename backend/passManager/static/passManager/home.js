@@ -47,7 +47,6 @@ function showModal(event) {
   var id = conElem.firstChild.textContent;
   var updtid = modalBox.querySelector(".updateid");
   updtid.textContent = id;
-
 }
 function hideModal() {
   modalBox.style.display = "none";
@@ -272,7 +271,9 @@ function search_Domain() {
   var domains = Array.from(document.getElementsByClassName("filterDiv"));
   var input = document.getElementById("searchbar").value.toLowerCase();
   for (var i = 0; i < domains.length; i++) {
-    if (!domains[i].textContent.toLowerCase().includes(input.trim().toLowerCase())) {
+    if (
+      !domains[i].textContent.toLowerCase().includes(input.trim().toLowerCase())
+    ) {
       var computedStyle = window.getComputedStyle(domains[i]);
       if (
         computedStyle.display === "flex" ||
@@ -494,8 +495,10 @@ cancelbutton.addEventListener("click", function () {
 
 function updatePassword(event) {
   event.preventDefault();
-  const csrfToken = modalBox.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
-  var updateId = modalBox.querySelector('.updateid').textContent;
+  const csrfToken = modalBox.querySelector(
+    "form.form input[name='csrfmiddlewaretoken']"
+  ).value;
+  var updateId = modalBox.querySelector(".updateid").textContent;
   var username = modalBox.querySelector("#username").value;
   var password = modalBox.querySelector("#passwordField").value;
   var sync = modalBox.querySelector("#sync").checked;
@@ -504,31 +507,35 @@ function updatePassword(event) {
   fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
     method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken,
-      'Authorization': `Token ${token}`,
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify({
       username: username,
       encrypted_password: password,
       sync: sync,
       notes: notes,
-      device_identifier: "asdfasd"
+      device_identifier: "asdfasd",
     }),
-  }).then(response => {
-    if (!response.ok) {
-      return response.json().then(errors => {
-        throw new Error(JSON.stringify(errors));
-      });
-    }
-    window.location.href = 'http://127.0.0.1:8000/';
-  }).catch(error => console.log(error));
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((errors) => {
+          throw new Error(JSON.stringify(errors));
+        });
+      }
+      window.location.href = "http://127.0.0.1:8000/";
+    })
+    .catch((error) => console.log(error));
 }
 const addcred = document.querySelector(".addcred");
 function createPassword(event) {
   event.preventDefault();
-  const csrfToken = addcred.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
-  var domain = addcred.querySelector('#domain1').value;
+  const csrfToken = addcred.querySelector(
+    "form.form input[name='csrfmiddlewaretoken']"
+  ).value;
+  var domain = addcred.querySelector("#domain1").value;
   var username = addcred.querySelector("#username1").value;
   var password = addcred.querySelector("#passwordField1").value;
   var sync = addcred.querySelector("#sync1").checked;
@@ -537,9 +544,9 @@ function createPassword(event) {
   fetch(`http://127.0.0.1:8000/create/`, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken,
-      'Authorization': `Token ${token}`,
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify({
       domain_name: domain,
@@ -547,55 +554,59 @@ function createPassword(event) {
       encrypted_password: password,
       sync: sync,
       notes: notes,
-      device_identifier: "asdfasd"
+      device_identifier: "asdfasd",
     }),
-  }).then(response => {
-    if (!response.ok) {
-      return response.json().then(errors => {
-        throw new Error(JSON.stringify(errors));
-      });
-    }
-    window.location.href = 'http://127.0.0.1:8000/';
-  }).catch(error => console.log(error));
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((errors) => {
+          throw new Error(JSON.stringify(errors));
+        });
+      }
+      window.location.href = "http://127.0.0.1:8000/";
+    })
+    .catch((error) => console.log(error));
 }
 
 function deletePassword(finalResult) {
   const deletebtn = document.querySelector(".Deletebuttons");
-  const csrfToken = deletebtn.querySelector("form.formdelete input[name='csrfmiddlewaretoken']").value;
+  const csrfToken = deletebtn.querySelector(
+    "form.formdelete input[name='csrfmiddlewaretoken']"
+  ).value;
   finalResult.domain_ids.forEach(function (domainId) {
     fetch(`http://127.0.0.1:8000/${domainId}/deletedomain`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        'Authorization': `Token ${token}`,
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+        Authorization: `Token ${token}`,
       },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log(`Data for domain_id ${domainId}:`, data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(`Error for domain_id ${domainId}:`, error);
       });
   });
 
   finalResult.ids.forEach(function (id) {
     fetch(`http://127.0.0.1:8000/${id}/delete`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        'Authorization': `Token ${token}`,
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+        Authorization: `Token ${token}`,
       },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log(`Data for id ${id}:`, data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(`Error for id ${id}:`, error);
       });
   });
-  window.location.href = 'http://127.0.0.1:8000/';
+  window.location.href = "http://127.0.0.1:8000/";
 }

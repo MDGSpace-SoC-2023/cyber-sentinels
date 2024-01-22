@@ -20,4 +20,5 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(
              template_name='account/password_reset_complete.html'),
          name='password_reset_complete'),
+     path('get_csrf_token/', get_csrf_token, name='get_csrf_token'),
 ]
