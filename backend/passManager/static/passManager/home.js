@@ -503,70 +503,100 @@ function updatePassword(event) {
   var password = modalBox.querySelector("#passwordField").value;
   var sync = modalBox.querySelector("#sync").checked;
   var notes = modalBox.querySelector("#customText").value;
-  var token = localStorage.getItem.token;
-  fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
-    method: "PUT",
+  var token = localStorage.getItem('token');
+
+  fetch("http://127.0.0.1:8000/auth/master", {
+    method: 'GET',
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
       Authorization: `Token ${token}`,
     },
-    body: JSON.stringify({
-      username: username,
-      encrypted_password: password,
-      sync: sync,
-      notes: notes,
-      device_identifier: "asdfasd",
-    }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((errors) => {
-          throw new Error(JSON.stringify(errors));
-        });
-      }
-      window.location.href = "http://127.0.0.1:8000/";
+    .then(response => response.json())
+    .then(data => {
+      const hashedMasterPassword = data.hashedMasterPassword;
+      const salt = data.salt;
+      const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+      const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+      var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+      fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+          'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({
+          username: username,
+          encrypted_password: encryptedData,
+          sync: sync,
+          notes: notes,
+          device_identifier: "asdfasd"
+        }),
+      }).then(response => {
+        if (!response.ok) {
+          return response.json().then(errors => {
+            throw new Error(JSON.stringify(errors));
+          });
+        }
+        window.location.href = 'http://127.0.0.1:8000/';
+      }).catch(error => console.log(error));
     })
-    .catch((error) => console.log(error));
+    .catch(error => console.error('Error:', error));
 }
+
 const addcred = document.querySelector(".addcred");
 function createPassword(event) {
   event.preventDefault();
-  const csrfToken = addcred.querySelector(
-    "form.form input[name='csrfmiddlewaretoken']"
-  ).value;
-  var domain = addcred.querySelector("#domain1").value;
+  var csrfToken = addcred.querySelector("form.form input[name='csrfmiddlewaretoken']").value;
+  var domain = addcred.querySelector('#domain1').value;
   var username = addcred.querySelector("#username1").value;
   var password = addcred.querySelector("#passwordField1").value;
   var sync = addcred.querySelector("#sync1").checked;
   var notes = addcred.querySelector("#customText1").value;
-  var token = localStorage.getItem.token;
-  fetch(`http://127.0.0.1:8000/create/`, {
-    method: "POST",
+  var token = localStorage.getItem('token');
+
+  fetch("http://127.0.0.1:8000/auth/master", {
+    method: 'GET',
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
       Authorization: `Token ${token}`,
     },
-    body: JSON.stringify({
-      domain_name: domain,
-      username: username,
-      encrypted_password: password,
-      sync: sync,
-      notes: notes,
-      device_identifier: "asdfasd",
-    }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((errors) => {
-          throw new Error(JSON.stringify(errors));
-        });
-      }
-      window.location.href = "http://127.0.0.1:8000/";
+    .then(response => response.json())
+    .then(data => {
+      const hashedMasterPassword = data.hashedMasterPassword;
+      const salt = data.salt;
+      const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+      const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+      var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+      fetch(`http://127.0.0.1:8000/create/`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+          'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({
+          domain_name: domain,
+          username: username,
+          encrypted_password: encryptedData,
+          sync: sync,
+          notes: notes,
+          device_identifier: "asdfasd"
+        }),
+      }).then(response => {
+        if (!response.ok) {
+          return response.json().then(errors => {
+            throw new Error(JSON.stringify(errors));
+          });
+        }
+        window.location.href = 'http://127.0.0.1:8000/';
+      }).catch(error => console.log(error));
     })
-    .catch((error) => console.log(error));
+    .catch(error => console.error('Error:', error));
 }
+
 
 function deletePassword(finalResult) {
   const deletebtn = document.querySelector(".Deletebuttons");

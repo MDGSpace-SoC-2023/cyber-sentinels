@@ -13,6 +13,49 @@ from django.contrib import messages
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.contrib.auth import logout, login
+from django.contrib.auth.hashers import make_password
+import secrets
+import string
+import re
+from .models import MasterHash
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+
+
+@require_GET
+def get_master_password(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
+    master = MasterHash.objects.get(user=request.user)
+    hashed_master_password = master.hash
+    salt = master.salt
+    email = request.user.email
+    return JsonResponse(
+        {"hashedMasterPassword": hashed_master_password, "salt": salt, "email": email}
+    )
+
+
+def generate(length=16, lowercase=True, uppercase=True, numbers=True, symbols=True):
+    characters = string.ascii_lowercase
+    if uppercase:
+        characters += string.ascii_uppercase
+    if numbers:
+        characters += string.digits
+    if symbols:
+        characters += string.punctuation
+    pattern = r"(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])"
+    password = ""
+    while not (
+        any([char in password for char in string.ascii_lowercase])
+        and any([char in password for char in string.ascii_uppercase])
+        and any([char in password for char in string.digits])
+        and any([char in password for char in string.punctuation])
+        and re.search(pattern, password)
+    ):
+        password = "".join(secrets.choice(characters) for _ in range(length))
+
+    return password
 
 
 def index(request):
@@ -24,7 +67,9 @@ def register_user(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            hash = make_password(generate(20), salt=generate(20))
+            MasterHash.objects.create(user=user, hash=hash, salt=generate(20))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -92,11 +137,8 @@ from django.contrib.auth.decorators import login_required
 
 
 def my_view(request):
-    # This view requires the user to be logged in
-    # You can access the logged-in user using request.user
     user = request.user
 
-    # Check if the user is authenticated
     if user.is_authenticated:
         return HttpResponse(f"Hello, {user.username}! You are logged in.")
     else:
