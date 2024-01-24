@@ -1,24 +1,25 @@
+import base64
+from .models import *
+from account.models import MasterHash
+from .serializers import *
+from django.db.models import Count
+from datetime import timedelta
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-from django.db.models import Count
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from .models import *
-from .serializers import *
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework import generics
-from datetime import timedelta
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
-import base64
-from account.models import MasterHash
 from cryptography.fernet import Fernet
-from django.conf import settings
 
 
 def generate_key(secret, salt):
@@ -34,30 +35,43 @@ def generate_key(secret, salt):
     return key.decode()
 
 
+def decrypt_password(encrypted_password, key):
+    cipher_suite = Fernet(key)
+    decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
+    return decrypted_password
+
+
+@login_required
 def home(request):
     return render(request, "passManager/home.html")
 
 
+@login_required
 def passwordGenerator(request):
     return render(request, "passManager/passwordGenerator.html")
 
 
+@login_required
 def notifications(request):
     return render(request, "passManager/notifications.html")
 
 
+@login_required
 def passwordUsage(request):
     return render(request, "passManager/passwordUsage.html")
 
 
+@login_required
 def darkwebMonitoring(request):
     return render(request, "passManager/darkwebMonitoring.html")
 
 
+@login_required
 def devices(request):
     return render(request, "passManager/devices.html")
 
 
+@login_required
 def changePassword(request):
     if request.method == "POST":
         user = request.user
@@ -91,6 +105,7 @@ def changePassword(request):
     return render(request, "passManager/changePassword.html")
 
 
+@login_required
 def profile(request):
     if request.method == "GET":
         username = request.user.username
@@ -140,13 +155,6 @@ def profile(request):
     return render(request, "passManager/profile.html")
 
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_control
-
-
-@method_decorator(
-    cache_control(no_cache=True, must_revalidate=True, no_store=True), name="dispatch"
-)
 class PasswordListView(generics.ListAPIView):
     serializer_class = PasswordSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -160,8 +168,8 @@ class PasswordListView(generics.ListAPIView):
             vault = PasswordVault.objects.get(user=user)
         except:
             return None
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         if not target_domain:
             domains = Domain.objects.filter(vault=vault)
         else:
@@ -169,7 +177,7 @@ class PasswordListView(generics.ListAPIView):
         if not usage:
             queryset = Password.objects.filter(domain__in=domains)
             for instance in queryset:
-                instance.encrypted_password = self.decrypt_password(
+                instance.encrypted_password = decrypt_password(
                     instance.encrypted_password, key
                 )
             return queryset
@@ -187,15 +195,10 @@ class PasswordListView(generics.ListAPIView):
                 )
             )
             for instance in instances_with_same_encrypted_password:
-                instance.encrypted_password = self.decrypt_password(
+                instance.encrypted_password = decrypt_password(
                     instance.encrypted_password, key
                 )
             return instances_with_same_encrypted_password
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
 
 class PasswordUsageListView(generics.RetrieveAPIView):
@@ -210,20 +213,15 @@ class PasswordUsageListView(generics.RetrieveAPIView):
             vault = PasswordVault.objects.get(user=user)
         except:
             return Password.objects.none()
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
         for instance in queryset:
-            instance.encrypted_password = self.decrypt_password(
+            instance.encrypted_password = decrypt_password(
                 instance.encrypted_password, key
             )
         return queryset
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
 
 class PasswordRetrieveView(generics.RetrieveAPIView):
@@ -240,18 +238,13 @@ class PasswordRetrieveView(generics.RetrieveAPIView):
             return Password.objects.none()
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         for instance in queryset:
-            instance.encrypted_password = self.decrypt_password(
+            instance.encrypted_password = decrypt_password(
                 instance.encrypted_password, key
             )
         return queryset
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
 
 class PasswordCreateView(generics.CreateAPIView):
@@ -265,20 +258,15 @@ class PasswordCreateView(generics.CreateAPIView):
             vault = PasswordVault.objects.get(user=user)
         except:
             return Password.objects.none()
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
         for instance in queryset:
-            instance.encrypted_password = self.decrypt_password(
+            instance.encrypted_password = decrypt_password(
                 instance.encrypted_password, key
             )
         return queryset
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -287,11 +275,10 @@ class PasswordCreateView(generics.CreateAPIView):
         domain, domain_created = Domain.objects.get_or_create(
             vault=vault, name=domain_name
         )
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         password = serializer.validated_data.get("encrypted_password", "")
         encrypted_password = self.encrypt_password(password, key)
-        print(encrypted_password)
         serializer.validated_data["encrypted_password"] = encrypted_password
         serializer.save(domain=domain)
         Notification.objects.create(
@@ -321,20 +308,15 @@ class PasswordUpdateView(generics.RetrieveUpdateAPIView):
             vault = PasswordVault.objects.get(user=user)
         except:
             return Password.objects.none()
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
         for instance in queryset:
-            instance.encrypted_password = self.decrypt_password(
+            instance.encrypted_password = decrypt_password(
                 instance.encrypted_password, key
             )
         return queryset
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
     def perform_update(self, serializer):
         user = self.request.user
@@ -364,20 +346,15 @@ class PasswordDeleteView(generics.RetrieveDestroyAPIView):
             vault = PasswordVault.objects.get(user=user)
         except PasswordVault.DoesNotExist:
             return Password.objects.none()
-        master = MasterHash.objects.get(user=user)
-        key = generate_key(master.hash, master.salt)
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
         for instance in queryset:
-            instance.encrypted_password = self.decrypt_password(
+            instance.encrypted_password = decrypt_password(
                 instance.encrypted_password, key
             )
         return queryset
-
-    def decrypt_password(self, encrypted_password, key):
-        cipher_suite = Fernet(key)
-        decrypted_password = cipher_suite.decrypt(encrypted_password.encode()).decode()
-        return decrypted_password
 
     def perform_destroy(self, instance):
         user = self.request.user

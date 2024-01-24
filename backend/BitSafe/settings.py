@@ -30,6 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = "/auth/"
+LOGIN_URL = "/auth/"
+
 
 # Application definition
 
@@ -57,7 +60,7 @@ REST_FRAMEWORK = {
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -74,11 +77,10 @@ MIDDLEWARE = [
 # ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://*',
+    "http://*",
     "http://127.0.0.1:8000",
     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
 ]
-
 
 
 ROOT_URLCONF = "BitSafe.urls"
@@ -159,5 +161,5 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('email')
-EMAIL_HOST_PASSWORD = os.environ.get('password')
+EMAIL_HOST_USER = os.environ.get("email")
+EMAIL_HOST_PASSWORD = os.environ.get("password")

@@ -114,7 +114,6 @@ function registerUser(event) {
     .then(response => {
       console.log('Registration Initiated:', response);
       clearRegisterFormMessages();
-
       const successMessage = document.createElement('span');
       successMessage.textContent = 'Registration Successful!, Please Login';
       successMessage.style.color = 'green';
@@ -162,7 +161,7 @@ document.getElementById('registerForm').addEventListener('submit', registerUser)
 function clearLoginFormMessages() {
   const errorlistRegister = document.getElementById('errorlistLogin');
   errorlistLogin.innerHTML = '';
-
+  errorlistRegister.innerHTML = '';
   const inputs = ['user', 'passwordField'];
   inputs.forEach(inputId => {
     const inputElement = document.getElementById(inputId);
@@ -220,8 +219,8 @@ function loginUser(event) {
       return response.json();
     })
     .then(response => {
-      
       localStorage.setItem('token', response.token)
+      window.location.href = "http://127.0.0.1:8000/";
       console.log('Login Initiated:', response);
     })
     .catch(error => {

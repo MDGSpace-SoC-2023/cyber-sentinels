@@ -1,25 +1,25 @@
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
-from django.contrib.auth.views import PasswordResetView
-from django.contrib import messages
-from django.urls import reverse
-from django.utils.safestring import mark_safe
-from django.contrib.auth import logout, login
-from django.contrib.auth.hashers import make_password
 import secrets
 import string
 import re
 from .models import MasterHash
+from .serializers import UserSerializer
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
+from django.contrib import messages
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from rest_framework import status
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
 
 @require_GET
@@ -59,6 +59,8 @@ def generate(length=16, lowercase=True, uppercase=True, numbers=True, symbols=Tr
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect("home")
     return render(request, "account/index.html")
 
 
@@ -133,9 +135,9 @@ class CustomPasswordResetView(PasswordResetView):
 
 
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def my_view(request):
     user = request.user
 
@@ -143,11 +145,3 @@ def my_view(request):
         return HttpResponse(f"Hello, {user.username}! You are logged in.")
     else:
         return HttpResponse("You are not logged in.")
-
-
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-
-def get_csrf_token(request):
-    csrf_token = get_token(request)
-    return JsonResponse({'csrf_token': csrf_token})
