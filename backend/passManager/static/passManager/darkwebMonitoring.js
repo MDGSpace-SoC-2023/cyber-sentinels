@@ -6,15 +6,15 @@ collapsibles[0].addEventListener("click", function () {
     mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
     var Heading = document.getElementsByClassName("heading")[0];
     var arrow = document.getElementsByClassName("Arrow")[0];
-    var head=document.getElementsByClassName("head")[0];
+    var head = document.getElementsByClassName("head")[0];
     if (menu.classList.contains('hidden')) {
         arrow.innerHTML = "&#707;";
         Heading.style.left = "2%";
-        head.style.marginLeft="25%";
+        head.style.marginLeft = "25%";
     } else {
         arrow.innerHTML = "&#706;";
         Heading.style.left = "22%";
-        head.style.marginLeft="23%";
+        head.style.marginLeft = "23%";
     }
 });
 function search_Domain() {
@@ -78,9 +78,24 @@ fetch("http://127.0.0.1:8000/view", {
     .then((response) => {
         return response.json();
     })
-    .then((jsonData) => {
+    .then(async (jsonData) => {
+        var response = await fetch("http://127.0.0.1:8000/auth/master", {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+            },
+        });
+        var data = await response.json();
+        const hashedMasterPassword = data.hashedMasterPassword;
+        const salt = data.salt;
+        const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+        const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
         jsonData.forEach(async function (element) {
-            var result = await checkPassword(element.encrypted_password);
+            var decryptedBytes = CryptoJS.AES.decrypt(element.encrypted_password, secretKey);
+            var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+            const password = decryptedData;
+            var result = await checkPassword(password);
             if (result) {
                 var divElement = document.createElement('div');
                 divElement.classList.add('drkwebntfcation');

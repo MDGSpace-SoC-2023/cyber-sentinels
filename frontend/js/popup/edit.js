@@ -85,13 +85,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to handle the "Update" button click
 // Function to handle the "Update" button click
-function updateData() {
+async function updateData() {
   // Extract the index from the query parameter
   const urlParams = new URLSearchParams(window.location.search);
   const index = urlParams.get("index");
 
   // Fetch user data from storage
-  chrome.storage.local.get("userData", function (result) {
+  chrome.storage.local.get("userData", async function (result) {
     const userData = result.userData;
 
     // Use the index to access the corresponding user data
@@ -102,11 +102,25 @@ function updateData() {
       const userId = userDataAtIndex.id;
       console.log("Updating data for user ID:", userId);
       // Extract the values from the form fields
+      var response = await fetch("http://127.0.0.1:8000/auth/master", {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
+      var password=document.getElementById("passwordField").value;
+      var data = await response.json();
+      const hashedMasterPassword = data.hashedMasterPassword;
+      const salt = data.salt;
+      const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+      const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+      var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
       const updatedData = {
         id: userId,
         user: userDataAtIndex.user,
         sync: document.getElementById("sync").checked,
-        encrypted_password: document.getElementById("passwordField").value,
+        encrypted_password: encryptedData,
         username: document.getElementById("username").value,
         notes: document.getElementById("customText").value,
         updated_at: userDataAtIndex.updated_at,

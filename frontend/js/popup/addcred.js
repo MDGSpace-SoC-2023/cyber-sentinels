@@ -27,13 +27,26 @@ cancelButton.addEventListener("click", function () {
 const token = localStorage.getItem("token");
 chrome.runtime.sendMessage({ token: token });
 
-function createPassword(event) {
+async function createPassword(event) {
   event.preventDefault();
   var domain = document.querySelector("#domain").value;
   var username = document.querySelector("#username").value;
   var password = document.querySelector("#passwordField").value;
   var sync = document.querySelector("#sync").checked;
   var notes = document.querySelector("#customText").value;
+  var response = await fetch("http://127.0.0.1:8000/auth/master", {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+  });
+  var data = await response.json();
+  const hashedMasterPassword = data.hashedMasterPassword;
+  const salt = data.salt;
+  const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+  const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+  var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
   fetch(`http://127.0.0.1:8000/create/`, {
     method: "POST",
     headers: {
@@ -43,7 +56,7 @@ function createPassword(event) {
     body: JSON.stringify({
       domain_name: domain,
       username: username,
-      encrypted_password: password,
+      encrypted_password: encryptedData,
       sync: sync,
       notes: notes,
       device_identifier: "asdfasd",
@@ -57,7 +70,7 @@ function createPassword(event) {
       }
     })
     .catch((error) => console.log(error));
-    window.location.href = "listview.html";
+  window.location.href = "listview.html";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -75,7 +88,7 @@ chrome.runtime.onMessage.addListener(function (
   message,
   sender,
   sendResponse
-) {});
+) { });
 
 const savebtn = document.getElementById("saveButton");
 savebtn.addEventListener("click", createPassword);
