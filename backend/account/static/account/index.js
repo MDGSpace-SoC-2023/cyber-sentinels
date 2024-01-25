@@ -171,6 +171,14 @@ function clearLoginFormMessages() {
   });
 }
 
+
+function getBrowser() {
+  var browser = 'Unknown';
+  browser = platform.name;
+  if (browser == 'Chrome' && window.navigator.userAgentData.brands[2].brand == 'Brave') return 'Brave';
+  return browser;
+}
+
 function loginUser(event) {
   clearLoginFormMessages();
   event.preventDefault();
@@ -209,7 +217,9 @@ function loginUser(event) {
     body: JSON.stringify({
       username: username,
       password: password,
-      recaptcha_response: recaptchaResponse,
+      browser: getBrowser(),
+      os: platform.os.toString(),
+      loginType: false,
     }),
   })
     .then(response => {

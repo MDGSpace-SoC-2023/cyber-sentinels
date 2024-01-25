@@ -8,6 +8,7 @@ urlpatterns = [
     path("register/", register_user, name="register"),
     path("login/", user_login, name="login"),
     path("logout/", user_logout, name="logout"),
+    path("verify/", verify, name="verify"),
     path("master/", get_master_password),
     path(
         "password-reset/",

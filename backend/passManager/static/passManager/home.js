@@ -493,6 +493,32 @@ cancelbutton.addEventListener("click", function () {
   addcred.style.display = "none";
 });
 
+function generateDeviceId() {
+  const fingerprint = [
+    navigator.userAgent,
+    navigator.language,
+    screen.colorDepth,
+    navigator.hardwareConcurrency,
+    navigator.serviceWorker,
+    navigator.mediaCapabilities,
+    new Date().getTimezoneOffset(),
+    screen.pixelDepth,
+  ].join('');
+  console.log(navigator.mediaCapabilities);
+  const hashedId = hashString(fingerprint);
+
+  return hashedId;
+}
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+  return hash.toString(16);
+}
+
 function updatePassword(event) {
   event.preventDefault();
   const csrfToken = modalBox.querySelector(
@@ -504,7 +530,11 @@ function updatePassword(event) {
   var sync = modalBox.querySelector("#sync").checked;
   var notes = modalBox.querySelector("#customText").value;
   var token = localStorage.getItem('token');
-
+  var deviceId = '';
+  if (!sync) {
+    deviceId = generateDeviceId();
+  }
+  console.log(deviceId);
   fetch("http://127.0.0.1:8000/auth/master", {
     method: 'GET',
     headers: {
@@ -531,7 +561,7 @@ function updatePassword(event) {
           encrypted_password: encryptedData,
           sync: sync,
           notes: notes,
-          device_identifier: "asdfasd"
+          device_identifier: deviceId
         }),
       }).then(response => {
         if (!response.ok) {
@@ -555,7 +585,10 @@ function createPassword(event) {
   var sync = addcred.querySelector("#sync1").checked;
   var notes = addcred.querySelector("#customText1").value;
   var token = localStorage.getItem('token');
-
+  var deviceId = '';
+  if (!sync) {
+    deviceId = generateDeviceId();
+  }
   fetch("http://127.0.0.1:8000/auth/master", {
     method: 'GET',
     headers: {
@@ -583,7 +616,7 @@ function createPassword(event) {
           encrypted_password: encryptedData,
           sync: sync,
           notes: notes,
-          device_identifier: "asdfasd"
+          device_identifier: deviceId,
         }),
       }).then(response => {
         if (!response.ok) {
@@ -640,3 +673,29 @@ function deletePassword(finalResult) {
   });
   window.location.href = "http://127.0.0.1:8000/";
 }
+
+
+// function verifyToken() {
+//   const csrfToken = document.getElementById('csrfForm').querySelector("input[name='csrfmiddlewaretoken']").value;
+//   const token = localStorage.getItem('token');
+//   console.log(token);
+//   const payload = {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRFToken': csrfToken,
+//       'Authorization': `Token ${token}`,
+//     },
+//   };
+
+//   return fetch('http://127.0.0.1:8000/auth/verify/', payload)
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log('Verification result:', data);
+//       return data.result;
+//     })
+//     .catch(error => {
+//       console.error('Verification failed:', error);
+//       return false;
+//     });
+// }

@@ -29,7 +29,7 @@ class Password(models.Model):
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    device_identifier = models.CharField(max_length=255)
+    device_identifier = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"{self.domain.vault.user.username}'s Domain: {self.domain.name} Password for: {self.username}"

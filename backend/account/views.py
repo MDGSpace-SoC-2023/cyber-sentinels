@@ -1,8 +1,9 @@
 import secrets
 import string
 import re
-from .models import MasterHash
+from .models import MasterHash, MultiToken
 from .serializers import UserSerializer
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -78,24 +79,40 @@ def register_user(request):
 
 @api_view(["POST"])
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect("home")
     if request.method == "POST":
         username = request.data.get("username")
         password = request.data.get("password")
-
+        browser = request.data.get("browser")
+        os = request.data.get("os")
+        type = request.data.get("loginType")
         if "@" in username:
             user = User.objects.filter(email=username).first()
 
             if user:
                 if user.check_password(password):
                     login(request, user)
-                    token, _ = Token.objects.get_or_create(user=user)
+                    token = MultiToken.objects.create(
+                        user=user,
+                        browser=browser,
+                        loginTime=timezone.now(),
+                        os=os,
+                        type=type,
+                    )
                     return Response({"token": token.key}, status=status.HTTP_200_OK)
 
         else:
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                token, _ = Token.objects.get_or_create(user=user)
+                token = MultiToken.objects.create(
+                    user=user,
+                    browser=browser,
+                    loginTime=timezone.now(),
+                    os=os,
+                    type=type,
+                )
                 return Response({"token": token.key}, status=status.HTTP_200_OK)
 
         return Response(
@@ -103,18 +120,55 @@ def user_login(request):
         )
 
 
+# @api_view(["POST"])
+# @permission_classes([IsAuthenticated])
+# def user_logout(request):
+#     try:
+#         logout(request)
+#         if hasattr(request.auth, "delete"):
+#             request.auth.delete()
+#         MultiToken.objects.filter(user=request.user).delete()
+#         return Response(
+#             {"message": "Successfully logged out."}, status=status.HTTP_200_OK
+#         )
+#     except Exception as e:
+#         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def user_logout(request):
     try:
+        auth_header = request.headers.get("Authorization")
+        token = auth_header.split()[1]
+        MultiToken.objects.filter(key=token, user=request.user).delete()
         logout(request)
-        if hasattr(request.auth, "delete"):
-            request.auth.delete()
+
         return Response(
             {"message": "Successfully logged out."}, status=status.HTTP_200_OK
         )
+
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+def verify(request):
+    try:
+        auth_header = request.headers.get("Authorization")
+        if not auth_header:
+            return JsonResponse({"result": False}, safe=False)
+
+        token = auth_header.split()[1]
+        token_instance = MultiToken.objects.filter(key=token).first()
+
+        if token_instance:
+            return JsonResponse({"result": True})
+        else:
+            return JsonResponse({"result": False}, safe=False)
+
+    except Exception as e:
+        return JsonResponse({"result": False}, safe=False)
 
 
 class CustomPasswordResetView(PasswordResetView):

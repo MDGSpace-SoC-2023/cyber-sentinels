@@ -1,6 +1,6 @@
 import base64
 from .models import *
-from account.models import MasterHash
+from account.models import MasterHash, MultiToken
 from .serializers import *
 from django.db.models import Count
 from datetime import timedelta
@@ -41,6 +41,12 @@ def decrypt_password(encrypted_password, key):
     return decrypted_password
 
 
+def encrypt_password(password, key):
+    cipher_suite = Fernet(key)
+    encrypted_password = cipher_suite.encrypt(password.encode())
+    return encrypted_password.decode()
+
+
 @login_required
 def home(request):
     return render(request, "passManager/home.html")
@@ -68,7 +74,13 @@ def darkwebMonitoring(request):
 
 @login_required
 def devices(request):
-    return render(request, "passManager/devices.html")
+    user = request.user
+    queryset = MultiToken.objects.filter(user=user).order_by("-loginTime")
+
+    if request.method == "POST":
+        uid = request.POST.get("uid")
+        MultiToken.objects.filter(id=uid).delete()
+    return render(request, "passManager/devices.html", {"activeLogin": queryset})
 
 
 @login_required
@@ -278,7 +290,7 @@ class PasswordCreateView(generics.CreateAPIView):
         salt = MasterHash.objects.get(user=user).salt
         key = generate_key(settings.SECRET_KEY, salt=salt)
         password = serializer.validated_data.get("encrypted_password", "")
-        encrypted_password = self.encrypt_password(password, key)
+        encrypted_password = encrypt_password(password, key)
         serializer.validated_data["encrypted_password"] = encrypted_password
         serializer.save(domain=domain)
         Notification.objects.create(
@@ -289,11 +301,6 @@ class PasswordCreateView(generics.CreateAPIView):
             status="Created",
         )
         return super().perform_create(serializer)
-
-    def encrypt_password(self, password, key):
-        cipher_suite = Fernet(key)
-        encrypted_password = cipher_suite.encrypt(password.encode())
-        return encrypted_password.decode()
 
 
 class PasswordUpdateView(generics.RetrieveUpdateAPIView):
@@ -320,6 +327,11 @@ class PasswordUpdateView(generics.RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         user = self.request.user
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
+        password = serializer.validated_data.get("encrypted_password", "")
+        encrypted_password = encrypt_password(password, key)
+        serializer.validated_data["encrypted_password"] = encrypted_password
         try:
             vault = PasswordVault.objects.get(user=user)
         except PasswordVault.DoesNotExist:

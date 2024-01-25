@@ -64,10 +64,14 @@
                 </form>
             </div>
         </div>
+        <form id="csrfForm" style="display: none">
+            {% csrf_token %}
+        </form>
         {% block content %}
         {% endblock content %}
         {% block fscript %}
         {% endblock fscript %}
         <script defer src="{% static 'passManager/logout.js' %}"></script>
+        <script defer src="{% static 'passManager/base.js' %}"></script>
     </body>
 </html>

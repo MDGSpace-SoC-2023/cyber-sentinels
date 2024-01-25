@@ -19,30 +19,23 @@
         <th>OS</th>
         <th></th>
       </tr>
-      <tr>
-        <td>October 13,2020 05:30GMT</td>
-        <td>Mozilla Firefox</td>
-        <td>MacOS</td>
-        <td>
-          <button class="button" id="Selector" role="button">Terminate</button>
-        </td>
-      </tr>
-      <tr>
-        <td>October 13,2020 05:30GMT</td>
-        <td>Mozilla Firefox</td>
-        <td>MacOS</td>
-        <td>
-          <button class="button" id="Selector" role="button">Terminate</button>
-        </td>
-      </tr>
-      <tr>
-        <td>October 13,2020 05:30GMT</td>
-        <td>Mozilla Firefox</td>
-        <td>MacOS</td>
-        <td>
-          <button class="button" id="Selector" role="button">Terminate</button>
-        </td>
-      </tr>
+      {% for instance in activeLogin %}
+        <tr>
+          <td>{{ instance.loginTime }}</td>
+          <td>
+            {{ instance.browser }}
+            {% if instance.type %}Extension{% endif %}
+          </td>
+          <td>{{ instance.os }}</td>
+          <td>
+            <form method="POST" action="{% url 'devices' %}">
+              {% csrf_token %}
+              <input type="hidden" name="uid" value="{{ instance.id }}">
+              <button class="button" id="Selector" role="button" type="submit">Terminate</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
     </table>
   </div>
 {% endblock content %}
