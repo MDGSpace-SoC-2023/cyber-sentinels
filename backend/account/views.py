@@ -1,7 +1,7 @@
 import secrets
 import string
 import re
-from .models import MasterHash, MultiToken
+from .models import MasterHash, MultiToken, ProfileSettings
 from .serializers import UserSerializer
 from django.utils import timezone
 from django.shortcuts import render, redirect
@@ -71,6 +71,7 @@ def register_user(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            ProfileSettings.objects.create(user=user)
             hash = make_password(generate(20), salt=generate(20))
             MasterHash.objects.create(user=user, hash=hash, salt=generate(20))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -100,6 +101,9 @@ def user_login(request):
                         os=os,
                         type=type,
                     )
+                    profile, _ = ProfileSettings.objects.get_or_create(
+                        request=request.user
+                    )
                     return Response({"token": token.key}, status=status.HTTP_200_OK)
 
         else:
@@ -113,26 +117,12 @@ def user_login(request):
                     os=os,
                     type=type,
                 )
+                profile, _ = ProfileSettings.objects.get_or_create(user=request.user)
                 return Response({"token": token.key}, status=status.HTTP_200_OK)
 
         return Response(
             {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
         )
-
-
-# @api_view(["POST"])
-# @permission_classes([IsAuthenticated])
-# def user_logout(request):
-#     try:
-#         logout(request)
-#         if hasattr(request.auth, "delete"):
-#             request.auth.delete()
-#         MultiToken.objects.filter(user=request.user).delete()
-#         return Response(
-#             {"message": "Successfully logged out."}, status=status.HTTP_200_OK
-#         )
-#     except Exception as e:
-#         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["POST"])
@@ -152,23 +142,41 @@ def user_logout(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+def is_valid(loginTime, expiry_duration):
+    expiry_datetime = loginTime + expiry_duration
+    return timezone.now() < expiry_datetime
+
+
 @api_view(["POST"])
 def verify(request):
     try:
         auth_header = request.headers.get("Authorization")
         if not auth_header:
-            return JsonResponse({"result": False}, safe=False)
-
+            return JsonResponse(
+                {"result": False, "error": "Missing authorization header"}, status=401
+            )
         token = auth_header.split()[1]
         token_instance = MultiToken.objects.filter(key=token).first()
-
-        if token_instance:
+        if not token_instance:
+            return JsonResponse({"result": False, "error": "Invalid token"}, status=401)
+        profile_settings = ProfileSettings.objects.filter(user=request.user).first()
+        if not profile_settings or not profile_settings.expiry_duration:
+            return JsonResponse(
+                {"result": False, "error": "Expiry duration not set for user"},
+                status=401,
+            )
+        if is_valid(token_instance.loginTime, profile_settings.expiry_duration):
             return JsonResponse({"result": True})
         else:
-            return JsonResponse({"result": False}, safe=False)
-
+            return JsonResponse({"result": False, "error": "Token expired"}, status=401)
+    except IndexError:
+        return JsonResponse(
+            {"result": False, "error": "Invalid authorization header"}, status=401
+        )
     except Exception as e:
-        return JsonResponse({"result": False}, safe=False)
+        return JsonResponse(
+            {"result": False, "error": "Internal server error"}, status=500
+        )
 
 
 class CustomPasswordResetView(PasswordResetView):

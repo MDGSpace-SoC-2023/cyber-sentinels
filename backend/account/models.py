@@ -2,17 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from django.conf import settings
+from django.utils import timezone
+from rest_framework.authtoken.models import Token
 
 
 class MasterHash(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hash = models.TextField()
     salt = models.TextField()
-
-
-from django.conf import settings
-from django.db import models
-from rest_framework.authtoken.models import Token
 
 
 class MultiToken(Token):
@@ -27,3 +24,9 @@ class MultiToken(Token):
     browser = models.CharField(max_length=255)
     os = models.CharField(max_length=255)
     loginTime = models.DateTimeField()
+
+
+class ProfileSettings(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    expiry_duration = models.DurationField(default=timezone.timedelta(days=365 * 100))
+    autoCapture = models.BooleanField(default=True)

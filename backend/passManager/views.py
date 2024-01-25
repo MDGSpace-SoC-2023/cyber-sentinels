@@ -1,6 +1,6 @@
 import base64
 from .models import *
-from account.models import MasterHash, MultiToken
+from account.models import MasterHash, MultiToken, ProfileSettings
 from .serializers import *
 from django.db.models import Count
 from datetime import timedelta
@@ -117,53 +117,92 @@ def changePassword(request):
     return render(request, "passManager/changePassword.html")
 
 
+from django.shortcuts import get_object_or_404
+
+
 @login_required
 def profile(request):
     if request.method == "GET":
         username = request.user.username
         name = request.user.first_name
         email = request.user.email
-        context = {"username": username, "name": name, "email": email}
+        profile = get_object_or_404(ProfileSettings, user=request.user)
+        expiry_minutes = 365 * 100 * 24 * 3600
+        context = {
+            "username": username,
+            "name": name,
+            "email": email,
+            "auto_capture": profile.autoCapture,
+            "expiry": int(profile.expiry_duration.total_seconds() / 60),
+            "expiry_not_default": profile.expiry_duration.total_seconds()
+            != expiry_minutes,
+        }
         return render(request, "passManager/profile.html", context)
 
     elif request.method == "POST":
-        updated_username = request.POST.get("username")
-        updated_name = request.POST.get("name")
-        updated_email = request.POST.get("email")
+        if request.POST.get("username"):
+            updated_username = request.POST.get("username")
+            updated_name = request.POST.get("name")
+            updated_email = request.POST.get("email")
 
-        if (
-            User.objects.filter(username=updated_username)
-            .exclude(pk=request.user.pk)
-            .exists()
-        ):
-            messages.error(
-                request, "Username already exists. Please choose a different one."
-            )
+            if (
+                User.objects.filter(username=updated_username)
+                .exclude(pk=request.user.pk)
+                .exists()
+            ):
+                messages.error(
+                    request, "Username already exists. Please choose a different one."
+                )
+                return redirect("profile")
+
+            try:
+                EmailValidator()(updated_email)
+            except ValidationError as e:
+                messages.error(request, e.message)
+                return redirect("profile")
+
+            if (
+                User.objects.filter(email=updated_email)
+                .exclude(pk=request.user.pk)
+                .exists()
+            ):
+                messages.error(
+                    request, "Email already exists. Please choose a different one."
+                )
+                return redirect("profile")
+
+            user = request.user
+            user.username = updated_username
+            user.first_name = updated_name
+            user.email = updated_email
+            user.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect("profile")
+        else:
+            expiry_duration_minutes = request.POST.get("time")
+            if expiry_duration_minutes:
+                try:
+                    expiry_duration_minutes = int(expiry_duration_minutes)
+                    expiry_duration = timezone.timedelta(
+                        minutes=expiry_duration_minutes
+                    )
+                except ValueError:
+                    expiry_duration = timezone.timedelta(days=36500)
+            auto_capture = request.POST.get("autoCapture")
+            automatic_logout = request.POST.get("automaticLogout")
+            if auto_capture:
+                flag = False
+            else:
+                flag = True
+            profile, created = ProfileSettings.objects.get_or_create(user=request.user)
+            profile.autoCapture = flag
+            if automatic_logout and expiry_duration:
+                profile.expiry_duration = expiry_duration
+            else:
+                profile.expiry_duration = timezone.timedelta(days=36500)
+            profile.save()
             return redirect("profile")
 
-        try:
-            EmailValidator()(updated_email)
-        except ValidationError as e:
-            messages.error(request, e.message)
-            return redirect("profile")
-
-        if (
-            User.objects.filter(email=updated_email)
-            .exclude(pk=request.user.pk)
-            .exists()
-        ):
-            messages.error(
-                request, "Email already exists. Please choose a different one."
-            )
-            return redirect("profile")
-
-        user = request.user
-        user.username = updated_username
-        user.first_name = updated_name
-        user.email = updated_email
-        user.save()
-        messages.success(request, "Profile updated successfully.")
-        return redirect("profile")
     return render(request, "passManager/profile.html")
 
 
