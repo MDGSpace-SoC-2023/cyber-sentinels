@@ -1,56 +1,50 @@
 {% extends "passManager/base.html" %}
 {% load static %}
 {% block title %}
-  Notifications
+Notifications
 {% endblock title %}
 {% block script %}
-  <script src="{% static 'passManager/fetch_for_notifications.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'passManager/notifications.css' %}" />
+<script src="{% static 'passManager/fetch_for_notifications.js' %}"></script>
+<link rel="stylesheet" href="{% static 'passManager/notifications.css' %}" />
 {% endblock script %}
 {% block content %}
-  <div class="heading">
-    <h2>NOTIFICATIONS</h2>
-  </div>
-  <div class="Main">
-    <button class="Arrow">&#706;</button>
-    <div class="nofctions"></div>
-    <div class="FilterArea">
-      <h2>Filter By:</h2>
-      <div class="FilterDate">
-        <h3>Date:</h3>
-        <label>Start Date:</label>
-        <input type="date" id="startDate" class="datepicker" />
-        <br />
-        <label>End Date:&nbsp;</label>
-        <input type="date" id="endDate" class="datepicker" />
-      </div>
-      <div class="FilterAction">
-        <h3>Action Type:</h3>
-        <button onclick="Filterntfctns('All')"
-                id="AllAct"
-                class="Act"
-                style="color: #ffe66b">All</button>
-        <button onclick="Filterntfctns('Add')" id="AddAct" class="Act">Addition</button>
-        <button onclick="Filterntfctns('Del')" id="DelAct" class="Act">Deletion</button>
-        <button onclick="Filterntfctns('Upd')" id="UpdAct" class="Act">Updated</button>
-        <button onclick="Filterntfctns('Dep')" id="DepAct" class="Act">Deprecated</button>
-      </div>
-      <div class="FilterSeverity">
-        <h3>Severity Type:</h3>
-        <button onclick="FilterSevere('All')"
-                style="color: #ffe66b"
-                id="AllSev"
-                class="Sev">All</button>
-        <button onclick="FilterSevere('Sev')" id="SevSev" class="Sev">Severe</button>
-        <button onclick="FilterSevere('notSev')" id="notSevSev" class="Sev">Not Severe</button>
-      </div>
-      <button class="clrfltr" id="Selector" onclick="clrfilter()" role="button">Clear All</button>
+<div class="heading">
+  <h2>NOTIFICATIONS</h2>
+</div>
+<div class="Main">
+  <button class="Arrow">&#706;</button>
+  <div class="nofctions"></div>
+  <div class="FilterArea">
+    <h2>Filter By:</h2>
+    <div class="FilterDate">
+      <h3>Date:</h3>
+      <label>Start Date:</label>
+      <input type="date" id="startDate" class="datepicker" />
+      <br />
+      <label>End Date:&nbsp;</label>
+      <input type="date" id="endDate" class="datepicker" />
     </div>
+    <div class="FilterAction">
+      <h3>Action Type:</h3>
+      <button onclick="Filterntfctns('All')" id="AllAct" class="Act" style="color: #ffe66b">All</button>
+      <button onclick="Filterntfctns('Add')" id="AddAct" class="Act">Addition</button>
+      <button onclick="Filterntfctns('Del')" id="DelAct" class="Act">Deletion</button>
+      <button onclick="Filterntfctns('Upd')" id="UpdAct" class="Act">Updated</button>
+      <button onclick="Filterntfctns('Dep')" id="DepAct" class="Act">Deprecated</button>
+    </div>
+    <div class="FilterSeverity">
+      <h3>Severity Type:</h3>
+      <button onclick="FilterSevere('All')" style="color: #ffe66b" id="AllSev" class="Sev">All</button>
+      <button onclick="FilterSevere('Sev')" id="SevSev" class="Sev">Severe</button>
+      <button onclick="FilterSevere('notSev')" id="notSevSev" class="Sev">Not Severe</button>
+    </div>
+    <button class="clrfltr" id="Selector" onclick="clrfilter()" role="button">Clear All</button>
   </div>
-  <!-- add custom tags to notifications -->
-  <!-- add text if no notifications -->
-  <!-- add delete notifications -->
+</div>
+<!-- add custom tags to notifications -->
+<!-- add text if no notifications -->
+<!-- add delete notifications -->
 {% endblock content %}
 {% block fscript %}
-  <script defer src="{% static 'passManager/notifications.js' %}"></script>
+<script defer src="{% static 'passManager/notifications.js' %}"></script>
 {% endblock fscript %}

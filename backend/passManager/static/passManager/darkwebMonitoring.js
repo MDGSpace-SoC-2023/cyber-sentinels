@@ -222,7 +222,7 @@ togglePasswordVisibilityClosed.addEventListener("click", function () {
     togglePasswordVisibilityOpen.style.display = "inline-block";
 });
 cancelButton.addEventListener("click", hideModal);
-function updatePassword(event) {
+async function updatePassword(event) {
     event.preventDefault();
     const modalBox = document.querySelector(".modal-box");
     const csrfToken = modalBox.querySelector(
@@ -239,44 +239,82 @@ function updatePassword(event) {
         deviceId = generateDeviceId();
     }
     console.log(deviceId);
-    fetch("http://127.0.0.1:8000/auth/master", {
+    var response = await fetch("http://127.0.0.1:8000/auth/master", {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,
         },
-    })
-        .then(response => response.json())
-        .then(data => {
-            const hashedMasterPassword = data.hashedMasterPassword;
-            const salt = data.salt;
-            const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
-            const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
-            var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
-            fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
-                method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                    'Authorization': `Token ${token}`,
-                },
-                body: JSON.stringify({
-                    username: username,
-                    encrypted_password: encryptedData,
-                    sync: sync,
-                    notes: notes,
-                    device_identifier: deviceId
-                }),
-            }).then(response => {
-                if (!response.ok) {
-                    return response.json().then(errors => {
-                        throw new Error(JSON.stringify(errors));
-                    });
-                }
-                window.location.href = 'http://127.0.0.1:8000/monitor';
-            }).catch(error => console.log(error));
-        })
-        .catch(error => console.error('Error:', error));
+    });
+    // fetch("http://127.0.0.1:8000/auth/master", {
+    //     method: 'GET',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Token ${token}`,
+    //     },
+    // })
+    //.then(response => response.json())
+    var data = await response.json();
+    const hashedMasterPassword = data.hashedMasterPassword;
+    const salt = data.salt;
+    const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+    const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+    var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+    var response2 = await fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+            'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({
+            username: username,
+            encrypted_password: encryptedData,
+            sync: sync,
+            notes: notes,
+            device_identifier: deviceId
+        }),
+    });
+    try {
+        if (!response2.ok) {
+            return response2.json().then(errors => {
+                throw new Error(JSON.stringify(errors));
+            });
+        }
+        window.location.href = 'http://127.0.0.1:8000/monitor';
+    } catch (error) {
+        console.log("Error:", error);
+    }
+    // .then(data => {
+    //     const hashedMasterPassword = data.hashedMasterPassword;
+    //     const salt = data.salt;
+    //     const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+    //     const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+    //     var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+    //     fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+    //         method: "PUT",
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-CSRFToken': csrfToken,
+    //             'Authorization': `Token ${token}`,
+    //         },
+    //         body: JSON.stringify({
+    //             username: username,
+    //             encrypted_password: encryptedData,
+    //             sync: sync,
+    //             notes: notes,
+    //             device_identifier: deviceId
+    //         }),
+    //     }).then(response => {
+    //         if (!response.ok) {
+    //             return response.json().then(errors => {
+    //                 throw new Error(JSON.stringify(errors));
+    //             });
+    //         }
+    //         window.location.href = 'http://127.0.0.1:8000/monitor';
+    //     }).catch(error => console.log(error));
+    // })
+    // .catch(error => console.error('Error:', error));
 }
 function generateDeviceId() {
     const fingerprint = [

@@ -1,37 +1,47 @@
 token = localStorage.getItem.token;
-fetch("http://127.0.0.1:8000/view/", {
-    method: "GET",
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: "Token ${token}",
-    },
-})
-    .then((response) => {
-        return response.json();
-    })
-    .then(async (jsonData) => {
-        var response = await fetch("http://127.0.0.1:8000/auth/master", {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${token}`,
-            },
-        });
-        var data = await response.json();
-        const hashedMasterPassword = data.hashedMasterPassword;
-        const salt = data.salt;
-        const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
-        const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
-        const passwordMap = new Map();
-        console.log("jsonData:", jsonData);
-        jsonData.forEach(item => {
-            var decryptedBytes = CryptoJS.AES.decrypt(item.encrypted_password, secretKey);
-            var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-            const password = decryptedData;
-            if (passwordMap.has(password)) {
-                const passwordInfo = passwordMap.get(password);
-                passwordInfo.count++;
-                passwordInfo.details.push({
+async function fetchpassuge() {
+    var response = await fetch("http://127.0.0.1:8000/view/", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token ${token}",
+        },
+    });
+    var jsonData = await response.json();
+    var response1 = await fetch("http://127.0.0.1:8000/auth/master", {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+    });
+    var data = await response1.json();
+    const hashedMasterPassword = data.hashedMasterPassword;
+    const salt = data.salt;
+    const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+    const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+    const passwordMap = new Map();
+    console.log("jsonData:", jsonData);
+    jsonData.forEach(item => {
+        var decryptedBytes = CryptoJS.AES.decrypt(item.encrypted_password, secretKey);
+        var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+        const password = decryptedData;
+        if (passwordMap.has(password)) {
+            const passwordInfo = passwordMap.get(password);
+            passwordInfo.count++;
+            passwordInfo.details.push({
+                id: item.id,
+                username: item.username,
+                notes: item.notes,
+                created_at: item.updated_at,
+                domain_name: item.domain.name,
+                domain_id: item.domain.id,
+                sync: item.sync,
+            });
+        } else {
+            passwordMap.set(password, {
+                count: 1,
+                details: [{
                     id: item.id,
                     username: item.username,
                     notes: item.notes,
@@ -39,160 +49,164 @@ fetch("http://127.0.0.1:8000/view/", {
                     domain_name: item.domain.name,
                     domain_id: item.domain.id,
                     sync: item.sync,
-                });
-            } else {
-                passwordMap.set(password, {
-                    count: 1,
-                    details: [{
-                        id: item.id,
-                        username: item.username,
-                        notes: item.notes,
-                        created_at: item.updated_at,
-                        domain_name: item.domain.name,
-                        domain_id: item.domain.id,
-                        sync: item.sync,
-                    }]
-                });
-            }
-        });
-        passwordMap.forEach((passwordInfo, password) => {
-            console.log(passwordInfo);
-            if (passwordInfo.count > 1) {
-                var button = document.createElement("button");
-                button.className = "filterDiv full-width";
-                var spanInsidenote = document.createElement("span");
-                spanInsidenote.className = "Insidenote";
-                var h5Insidenote = document.createElement("h5");
-                h5Insidenote.id = "h1Insidenote";
-                h5Insidenote.innerHTML = "Password Note:&nbsp;";
-                var spanNote = document.createElement("span");
-                spanNote.style.fontSize = "20px";
-                spanNote.textContent = " ";
-                const domainNames = [];
-                passwordInfo.details.forEach(detail => {
-                    domainNames.push(detail.domain_name);
-                });
-                spanNote.textContent = domainNames.join(', ');
-                spanInsidenote.appendChild(h5Insidenote);
-                spanInsidenote.appendChild(spanNote);
-                var spanInsideusage = document.createElement("span");
-                spanInsideusage.className = "Insideusage";
-                spanInsideusage.textContent = `Your password has been used ${passwordInfo.count} times.`;
-                var h5ActionRequired = document.createElement("h5");
-                h5ActionRequired.className = "actionRequired";
-                h5ActionRequired.textContent = "Action Required";
-                button.appendChild(spanInsidenote);
-                button.appendChild(spanInsideusage);
-                button.appendChild(h5ActionRequired);
-                var container = document.getElementsByClassName("UsrnmeNPasswrds")[0];
-                container.appendChild(button);
-                passwordInfo.details.forEach(detail => {
-                    var divContent = document.createElement("div");
-                    var idelem = document.createElement("p");
-                    idelem.style.display = "none";
-                    idelem.textContent = detail.id;
-                    divContent.appendChild(idelem);
-                    var domelem = document.createElement("p");
-                    domelem.style.display = "none";
-                    domelem.textContent = detail.domain_name;
-                    divContent.appendChild(domelem);
-                    divContent.className = "content visible OnDev";
-                    if (detail.sync) {
-                        divContent.className = "content visible ClouSync";
-                    } else {
-                        divContent.className = "content visible OnDev";
-                    }
-                    var pUsername = document.createElement("p");
-                    pUsername.className = "usrnme";
-                    pUsername.textContent = detail.username;
-                    var inputPassword = document.createElement("input");
-                    inputPassword.type = "password";
-                    inputPassword.value = password;
-                    inputPassword.className = "passwords";
-                    inputPassword.readOnly = true;
-                    var eyeIconSvg = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "svg"
-                    );
-                    eyeIconSvg.setAttribute("height", "10%");
-                    eyeIconSvg.setAttribute("width", "2.5%");
-                    eyeIconSvg.setAttribute("viewBox", "0 0 24 24");
-                    eyeIconSvg.setAttribute("fill", "none");
-                    eyeIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                    eyeIconSvg.classList.add("eyeicon");
-                    var groupElement = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "g"
-                    );
-                    groupElement.setAttribute("stroke", "#fff");
-                    groupElement.setAttribute("stroke-linecap", "round");
-                    groupElement.setAttribute("stroke-linejoin", "round");
-                    groupElement.setAttribute("stroke-width", "2");
-                    var path1Element = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "path"
-                    );
-                    path1Element.setAttribute(
-                        "d",
-                        "m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z"
-                    );
-                    var path2Element = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "path"
-                    );
-                    path2Element.setAttribute(
-                        "d",
-                        "m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z"
-                    );
-                    groupElement.appendChild(path1Element);
-                    groupElement.appendChild(path2Element);
-                    eyeIconSvg.appendChild(groupElement);
-                    divContent.appendChild(pUsername);
-                    divContent.appendChild(inputPassword);
-                    divContent.appendChild(eyeIconSvg);
-                    var pCategory = document.createElement("p");
-                    pCategory.className = "ctgry";
-                    if (detail.sync) {
-                        pCategory.textContent = "Cloud Synced";
-                    } else {
-                        pCategory.textContent = "On Device";
-                    }
-                    var pTag = document.createElement("p");
-                    pTag.className = "tag";
-                    pTag.textContent = detail.notes;
-                    var spanColorBoxes = document.createElement("span");
-                    spanColorBoxes.id = "color-boxes";
-                    spanColorBoxes.className = "color-boxes";
-                    var spanTooltipText = document.createElement("span");
-                    spanTooltipText.id = "tooltiptext";
-                    spanTooltipText.className = "tooltiptext";
-                    spanTooltipText.textContent = "Tooltiptext";
-                    spanColorBoxes.appendChild(spanTooltipText);
-                    var editButtonSvg = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "svg"
-                    );
-                    editButtonSvg.setAttribute("height", "30px");
-                    editButtonSvg.setAttribute("width", "20px");
-                    editButtonSvg.setAttribute("viewBox", "0 0 576 512");
-                    editButtonSvg.classList.add("editbtn");
-                    var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    pathElement.setAttribute('fill', '#ffffff');
-                    pathElement.setAttribute('d', 'M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z');
-                    editButtonSvg.appendChild(pathElement);
-                    divContent.appendChild(pCategory);
-                    divContent.appendChild(pTag);
-                    divContent.appendChild(spanColorBoxes);
-                    divContent.appendChild(editButtonSvg);
-                    container.appendChild(divContent);
-                });
-            }
-        });
-        runRemainingCode();
-    })
-    .catch((error) => {
-        console.log("Error:", error);
+                }]
+            });
+        }
     });
+    passwordMap.forEach((passwordInfo, password) => {
+        console.log(passwordInfo);
+        if (passwordInfo.count > 1) {
+            var button = document.createElement("button");
+            button.className = "filterDiv full-width";
+            var spanInsidenote = document.createElement("span");
+            spanInsidenote.className = "Insidenote";
+            var h5Insidenote = document.createElement("h5");
+            h5Insidenote.id = "h1Insidenote";
+            h5Insidenote.innerHTML = "Password Note:&nbsp;";
+            var spanNote = document.createElement("span");
+            spanNote.style.fontSize = "20px";
+            spanNote.textContent = " ";
+            const domainNames = [];
+            passwordInfo.details.forEach(detail => {
+                domainNames.push(detail.domain_name);
+            });
+            spanNote.textContent = domainNames.join(', ');
+            spanInsidenote.appendChild(h5Insidenote);
+            spanInsidenote.appendChild(spanNote);
+            var spanInsideusage = document.createElement("span");
+            spanInsideusage.className = "Insideusage";
+            spanInsideusage.textContent = `Your password has been used ${passwordInfo.count} times.`;
+            var h5ActionRequired = document.createElement("h5");
+            h5ActionRequired.className = "actionRequired";
+            h5ActionRequired.textContent = "Action Required";
+            button.appendChild(spanInsidenote);
+            button.appendChild(spanInsideusage);
+            button.appendChild(h5ActionRequired);
+            var container = document.getElementsByClassName("UsrnmeNPasswrds")[0];
+            container.appendChild(button);
+            passwordInfo.details.forEach(detail => {
+                var divContent = document.createElement("div");
+                var idelem = document.createElement("p");
+                idelem.style.display = "none";
+                idelem.textContent = detail.id;
+                divContent.appendChild(idelem);
+                var domelem = document.createElement("p");
+                domelem.style.display = "none";
+                domelem.textContent = detail.domain_name;
+                divContent.appendChild(domelem);
+                divContent.className = "content visible OnDev";
+                if (detail.sync) {
+                    divContent.className = "content visible ClouSync";
+                } else {
+                    divContent.className = "content visible OnDev";
+                }
+                var pUsername = document.createElement("p");
+                pUsername.className = "usrnme";
+                pUsername.textContent = detail.username;
+                var inputPassword = document.createElement("input");
+                inputPassword.type = "password";
+                inputPassword.value = password;
+                inputPassword.className = "passwords";
+                inputPassword.readOnly = true;
+                var eyeIconSvg = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "svg"
+                );
+                eyeIconSvg.setAttribute("height", "10%");
+                eyeIconSvg.setAttribute("width", "2.5%");
+                eyeIconSvg.setAttribute("viewBox", "0 0 24 24");
+                eyeIconSvg.setAttribute("fill", "none");
+                eyeIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                eyeIconSvg.classList.add("eyeicon");
+                var groupElement = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "g"
+                );
+                groupElement.setAttribute("stroke", "#fff");
+                groupElement.setAttribute("stroke-linecap", "round");
+                groupElement.setAttribute("stroke-linejoin", "round");
+                groupElement.setAttribute("stroke-width", "2");
+                var path1Element = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+                path1Element.setAttribute(
+                    "d",
+                    "m15.0007 12c0 1.6569-1.3431 3-3 3-1.6568 0-2.99997-1.3431-2.99997-3s1.34317-3 2.99997-3c1.6569 0 3 1.3431 3 3z"
+                );
+                var path2Element = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+                path2Element.setAttribute(
+                    "d",
+                    "m12.0012 5c-4.47766 0-8.26794 2.94288-9.54222 7 1.27426 4.0571 5.06456 7 9.54222 7 4.4776 0 8.2679-2.9429 9.5422-7-1.2743-4.05709-5.0646-7-9.5422-7z"
+                );
+                groupElement.appendChild(path1Element);
+                groupElement.appendChild(path2Element);
+                eyeIconSvg.appendChild(groupElement);
+                divContent.appendChild(pUsername);
+                divContent.appendChild(inputPassword);
+                divContent.appendChild(eyeIconSvg);
+                var pCategory = document.createElement("p");
+                pCategory.className = "ctgry";
+                if (detail.sync) {
+                    pCategory.textContent = "Cloud Synced";
+                } else {
+                    pCategory.textContent = "On Device";
+                }
+                var pTag = document.createElement("p");
+                pTag.className = "tag";
+                pTag.textContent = detail.notes;
+                var spanColorBoxes = document.createElement("span");
+                spanColorBoxes.id = "color-boxes";
+                spanColorBoxes.className = "color-boxes";
+                var spanTooltipText = document.createElement("span");
+                spanTooltipText.id = "tooltiptext";
+                spanTooltipText.className = "tooltiptext";
+                spanTooltipText.textContent = "Tooltiptext";
+                spanColorBoxes.appendChild(spanTooltipText);
+                var editButtonSvg = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "svg"
+                );
+                editButtonSvg.setAttribute("height", "30px");
+                editButtonSvg.setAttribute("width", "20px");
+                editButtonSvg.setAttribute("viewBox", "0 0 576 512");
+                editButtonSvg.classList.add("editbtn");
+                var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathElement.setAttribute('fill', '#ffffff');
+                pathElement.setAttribute('d', 'M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z');
+                editButtonSvg.appendChild(pathElement);
+                divContent.appendChild(pCategory);
+                divContent.appendChild(pTag);
+                divContent.appendChild(spanColorBoxes);
+                divContent.appendChild(editButtonSvg);
+                container.appendChild(divContent);
+            });
+        }
+    });
+    runRemainingCode();
+}
+fetchpassuge();
+// fetch("http://127.0.0.1:8000/view/", {
+//     method: "GET",
+//     headers: {
+//         "Content-Type": "application/json",
+//         Authorization: "Token ${token}",
+//     },
+// })
+//     .then((response) => {
+//         return response.json();
+//     })
+// .then(async (jsonData) => {
+
+// });
+// runRemainingCode();
+// })
+//     .catch ((error) => {
+//     console.log("Error:", error);
+// });
 /**
      * Parse a password string into a numeric value.
      * This function evaluates password strength based on various criteria.
@@ -273,7 +287,7 @@ function runRemainingCode() {
     function hideModal() {
         modalBox.style.display = "none";
         overlay.style.display = "none";
-        window.location.href="http:127.0.0.1:8000/usage";
+        window.location.href = "http:127.0.0.1:8000/usage";
     }
     showBtn.forEach(btn => {
         btn.addEventListener("click", showModal);
@@ -417,7 +431,7 @@ async function updatePassword(event) {
     const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
     const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
     var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
-    fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+    var response = await fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',
@@ -431,12 +445,37 @@ async function updatePassword(event) {
             notes: notes,
             device_identifier: "asdfasd"
         }),
-    }).then(response => {
+    });
+    try {
         if (!response.ok) {
             return response.json().then(errors => {
                 throw new Error(JSON.stringify(errors));
             });
         }
         window.location.href = 'http://127.0.0.1:8000/usage';
-    }).catch(error => console.log(error));
+    } catch (error) {
+        console.log("Error:", error);
+    }
+    // fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
+    //     method: "PUT",
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'X-CSRFToken': csrfToken,
+    //         'Authorization': `Token ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //         username: username,
+    //         encrypted_password: encryptedData,
+    //         sync: sync,
+    //         notes: notes,
+    //         device_identifier: "asdfasd"
+    //     }),
+    // }).then(response => {
+    //     if (!response.ok) {
+    //         return response.json().then(errors => {
+    //             throw new Error(JSON.stringify(errors));
+    //         });
+    //     }
+    //     window.location.href = 'http://127.0.0.1:8000/usage';
+    // }).catch(error => console.log(error));
 }

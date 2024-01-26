@@ -1,106 +1,102 @@
 {% extends "passManager/base.html" %}
 {% load static %}
 {% block title %}
-  Profile
+Profile
 {% endblock title %}
 {% block script %}
-  <link rel="stylesheet" href="{% static 'passManager/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'passManager/profile.css' %}" />
 {% endblock script %}
 {% block content %}
-  <div class="heading">
-    <h2>PROFILE</h2>
-  </div>
-  <div class="Main">
-    <button class="Arrow">&#706;</button>
-    <div class="profile">
-      <h1 welcome-name="">Welcome, {{ name }}</h1>
-      <div class="userdetals">
-        <form method="post" action="{% url 'profile' %}">
-          {% csrf_token %}
-          <table>
-            <tr>
-              <td class="inputname">Name:</td>
-              <td>
-                <input type="text" name="name" value="{{ name }}" />
-              </td>
-            </tr>
-            <tr>
-              <td class="inputname">Username:</td>
-              <td>
-                <input type="text" name="username" value="{{ username }}" />
-              </td>
-            </tr>
-            <tr>
-              <td class="inputname">Email:</td>
-              <td>
-                <input type="text" name="email" value="{{ email }}" />
-              </td>
-            </tr>
-          </table>
-          <span id="messages">
-            {% if messages %}
-              {% for message in messages %}
-                {% if message.tags == 'error' %}
-                  <span style="color: red">{{ message }}</span>
-                {% elif message.tags == 'success' %}
-                  <span style="color: green">{{ message }}</span>
-                {% else %}
-                  {{ message }}
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-          </span>
-          <div class="updatebtn">
-            <button type="submit" class="button" id="Selector" role="button">Update</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="settings">
-      <form method='POST' id='profileSettings'>
+<div class="heading">
+  <h2>PROFILE</h2>
+</div>
+<div class="Main">
+  <button class="Arrow">&#706;</button>
+  <div class="profile">
+    <h1 welcome-name="">Welcome, {{ name }}</h1>
+    <div class="userdetals">
+      <form method="post" action="{% url 'profile' %}">
         {% csrf_token %}
-        <div class="settng">
-          <label class="checkbox style-d">
-            <input type="checkbox"
-                   name="automaticLogout"
-                   {% if expiry_not_default %}checked{% endif %} />
-            <div class="checkbox__checkmark"></div>
-          </label>
-          <p style="font-size: 25px; margin-left: 5%">
-            <b>Automatic Logout</b>
-          </p>
-          <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
-            Choose how long the session should remain logged in. Enter in minutes
-          </p>
-          <input type="number" name="time" value="{{ expiry }}">
+        <table>
+          <tr>
+            <td class="inputname">Name:</td>
+            <td>
+              <input type="text" name="name" value="{{ name }}" />
+            </td>
+          </tr>
+          <tr>
+            <td class="inputname">Username:</td>
+            <td>
+              <input type="text" name="username" value="{{ username }}" />
+            </td>
+          </tr>
+          <tr>
+            <td class="inputname">Email:</td>
+            <td>
+              <input type="text" name="email" value="{{ email }}" />
+            </td>
+          </tr>
+        </table>
+        <span id="messages">
+          {% if messages %}
+          {% for message in messages %}
+          {% if message.tags == 'error' %}
+          <span style="color: red">{{ message }}</span>
+          {% elif message.tags == 'success' %}
+          <span style="color: green">{{ message }}</span>
+          {% else %}
+          {{ message }}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+        </span>
+        <div class="updatebtn">
+          <button type="submit" class="button" id="Selector" role="button">Update</button>
         </div>
-        <div class="settng">
-          <label class="checkbox style-d">
-            <input type="checkbox"
-                   name="autoCapture"
-                   {% if not auto_capture %}checked{% endif %} />
-            <div class="checkbox__checkmark"></div>
-          </label>
-          <p style="font-size: 25px; margin-left: 5%">
-            <b>Prevent Browser from Prompting to Save Passwords</b>
-          </p>
-          <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
-            Select this option if you want to refrain the browser from saving
-            account passwords.
-          </p>
-        </div>
-        {% comment %} <div class="settng">
-          <label class="checkbox style-d">
-            <input type="checkbox" />
-            <div class="checkbox__checkmark"></div>
-          </label>
-          <p style="font-size: 25px; margin-left: 5%">
-            <b>Automatically Log in to Extension When Logged in to Web
+      </form>
+    </div>
+  </div>
+  <div class="settings">
+    <form method='POST' id='profileSettings'>
+      {% csrf_token %}
+      <div class="settng">
+        <label class="checkbox style-d">
+          <input type="checkbox" name="automaticLogout" {% if expiry_not_default %}checked{% endif %} />
+          <div class="checkbox__checkmark"></div>
+        </label>
+        <p style="font-size: 25px; margin-left: 5%">
+          <b>Automatic Logout</b>
+        </p>
+        <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
+          Choose how long the session should remain logged in. Enter in minutes
+        </p>
+        <input type="number" name="time" value="{{ expiry }}">
+      </div>
+      <div class="settng">
+        <label class="checkbox style-d">
+          <input type="checkbox" name="autoCapture" {% if not auto_capture %}checked{% endif %} />
+          <div class="checkbox__checkmark"></div>
+        </label>
+        <p style="font-size: 25px; margin-left: 5%">
+          <b>Prevent Browser from Prompting to Save Passwords</b>
+        </p>
+        <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
+          Select this option if you want to refrain the browser from saving
+          account passwords.
+        </p>
+      </div>
+      {% comment %} <div class="settng">
+        <label class="checkbox style-d">
+          <input type="checkbox" />
+          <div class="checkbox__checkmark"></div>
+        </label>
+        <p style="font-size: 25px; margin-left: 5%">
+          <b>Automatically Log in to Extension When Logged in to Web
             Interface</b>
-          </p>
-          <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
-            Select this option if you want the browser extension to be enabled
-            concurrently with the login of the web console.
+        </p>
+        <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
+          Select this option if you want the browser extension to be enabled
+          concurrently with the login of the web console.
         </p> {% endcomment %}
         <button type="submit" class="button" id="profileButton" role="button">Update</button>
       </div>
@@ -109,11 +105,11 @@
 </div>
 {% endblock content %}
 {% block fscript %}
-  <script src="{% static 'passManager/profile.js' %}"></script>
-  <script>
-      var name = "{{name}}";
-      document
-        .querySelector("h1[welcome-name]")
-        .setAttribute("welcome-name", name.charAt(0));
-  </script>
+<script src="{% static 'passManager/profile.js' %}"></script>
+<script>
+  var name = "{{name}}";
+  document
+    .querySelector("h1[welcome-name]")
+    .setAttribute("welcome-name", name.charAt(0));
+</script>
 {% endblock fscript %}

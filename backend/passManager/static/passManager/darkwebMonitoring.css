@@ -372,7 +372,7 @@ input#passwordField[type="text"] {
     font-size: 14px;
 }
 
-#customText{
+#customText {
     flex: 1;
     padding: 8px;
     border-radius: 3px;
