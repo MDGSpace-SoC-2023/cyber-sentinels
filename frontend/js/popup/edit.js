@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameField = document.getElementById("username");
     const passwordField = document.getElementById("passwordField");
     const syncCheckbox = document.getElementById("sync");
-    const devCheckbox = document.getElementById("device");
+    // const devCheckbox = document.getElementById("device");
     const customTextField = document.getElementById("customText");
 
     // Use the index to access the corresponding user data
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       usernameField.value = userDataAtIndex.username || "";
       passwordField.value = userDataAtIndex.encrypted_password || "";
       syncCheckbox.checked = userDataAtIndex.sync || false;
-      devCheckbox.checked = !userDataAtIndex.sync || false;
+      //devCheckbox.checked = !userDataAtIndex.sync || false;
       customTextField.value = userDataAtIndex.notes || "";
       domainfield.value = domain;
     }

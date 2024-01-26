@@ -279,12 +279,8 @@ function runremaining() {
       pswdinmodalBox.value = Password;
       var Syncchek = modalBox.querySelector("#sync");
       Syncchek.checked = false;
-      var Devchek = modalBox.querySelector("#device");
-      Devchek.checked = false;
       if (conElem.classList.contains("ClouSync")) {
         Syncchek.checked = true;
-      } else {
-        Devchek.checked = true;
       }
       var customText = modalBox.querySelector("#customText");
       var tag = conElem.querySelector(".tag");
@@ -625,22 +621,6 @@ account.addEventListener("click", function () {
     }
   }
 });
-var synchecker = document.querySelector("#sync");
-var devchecker = document.querySelector("#device");
-synchecker.addEventListener("change", function () {
-  if (synchecker.checked) {
-    devchecker.checked = false;
-  } else {
-    devchecker.checked = true;
-  }
-});
-devchecker.addEventListener("change", function () {
-  if (devchecker.checked) {
-    synchecker.checked = false;
-  } else {
-    synchecker.checked = true;
-  }
-});
 var addbtn = document.getElementById("Adder");
 addbtn.addEventListener("click", function () {
   var addcred = document.getElementsByClassName("addcred")[0];
@@ -662,22 +642,6 @@ togglePasswordVisibilityClosed1.addEventListener("click", function () {
   passwordField1.type = "text";
   togglePasswordVisibilityClosed1.style.display = "none";
   togglePasswordVisibilityOpen1.style.display = "inline-block";
-});
-var synchecker1 = document.querySelector("#sync1");
-var devchecker1 = document.querySelector("#device1");
-synchecker1.addEventListener("change", function () {
-  if (synchecker1.checked) {
-    devchecker1.checked = false;
-  } else {
-    devchecker1.checked = true;
-  }
-});
-devchecker1.addEventListener("change", function () {
-  if (devchecker1.checked) {
-    synchecker1.checked = false;
-  } else {
-    synchecker1.checked = true;
-  }
 });
 var cancelbutton = document.getElementById("cancelButton1");
 cancelbutton.addEventListener("click", function () {

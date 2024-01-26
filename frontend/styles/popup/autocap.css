@@ -67,6 +67,16 @@ input[type="checkbox"] {
   font-size: 14px;
 }
 
+#customText{
+  flex: 1;
+  padding: 8px;
+  border-radius: 3px;
+  background-color: #555;
+  color: #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
 .form-buttons {
   display: flex;
   justify-content: space-between;

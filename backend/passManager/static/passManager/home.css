@@ -65,9 +65,17 @@ input#domain[type="text"],
 input#username[type="text"],
 input#passwordField[type="password"],
 input#sync[type="checkbox"],
-input#device[type="checkbox"],
-input#customText[type="text"],
 input#passwordField[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #555;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+#customText{
     flex: 1;
     padding: 8px;
     border-radius: 3px;
@@ -340,6 +348,7 @@ body {
     padding-bottom: 3.5%;
     font-family: 'Opensans', sans-serif;
     color: #ffe66b;
+    text-align: center;
 }
 
 .NavBar a:active {
@@ -943,8 +952,6 @@ input#domain1[type="text"],
 input#username1[type="text"],
 input#passwordField1[type="password"],
 input#sync1[type="checkbox"],
-input#device1[type="checkbox"],
-input#customText1[type="text"],
 input#passwordField1[type="text"] {
     flex: 1;
     padding: 8px;
@@ -957,4 +964,14 @@ input#passwordField1[type="text"] {
 
 input#passwordField1[type="password"] {
     width: 169px;
+}
+
+#customText1{
+    flex: 1;
+    padding: 8px;
+    border-radius: 3px;
+    background-color: #555;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
 }

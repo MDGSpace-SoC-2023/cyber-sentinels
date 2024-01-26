@@ -97,6 +97,11 @@ fetch("http://127.0.0.1:8000/view/", {
                     domelem.textContent = detail.domain_name;
                     divContent.appendChild(domelem);
                     divContent.className = "content visible OnDev";
+                    if (detail.sync) {
+                        divContent.className = "content visible ClouSync";
+                    } else {
+                        divContent.className = "content visible OnDev";
+                    }
                     var pUsername = document.createElement("p");
                     pUsername.className = "usrnme";
                     pUsername.textContent = detail.username;
@@ -253,12 +258,8 @@ function runRemainingCode() {
         pswdinmodalBox.value = Password;
         var Syncchek = modalBox.querySelector("#sync");
         Syncchek.checked = false;
-        var Devchek = modalBox.querySelector("#device");
-        Devchek.checked = false;
         if (conElem.classList.contains("ClouSync")) {
             Syncchek.checked = true;
-        } else {
-            Devchek.checked = true;
         }
         var customText = modalBox.querySelector("#customText");
         var tag = conElem.querySelector(".tag");
@@ -272,6 +273,7 @@ function runRemainingCode() {
     function hideModal() {
         modalBox.style.display = "none";
         overlay.style.display = "none";
+        window.location.href="http:127.0.0.1:8000/usage";
     }
     showBtn.forEach(btn => {
         btn.addEventListener("click", showModal);
@@ -374,22 +376,6 @@ function runRemainingCode() {
             tooltipText.innerHTML = data.label;
         }
     });
-    var synchecker = document.querySelector("#sync");
-    var devchecker = document.querySelector("#device");
-    synchecker.addEventListener("change", function () {
-        if (synchecker.checked) {
-            devchecker.checked = false;
-        } else {
-            devchecker.checked = true;
-        }
-    });
-    devchecker.addEventListener("change", function () {
-        if (devchecker.checked) {
-            synchecker.checked = false;
-        } else {
-            synchecker.checked = true;
-        }
-    });
     const passwordField = document.getElementById("passwordField");
     const togglePasswordVisibilityOpen = document.getElementById(
         "togglePasswordVisibilityOpen"
@@ -419,18 +405,18 @@ async function updatePassword(event) {
     var notes = modalBox.querySelector("#customText").value;
     var token = localStorage.getItem.token;
     var response = await fetch("http://127.0.0.1:8000/auth/master", {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${token}`,
-            },
-        });
-        var data = await response.json();
-        const hashedMasterPassword = data.hashedMasterPassword;
-        const salt = data.salt;
-        const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
-        const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
-        var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+        },
+    });
+    var data = await response.json();
+    const hashedMasterPassword = data.hashedMasterPassword;
+    const salt = data.salt;
+    const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+    const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
+    var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
     fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
         method: "PUT",
         headers: {

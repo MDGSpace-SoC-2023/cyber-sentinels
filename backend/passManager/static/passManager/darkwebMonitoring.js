@@ -185,12 +185,8 @@ async function showModal() {
     usrinmodalBox.value = jsonData.username;
     var Syncchek = modalBox.querySelector("#sync");
     Syncchek.checked = false;
-    var Devchek = modalBox.querySelector("#device");
-    Devchek.checked = false;
     if (jsonData.sync) {
         Syncchek.checked = true;
-    } else {
-        Devchek.checked = true;
     }
     var customText = modalBox.querySelector("#customText");
     var domainelem = modalBox.querySelector("#domain");
@@ -199,9 +195,9 @@ async function showModal() {
     var updtid = modalBox.querySelector(".updateid");
     updtid.textContent = id;
     var pswdinmodalBox = modalBox.querySelector("#passwordField");
-    //pswdinmodalBox.value=password;
-    //var decryptor = CryptoJS.AES.decrypt(jsonData.encrypted_password, secretKey);
-    // console.log(decryptor);
+    var decryptedBytes = CryptoJS.AES.decrypt(jsonData.encrypted_password, secretKey);
+    var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    pswdinmodalBox.value = decryptedData;
 }
 function hideModal() {
     const modalBox = document.querySelector(".modal-box");
@@ -281,4 +277,27 @@ function updatePassword(event) {
             }).catch(error => console.log(error));
         })
         .catch(error => console.error('Error:', error));
+}
+function generateDeviceId() {
+    const fingerprint = [
+        navigator.userAgent,
+        navigator.language,
+        screen.colorDepth,
+        navigator.hardwareConcurrency,
+        navigator.serviceWorker,
+        navigator.mediaCapabilities,
+        new Date().getTimezoneOffset(),
+        screen.pixelDepth,
+    ].join('');
+    console.log(navigator.mediaCapabilities);
+    const hashedId = hashString(fingerprint);
+    return hashedId;
+}
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+    }
+    return hash.toString(16);
 }

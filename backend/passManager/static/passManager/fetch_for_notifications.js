@@ -53,7 +53,7 @@ fetch("http://127.0.0.1:8000/notificationslist", {
             usernameSpan.style.color = '#ffe66b';
             usernameSpan.textContent = 'Username: ';
             const usernameLink = document.createElement('a');
-            usernameLink.href = element.domain;
+            usernameLink.href = "#";
             usernameLink.textContent = element.username;
             usernameParagraph.appendChild(usernameSpan);
             usernameParagraph.appendChild(usernameLink);
@@ -63,7 +63,7 @@ fetch("http://127.0.0.1:8000/notificationslist", {
             domainSpan.style.color = '#ffe66b';
             domainSpan.textContent = 'Domain: ';
             const domainLink = document.createElement('a');
-            domainLink.href = element.domain;
+            domainLink.href = "#";
             domainLink.textContent = element.domain;
             domainParagraph.appendChild(domainSpan);
             domainParagraph.appendChild(domainLink);

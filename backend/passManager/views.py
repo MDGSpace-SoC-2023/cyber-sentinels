@@ -5,6 +5,8 @@ from .serializers import *
 from django.db.models import Count
 from datetime import timedelta
 from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import update_session_auth_hash
@@ -17,6 +19,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.response import Response
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.fernet import Fernet
@@ -252,29 +255,6 @@ class PasswordListView(generics.ListAPIView):
             return instances_with_same_encrypted_password
 
 
-class PasswordUsageListView(generics.RetrieveAPIView):
-    serializer_class = PasswordSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    lookup_field = "pk"
-
-    def get_queryset(self):
-        user = self.request.user
-        try:
-            vault = PasswordVault.objects.get(user=user)
-        except:
-            return Password.objects.none()
-        salt = MasterHash.objects.get(user=user).salt
-        key = generate_key(settings.SECRET_KEY, salt=salt)
-        domains = Domain.objects.filter(vault=vault)
-        queryset = Password.objects.filter(domain__in=domains)
-        for instance in queryset:
-            instance.encrypted_password = decrypt_password(
-                instance.encrypted_password, key
-            )
-        return queryset
-
-
 class PasswordRetrieveView(generics.RetrieveAPIView):
     serializer_class = PasswordSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -285,17 +265,20 @@ class PasswordRetrieveView(generics.RetrieveAPIView):
         user = self.request.user
         try:
             vault = PasswordVault.objects.get(user=user)
-        except:
+        except PasswordVault.DoesNotExist:
             return Password.objects.none()
         domains = Domain.objects.filter(vault=vault)
         queryset = Password.objects.filter(domain__in=domains)
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = self.request.user
         salt = MasterHash.objects.get(user=user).salt
         key = generate_key(settings.SECRET_KEY, salt=salt)
-        for instance in queryset:
-            instance.encrypted_password = decrypt_password(
-                instance.encrypted_password, key
-            )
-        return queryset
+        instance.encrypted_password = decrypt_password(instance.encrypted_password, key)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class PasswordCreateView(generics.CreateAPIView):
@@ -363,6 +346,15 @@ class PasswordUpdateView(generics.RetrieveUpdateAPIView):
                 instance.encrypted_password, key
             )
         return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = self.request.user
+        salt = MasterHash.objects.get(user=user).salt
+        key = generate_key(settings.SECRET_KEY, salt=salt)
+        instance.encrypted_password = decrypt_password(instance.encrypted_password, key)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def perform_update(self, serializer):
         user = self.request.user

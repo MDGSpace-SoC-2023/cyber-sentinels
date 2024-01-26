@@ -17,6 +17,16 @@ body {
   font-family: 'Silkscreen', sans-serif;
 }
 
+#customText{
+  flex: 1;
+  padding: 8px;
+  border-radius: 3px;
+  background-color: #555;
+  color: #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
 .popup-container {
   width: 400px;
   transform: scale(1.05);

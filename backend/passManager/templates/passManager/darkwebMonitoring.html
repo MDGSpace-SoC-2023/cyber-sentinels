@@ -55,7 +55,7 @@ Dark Web Monitoring
                     </div>
                 </label>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="device">Device:</label>
                 <label class="toggler-wrapper style-7" for="device">
                     <input type="checkbox" id="device" name="device" />
@@ -63,10 +63,16 @@ Dark Web Monitoring
                         <div class="toggler-knob"></div>
                     </div>
                 </label>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="customText">Custom:</label>
-                <input type="text" id="customText" name="customText" />
+                <!-- <input type="text" id="customText" name="customText" /> -->
+                <select id="customText" name="customText">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="School">School</option>
+                    <option value="Others">Others</option>
+                  </select>
             </div>
             <div class="form-buttons">
                 <button class="cancel-button" id="cancelButton">Cancel</button>
