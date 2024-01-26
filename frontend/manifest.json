@@ -4,16 +4,18 @@
   "description": "BitSafe is a password manager extension that keeps your passwords secure while offering easy access whenever you need them.",
   "version": "1.0",
   "action": {
-    "default_popup": "templates/popup/listview.html"
+    "default_popup": "templates/popup/popup.html"
   },
-  "permissions": [
-    "identity", 
-    "storage", 
-    "activeTab",
-    "http://*/",
-    "https://*/"
-  ],
+  "permissions": ["identity", "storage", "activeTab", "tabs", "*://*/*", "https://www.instagram.com/*", "http://127.0.0.1:8000/*"],
   "background": {
     "service_worker": "bs.js"
-  }
+    
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["cs.js", "crypto-js.min.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

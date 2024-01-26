@@ -28,7 +28,6 @@ SECRET_KEY = "django-insecure-g*ouaf@wg90d_uuzu_pmkmwvh%!ov326=(=kb*!ek*x4vr)t8#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = "/auth/"
 LOGIN_URL = "/auth/"
@@ -74,13 +73,19 @@ MIDDLEWARE = [
 #     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
 #     "http://*"
 # ]
-
-CORS_ALLOWED_ORIGINS = [
+CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = [
     "http://*",
-    "http://127.0.0.1:8000",
-    "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
+    "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl"
 ]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://*",
+#     "http://127.0.0.1:8000",
+#     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
+#     # "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl/*",
+# ]
 
+ALLOWED_HOSTS = ["*", "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl", "http://*"]
 
 ROOT_URLCONF = "BitSafe.urls"
 

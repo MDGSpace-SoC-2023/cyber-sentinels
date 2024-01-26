@@ -23,6 +23,8 @@ from rest_framework.response import Response
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.fernet import Fernet
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 
 def generate_key(secret, salt):
@@ -283,8 +285,16 @@ class PasswordRetrieveView(generics.RetrieveAPIView):
 
 class PasswordCreateView(generics.CreateAPIView):
     serializer_class = PasswordSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get_authentication_classes(self):
+        if "Authorization" in self.request.headers:
+            auth_header = self.request.headers["Authorization"]
+            if auth_header.startswith("Token "):
+                return [TokenAuthentication]
+        elif "sessionid" in self.request.COOKIES:
+            return [SessionAuthentication]
+        return super().get_authentication_classes()
 
     def get_queryset(self):
         user = self.request.user
@@ -304,6 +314,9 @@ class PasswordCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
+        print(self.request.data)
+        print(self.request.headers)
+        print(self.request)
         domain_name = self.request.data.get("domain_name", "")
         vault, vault_created = PasswordVault.objects.get_or_create(user=user)
         domain, domain_created = Domain.objects.get_or_create(
@@ -327,8 +340,16 @@ class PasswordCreateView(generics.CreateAPIView):
 
 class PasswordUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = PasswordSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get_authentication_classes(self):
+        if "Authorization" in self.request.headers:
+            auth_header = self.request.headers["Authorization"]
+            if auth_header.startswith("Token "):
+                return [TokenAuthentication]
+        elif "sessionid" in self.request.COOKIES:
+            return [SessionAuthentication]
+        return super().get_authentication_classes()
     lookup_field = "pk"
 
     def get_queryset(self):
