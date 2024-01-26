@@ -1,44 +1,44 @@
 {% extends "passManager/base.html" %}
 {% load static %}
 {% block title %}
-Devices
+  Devices
 {% endblock title %}
 {% block script %}
-<link rel="stylesheet" href="{% static 'passManager/devices.css' %}" />
+  <link rel="stylesheet" href="{% static 'passManager/devices.css' %}" />
 {% endblock script %}
 {% block content %}
-<div class="heading">
-  <h2>DEVICES</h2>
-</div>
-<div class="Main">
-  <button class="Arrow">&#706;</button>
-  <table class="tbl">
-    <tr>
-      <th>Date and Time</th>
-      <th>Browser</th>
-      <th>OS</th>
-      <th></th>
-    </tr>
-    {% for instance in activeLogin %}
-    <tr>
-      <td>{{ instance.loginTime }}</td>
-      <td>
-        {{ instance.browser }}
-        {% if instance.type %}Extension{% endif %}
-      </td>
-      <td>{{ instance.os }}</td>
-      <td>
-        <form method="POST" action="{% url 'devices' %}">
-          {% csrf_token %}
-          <input type="hidden" name="uid" value="{{ instance.id }}">
-          <button class="button" id="Selector" role="button" type="submit">Terminate</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
+  <div class="heading">
+    <h2>DEVICES</h2>
+  </div>
+  <div class="Main">
+    <button class="Arrow">&#706;</button>
+    <table class="tbl">
+      <tr>
+        <th>Date and Time</th>
+        <th>Browser</th>
+        <th>OS</th>
+        <th></th>
+      </tr>
+      {% for instance in activeLogin %}
+        <tr>
+          <td>{{ instance.loginTime }}</td>
+          <td>
+            {{ instance.browser }}
+            {% if instance.type %}Extension{% endif %}
+          </td>
+          <td>{{ instance.os }}</td>
+          <td>
+            <form method="POST" action="{% url 'devices' %}">
+              {% csrf_token %}
+              <input type="hidden" name="uid" value="{{ instance.uid }}">
+              <button class="button" id="Selector" role="button" type="submit">Terminate</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock content %}
 {% block fscript %}
-<script src="{% static 'passManager/devices.js'%}"></script>
+  <script src="{% static 'passManager/devices.js'%}"></script>
 {% endblock fscript %}

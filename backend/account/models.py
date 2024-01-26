@@ -13,7 +13,7 @@ class MasterHash(models.Model):
 
 
 class MultiToken(Token):
-    id = models.UUIDField(default=uuid.uuid4, editable=False)
+    uid = models.UUIDField(default=uuid.uuid4, editable=False)
     type = models.BooleanField()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

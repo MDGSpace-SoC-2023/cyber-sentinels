@@ -84,7 +84,7 @@ def devices(request):
 
     if request.method == "POST":
         uid = request.POST.get("uid")
-        MultiToken.objects.filter(id=uid).delete()
+        MultiToken.objects.filter(uid=uid).delete()
     return render(request, "passManager/devices.html", {"activeLogin": queryset})
 
 
@@ -350,6 +350,16 @@ class PasswordUpdateView(generics.RetrieveUpdateAPIView):
         elif "sessionid" in self.request.COOKIES:
             return [SessionAuthentication]
         return super().get_authentication_classes()
+
+    def get_authentication_classes(self):
+        if "Authorization" in self.request.headers:
+            auth_header = self.request.headers["Authorization"]
+            if auth_header.startswith("Token "):
+                return [TokenAuthentication]
+        elif "sessionid" in self.request.COOKIES:
+            return [SessionAuthentication]
+        return super().get_authentication_classes()
+
     lookup_field = "pk"
 
     def get_queryset(self):

@@ -887,7 +887,7 @@ async function updatePassword(event) {
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrfToken,
-      'Authorization': `Token ${token}`,
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify({
       username: username,
@@ -978,7 +978,7 @@ async function createPassword(event) {
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrfToken,
-      'Authorization': `Token ${token}`,
+      Authorization: `Token ${token}`,
     },
     body: JSON.stringify({
       domain_name: domain,
