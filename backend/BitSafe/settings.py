@@ -68,15 +68,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:8000",
-#     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
-#     "http://*"
-# ]
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = [
     "http://*",
-    "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl"
+    "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
+    "chrome-extension://hahidolbpmephflnciplmlilgpimecpc",
 ]
 # CORS_ALLOWED_ORIGINS = [
 #     "http://*",

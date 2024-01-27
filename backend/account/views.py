@@ -21,6 +21,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from django.middleware import csrf as django_csrf
 
 
 @require_GET
@@ -78,10 +79,22 @@ def register_user(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET"])
+def csrf_view(request):
+    csrf_token = django_csrf.get_token(request)
+    print(csrf_token)
+    return JsonResponse({"csrf": csrf_token})
+
+
 @api_view(["POST"])
 def user_login(request):
-    if request.user.is_authenticated:
-        return redirect("home")
+    # print(request.headers)
+    # csrf_token = csrf.get_token(request)
+    # response = HttpResponse("Response content")
+    # response["X-CSRFToken"] = csrf_token
+    # print(request.headers)
+    # if request.user.is_authenticated:
+    #     return redirect("home")
     if request.method == "POST":
         username = request.data.get("username")
         password = request.data.get("password")

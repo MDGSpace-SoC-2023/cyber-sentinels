@@ -9,6 +9,7 @@ urlpatterns = [
     path("login/", user_login, name="login"),
     path("logout/", user_logout, name="logout"),
     path("verify/", verify, name="verify"),
+    path("csrf/", csrf_view, name="csrf"),
     path("master/", get_master_password),
     path(
         "password-reset/",
