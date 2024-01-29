@@ -239,7 +239,18 @@ async function handleMessage(request, sender, sendResponse) {
       username: request.data.username,
       password: request.data.password,
     };
-
+    var response1=await fetch("http://127.0.0.1:8000/auth/capture/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    });
+    var data1 = await response1.json();
+    console.log(data1);
+    if(!data1.capture){
+      return;
+    }
     try {
       backendData = await fetchDataFromBackend();
 
