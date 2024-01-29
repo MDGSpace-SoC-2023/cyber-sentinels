@@ -202,8 +202,6 @@ function onDOMContentLoaded() {
         },
       });
     });
-  } else {
-    console.error("Login button not found.");
   }
 }
 

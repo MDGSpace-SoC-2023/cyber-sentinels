@@ -207,8 +207,6 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
           },
           args: [index, username, password],
         });
-      } else {
-        console.error("No active tabs found.");
       }
     });
   }

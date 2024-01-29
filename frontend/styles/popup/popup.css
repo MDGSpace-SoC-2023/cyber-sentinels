@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.logo {
+    width: 25px;
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
 .popup-container {
     width: 400px;
     font-family: Arial, sans-serif;
@@ -70,15 +77,20 @@
     margin-bottom: 8%;
 }
 
-
-
-
-
 .popup-container .navbar .title {
     margin: 0;
     color: #fff;
     font-family: 'Silkscreen', sans-serif;
     font-size: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.popup-container .navbar .title p {
+    color: #fff;
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 30px;
+    margin-left: -5px;
 }
 
 
