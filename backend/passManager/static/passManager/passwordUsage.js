@@ -1,4 +1,5 @@
 token = localStorage.getItem.token;
+var cnt=0;
 async function fetchpassuge() {
     var response = await fetch("http://127.0.0.1:8000/view/", {
         method: "GET",
@@ -56,6 +57,7 @@ async function fetchpassuge() {
     passwordMap.forEach((passwordInfo, password) => {
         console.log(passwordInfo);
         if (passwordInfo.count > 1) {
+            cnt++;
             var button = document.createElement("button");
             button.className = "filterDiv full-width";
             var spanInsidenote = document.createElement("span");
@@ -255,6 +257,13 @@ let scoreToData = (score) => {
     }
 };
 function runRemainingCode() {
+    if(cnt==0){
+        var usr=document.getElementsByClassName("UsrnmeNPasswrds")[0];
+        var text=document.createElement('h3');
+        text.textContent="No password is being reused.";
+        text.classList.add("head");
+        usr.appendChild(text);
+    }
     const showBtn = document.querySelectorAll(".editbtn");
     const modalBox = document.querySelector(".modal-box");
     const overlay = document.querySelector(".overlay");

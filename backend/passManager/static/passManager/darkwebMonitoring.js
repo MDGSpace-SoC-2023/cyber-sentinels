@@ -18,15 +18,12 @@ collapsibles[0].addEventListener("click", function () {
     mainSection.classList.toggle("full-width", menu.classList.contains("hidden"));
     var Heading = document.getElementsByClassName("heading")[0];
     var arrow = document.getElementsByClassName("Arrow")[0];
-    var head = document.getElementsByClassName("head")[0];
     if (menu.classList.contains('hidden')) {
         arrow.innerHTML = "&#707;";
         Heading.style.left = "2%";
-        head.style.marginLeft = "25%";
     } else {
         arrow.innerHTML = "&#706;";
         Heading.style.left = "22%";
-        head.style.marginLeft = "23%";
     }
 });
 function search_Domain() {
@@ -88,6 +85,7 @@ async function checkBreaches(jsonData) {
             Authorization: `Token ${token}`,
         },
     });
+    var cnt=0;
     var data = await response.json();
     hashedMasterPassword = data.hashedMasterPassword;
     salt = data.salt;
@@ -99,6 +97,7 @@ async function checkBreaches(jsonData) {
         const password = decryptedData;
         var result = await checkPassword(password);
         if (result) {
+            cnt=cnt+1;
             var divElement = document.createElement('div');
             divElement.classList.add('drkwebntfcation');
             var usernameParagraph = document.createElement('p');
@@ -152,6 +151,14 @@ async function checkBreaches(jsonData) {
             var divCont = document.getElementsByClassName("drkwebntfcations")[0];
             divCont.appendChild(divElement);
         }
+    }
+    var head=document.getElementsByClassName("head")[0];
+    if(cnt==0){
+        head.textContent="All of your passwords are safe.";
+        head.style.color="#555";
+        head.style.top="30%";
+    }else{
+        head.textContent="The following usernames have their passwords breached."
     }
     runremaining();
 }

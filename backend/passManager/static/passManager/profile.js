@@ -26,3 +26,20 @@ account.addEventListener("click", function () {
         }
     }
 });
+var autotlgout = document.getElementById("autolgout");
+autotlgout.addEventListener("change", function () {
+    var timer = document.getElementById("timer");
+    if (autotlgout.checked) {
+        timer.style.display = "block";
+    } else {
+        timer.style.display = "none";
+    }
+});
+window.addEventListener("DOMContentLoaded", function () {
+    var timer = document.getElementById("timer");
+    if (autotlgout.checked) {
+        timer.style.display = "block";
+    } else {
+        timer.style.display = "none";
+    }
+});

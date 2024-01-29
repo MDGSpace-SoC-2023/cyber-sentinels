@@ -1,4 +1,5 @@
 var token = localStorage.getItem('token');
+var cnt = 0;
 async function fetchdt() {
   var response = await fetch("http://127.0.0.1:8000/auth/master", {
     method: 'GET',
@@ -21,6 +22,7 @@ async function fetchdt() {
   });
   var jsonData = await response2.json();
   jsonData.forEach(function (element) {
+    cnt++;
     var domains = document.getElementsByClassName("filterDiv");
     var z = -1;
     for (var i = 0; i < domains.length; i++) {
@@ -369,6 +371,13 @@ fetchdt();
 //     console.error('Error:', error);
 //   });
 function runremaining() {
+  if (cnt == 0) {
+    var usr = document.getElementsByClassName("UsrnmeNPasswrds")[0];
+    var text = document.createElement('h3');
+    text.textContent = "Please create passwords to view here.";
+    text.classList.add("head");
+    usr.appendChild(text);
+  }
   console.log("runremaining called");
   var coll = document.getElementsByClassName("filterDiv");
   for (var i = 0; i < coll.length; i++) {

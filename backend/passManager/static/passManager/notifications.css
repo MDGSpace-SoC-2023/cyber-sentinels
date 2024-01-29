@@ -350,9 +350,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 1.75%;
 }
 
-
-
-
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -377,4 +374,12 @@ h3 {
 
 .FilterArea label {
     color: #ffe66b;
+}
+
+.head{
+    color: #555;
+    position: relative;
+    text-align:center;
+    top:30%;
+    font-family: "Silkscreen", sans-serif;
 }

@@ -61,24 +61,24 @@ Profile
       {% csrf_token %}
       <div class="settng">
         <label class="checkbox style-d">
-          <input type="checkbox" name="automaticLogout" {% if expiry_not_default %}checked{% endif %} />
+          <input type="checkbox" name="automaticLogout" id="autolgout" {% if expiry_not_default %}checked{% endif %} />
           <div class="checkbox__checkmark"></div>
         </label>
         <p style="font-size: 25px; margin-left: 5%">
           <b>Automatic Logout</b>
         </p>
         <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
-          Choose how long the session should remain logged in. Enter in minutes
+          Choose how long the session should remain logged in. <br>Enter in minutes.
         </p>
-        <input type="number" name="time" value="{{ expiry }}">
+        <input type="number" id="timer" name="time" value="{{ expiry }}">
       </div>
       <div class="settng">
         <label class="checkbox style-d">
-          <input type="checkbox" name="autoCapture" {% if not auto_capture %}checked{% endif %} />
+          <input type="checkbox" name="autoCapture" id="autocap" {% if not auto_capture %}checked{% endif %} />
           <div class="checkbox__checkmark"></div>
         </label>
         <p style="font-size: 25px; margin-left: 5%">
-          <b>Prevent Browser from Prompting to Save Passwords</b>
+          <b>Prevent Browser from Saving Passwords</b>
         </p>
         <p style="word-wrap: break-word; font-family: 'Opensans', sans-serif">
           Select this option if you want to refrain the browser from saving

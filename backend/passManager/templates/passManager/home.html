@@ -1,91 +1,76 @@
 {% extends "passManager/base.html" %}
 {% load static %}
 {% block title %}
-  Dashboard - BitSafe
+Dashboard - BitSafe
 {% endblock title %}
 {% block script %}
-  <link rel="stylesheet" href="{% static 'passManager/home.css' %}" />
+<link rel="stylesheet" href="{% static 'passManager/home.css' %}" />
 {% endblock script %}
 {% block content %}
-  <div class="heading">
-    <h2>DASHBOARD</h2>
-  </div>
-  <div class="Main">
-    <button class="Arrow">&#706;</button>
-    <span class="material-symbols-outlined"
-          id="Filter"
-          style="font-size: 30px;
+<div class="heading">
+  <h2>DASHBOARD</h2>
+</div>
+<div class="Main">
+  <button class="Arrow">&#706;</button>
+  <span class="material-symbols-outlined" id="Filter" style="font-size: 30px;
                  margin-top: 1.15%">menu</span>
-    <div class="FilterOptions">
-      <button id="close" onclick="Filters()">&#10005;</button>
-      <button class="btn active" onclick="filterSelection('all')">All Passwords</button>
-      <button class="btn" onclick="filterSelection('OnDev')">On Device</button>
-      <button class="btn" onclick="filterSelection('ClouSync')">Cloud Synced</button>
-    </div>
-    <div class="search-container">
-      <input type="text"
-             id="searchbar"
-             onkeyup="search_Domain()"
-             name="search"
-             placeholder="Search..."
-             class="search-input" />
-      <div class="pre-hover-placeholder">Search something</div>
-    </div>
-    <button class="button" id="Selector" role="button">Select</button>
-    <button id="Adder" class="button">Add</button>
-    <div class="UsrnmeNPasswrds"></div>
-    <div class="Deletebuttons">
-      <form class="formdelete">
-        {% csrf_token %}
-        <button class="buttonDel" id="Delete" role="button" type="submit">Delete</button>
-      </form>
-      <button class="buttonCanc" id="Cancel" role="button">Cancel</button>
-    </div>
+  <div class="FilterOptions">
+    <button id="close" onclick="Filters()">&#10005;</button>
+    <button class="btn active" onclick="filterSelection('all')">All Passwords</button>
+    <button class="btn" onclick="filterSelection('OnDev')">On Device</button>
+    <button class="btn" onclick="filterSelection('ClouSync')">Cloud Synced</button>
   </div>
-  <span class="overlay"></span>
-  <div class="modal-box" style="display: none">
-    <div class="popup-container">
-      <p style="display: none" class="updateid">-1</p>
-      <form class="form" action="#">
-        {% csrf_token %}
-        <h2>Edit Credentials</h2>
-        <div class="form-group form-group-domain">
-          <label for="domain">Domain:</label>
-          <input type="text" id="domain" name="domain" value="example.com" disabled />
+  <div class="search-container">
+    <input type="text" id="searchbar" onkeyup="search_Domain()" name="search" placeholder="Search..."
+      class="search-input" />
+    <div class="pre-hover-placeholder">Search something</div>
+  </div>
+  <button class="button" id="Selector" role="button">Select</button>
+  <button id="Adder" class="button">Add</button>
+  <div class="UsrnmeNPasswrds"></div>
+  <div class="Deletebuttons">
+    <form class="formdelete">
+      {% csrf_token %}
+      <button class="buttonDel" id="Delete" role="button" type="submit">Delete</button>
+    </form>
+    <button class="buttonCanc" id="Cancel" role="button">Cancel</button>
+  </div>
+</div>
+<span class="overlay"></span>
+<div class="modal-box" style="display: none">
+  <div class="popup-container">
+    <p style="display: none" class="updateid">-1</p>
+    <form class="form" action="#">
+      {% csrf_token %}
+      <h2>Edit Credentials</h2>
+      <div class="form-group form-group-domain">
+        <label for="domain">Domain:</label>
+        <input type="text" id="domain" name="domain" value="example.com" disabled />
+      </div>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="example@example" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <div class="password-container">
+          <input type="password" id="passwordField" name="password" value="example@123" required maxlength="20" />
+          <span class="material-symbols-outlined eye-icon eye-closed"
+            id="togglePasswordVisibilityClosed">visibility</span>
+          <span class="material-symbols-outlined eye-icon eye-open"
+            id="togglePasswordVisibilityOpen">visibility_off</span>
         </div>
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text"
-                 id="username"
-                 name="username"
-                 value="example@example"
-                 required />
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <div class="password-container">
-            <input type="password"
-                   id="passwordField"
-                   name="password"
-                   value="example@123"
-                   required
-                   maxlength="20" />
-            <span class="material-symbols-outlined eye-icon eye-closed"
-                  id="togglePasswordVisibilityClosed">visibility</span>
-            <span class="material-symbols-outlined eye-icon eye-open"
-                  id="togglePasswordVisibilityOpen">visibility_off</span>
+      </div>
+      <div class="form-group">
+        <label for="sync">Sync:</label>
+        <label class="toggler-wrapper style-7" for="sync">
+          <input type="checkbox" id="sync" name="sync" />
+          <div class="toggler-slider">
+            <div class="toggler-knob"></div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="sync">Sync:</label>
-          <label class="toggler-wrapper style-7" for="sync">
-            <input type="checkbox" id="sync" name="sync" />
-            <div class="toggler-slider">
-              <div class="toggler-knob"></div>
-            </div>
-          </label>
-        </div>
-        <!-- <div class="form-group">
+        </label>
+      </div>
+      <!-- <div class="form-group">
           <label for="device">Device:</label>
           <label class="toggler-wrapper style-7" for="device">
             <input type="checkbox" id="device" name="device" />
@@ -94,59 +79,56 @@
             </div>
           </label>
         </div> -->
-        <div class="form-group">
-          <label for="customText">Custom:</label>
-          <!-- <input type="text" id="customText" name="customText" /> -->
-          <select id="customText" name="customText">
-            <option value="Personal">Personal</option>
-            <option value="Work">Work</option>
-            <option value="School">School</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        <div class="form-buttons">
-          <button class="cancel-button" id="cancelButton">Cancel</button>
-          <button class="save-button"
-                  id="updatebtn"
-                  type="submit"
-                  onclick="updatePassword(event)">Update</button>
-        </div>
-      </form>
-    </div>
+      <div class="form-group">
+        <label for="customText">Custom:</label>
+        <!-- <input type="text" id="customText" name="customText" /> -->
+        <select id="customText" name="customText">
+          <option value="Personal">Personal</option>
+          <option value="Work">Work</option>
+          <option value="School">School</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+      <div class="form-buttons">
+        <button class="cancel-button" id="cancelButton">Cancel</button>
+        <button class="save-button" id="updatebtn" type="submit" onclick="updatePassword(event)">Update</button>
+      </div>
+    </form>
   </div>
-  <div class="addcred">
-    <div class="popup-container">
-      <form class="form">
-        {% csrf_token %}
-        <h2>Add Credentials</h2>
-        <div class="form-group form-group-domain">
-          <label for="domain1">Domain:</label>
-          <input type="text" id="domain1" name="domain" />
+</div>
+<div class="addcred">
+  <div class="popup-container">
+    <form class="form">
+      {% csrf_token %}
+      <h2>Add Credentials</h2>
+      <div class="form-group form-group-domain">
+        <label for="domain1">Domain:</label>
+        <input type="text" id="domain1" name="domain" />
+      </div>
+      <div class="form-group">
+        <label for="username1">Username:</label>
+        <input type="text" id="username1" name="username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <div class="password-container">
+          <input type="password" id="passwordField1" name="password" maxlength="20" />
+          <span class="material-symbols-outlined eye-icon eye-closed"
+            id="togglePasswordVisibilityClosed1">visibility</span>
+          <span class="material-symbols-outlined eye-icon eye-open"
+            id="togglePasswordVisibilityOpen1">visibility_off</span>
         </div>
-        <div class="form-group">
-          <label for="username1">Username:</label>
-          <input type="text" id="username1" name="username" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <div class="password-container">
-            <input type="password" id="passwordField1" name="password" maxlength="20" />
-            <span class="material-symbols-outlined eye-icon eye-closed"
-                  id="togglePasswordVisibilityClosed1">visibility</span>
-            <span class="material-symbols-outlined eye-icon eye-open"
-                  id="togglePasswordVisibilityOpen1">visibility_off</span>
+      </div>
+      <div class="form-group">
+        <label for="sync">Sync:</label>
+        <label class="toggler-wrapper style-7" for="sync1">
+          <input type="checkbox" id="sync1" name="sync" />
+          <div class="toggler-slider">
+            <div class="toggler-knob"></div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="sync">Sync:</label>
-          <label class="toggler-wrapper style-7" for="sync1">
-            <input type="checkbox" id="sync1" name="sync" />
-            <div class="toggler-slider">
-              <div class="toggler-knob"></div>
-            </div>
-          </label>
-        </div>
-        <!-- <div class="form-group">
+        </label>
+      </div>
+      <!-- <div class="form-group">
           <label for="device">Device:</label>
           <label class="toggler-wrapper style-7" for="device1">
             <input type="checkbox" id="device1" name="device" />
@@ -155,29 +137,27 @@
             </div>
           </label>
 </div> -->
-        <div class="form-group">
-          <label for="customText1">Tag:</label>
-          <!-- <input type="text" id="customText1" name="customText" /> -->
-          <select id="customText1" name="customText">
-            <option value="Personal">Personal</option>
-            <option value="Work">Work</option>
-            <option value="School">School</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <div class="errorListCreate"></div>
-        </div>
-        <div class="form-buttons">
-          <button class="cancel-button" id="cancelButton1">Cancel</button>
-          <button class="save-button" type="submit" onclick="createPassword(event)">Save</button>
-        </div>
-      </form>
-    </div>
-    <!-- if no passwords,a message should be displayed -->
-    <!-- search for username too -->
+      <div class="form-group">
+        <label for="customText1">Tag:</label>
+        <!-- <input type="text" id="customText1" name="customText" /> -->
+        <select id="customText1" name="customText">
+          <option value="Personal">Personal</option>
+          <option value="Work">Work</option>
+          <option value="School">School</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="errorListCreate"></div>
+      </div>
+      <div class="form-buttons">
+        <button class="cancel-button" id="cancelButton1">Cancel</button>
+        <button class="save-button" type="submit" onclick="createPassword(event)">Save</button>
+      </div>
+    </form>
   </div>
+</div>
 {% endblock content %}
 {% block fscript %}
-  <script defer src="{% static 'passManager/home.js' %}"></script>
+<script defer src="{% static 'passManager/home.js' %}"></script>
 {% endblock fscript %}

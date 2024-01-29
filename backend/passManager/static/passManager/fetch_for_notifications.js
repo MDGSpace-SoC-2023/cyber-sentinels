@@ -1,4 +1,5 @@
 token = localStorage.getItem.token;
+var cnt=0;
 async function fetchnoti() {
     var response = await fetch("http://127.0.0.1:8000/notificationslist", {
         method: "GET",
@@ -8,7 +9,8 @@ async function fetchnoti() {
         },
     });
     var jsonData = await response.json();
-    jsonData.forEach(element => {
+    for(const element of jsonData){
+        cnt++;
         var notifications = document.getElementsByClassName("nofctions")[0];
         const notificationContainer = document.createElement('div');
         notificationContainer.classList.add('ntfcation');
@@ -80,8 +82,14 @@ async function fetchnoti() {
         messageDiv.appendChild(textParagraph);
         notificationContainer.appendChild(messageDiv);
         notifications.insertBefore(notificationContainer, notifications.firstChild);
-    });
-
+    }
+    if(cnt==0){
+        var ntfcation=document.getElementsByClassName("nofctions")[0];
+        var text=document.createElement('h3');
+        text.textContent="No notifications.";
+        text.classList.add("head");
+        ntfcation.appendChild(text);
+    }
 }
 fetchnoti();
 // fetch("http://127.0.0.1:8000/notificationslist", {

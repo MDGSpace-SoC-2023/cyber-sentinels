@@ -975,3 +975,11 @@ input#passwordField1[type="password"] {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
 }
+
+.head{
+    color: #555;
+    position: relative;
+    text-align:center;
+    top:30%;
+    font-family: "Silkscreen", sans-serif;
+}
