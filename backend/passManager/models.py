@@ -51,4 +51,4 @@ class Notification(models.Model):
     tag = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.pk_field} - {self.status}"
+        return f"{self.vault} - {self.status}"

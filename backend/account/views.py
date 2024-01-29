@@ -73,7 +73,9 @@ def register_user(request):
         if serializer.is_valid():
             user = serializer.save()
             ProfileSettings.objects.create(user=user)
-            hash = make_password(generate(20), salt=generate(20))
+            password = generate(20)
+            salt = generate(20).replace("$", "")
+            hash = make_password(password, salt=salt)
             MasterHash.objects.create(user=user, hash=hash, salt=generate(20))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

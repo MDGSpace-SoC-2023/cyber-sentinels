@@ -992,6 +992,14 @@ async function createPassword(event) {
   try {
     if (!response2.ok) {
       return response2.json().then(errors => {
+        var errorDiv = document.querySelector('.errorListCreate');
+        errorDiv.innerHTML = '';
+        if (errors.length > 0) {
+          var p = document.createElement('p');
+          p.textContent = errors[0];
+          p.style.color = 'red';
+          errorDiv.appendChild(p);
+        }
         throw new Error(JSON.stringify(errors));
       });
     }

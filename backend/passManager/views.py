@@ -314,14 +314,20 @@ class PasswordCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
-        print(self.request.data)
-        print(self.request.headers)
-        print(self.request)
         domain_name = self.request.data.get("domain_name", "")
+        user_name = self.request.data.get("username")
         vault, vault_created = PasswordVault.objects.get_or_create(user=user)
         domain, domain_created = Domain.objects.get_or_create(
             vault=vault, name=domain_name
         )
+        if user_name:
+            check = Password.objects.filter(domain=domain, username=user_name)
+            if check.exists():
+                raise serializers.ValidationError(
+                    "Username already exists for this domain."
+                )
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         salt = MasterHash.objects.get(user=user).salt
         key = generate_key(settings.SECRET_KEY, salt=salt)
         password = serializer.validated_data.get("encrypted_password", "")

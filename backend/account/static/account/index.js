@@ -37,11 +37,6 @@ function clearRegisterFormMessages() {
       inputElement.classList.remove('error');
     }
   });
-
-  const messagecontainerRegister = document.getElementById('messagecontainerRegister');
-  if (messagecontainerRegister) {
-    messagecontainerRegister.innerHTML = '';
-  }
 }
 
 function registerUser(event) {
@@ -52,7 +47,6 @@ function registerUser(event) {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password1').value;
   const confirmPassword = document.getElementById('password2').value;
-  const messagecontainerRegister = document.getElementById('messagecontainerRegister');
   const errorlistRegister = document.getElementById('errorlistRegister');
 
   if (password != confirmPassword) {
@@ -112,13 +106,18 @@ function registerUser(event) {
       return response.json();
     })
     .then(response => {
-      console.log('Registration Initiated:', response);
-      clearRegisterFormMessages();
-      const successMessage = document.createElement('span');
+      const successMessage = document.createElement('li');
       successMessage.textContent = 'Registration Successful!, Please Login';
       successMessage.style.color = 'green';
-      messagecontainerRegister.appendChild(successMessage);
+      errorlistRegister.appendChild(successMessage);
+      setTimeout(() => {
+        if (errorlistRegister.contains(successMessage)) {
+          errorlistRegister.removeChild(successMessage);
+        }
+      }, 50000);
     })
+
+
     .catch(error => {
       console.error('Registration failed:', error);
       clearRegisterFormMessages();
