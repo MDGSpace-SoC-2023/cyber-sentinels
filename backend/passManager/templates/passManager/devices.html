@@ -1,11 +1,11 @@
-{% extends "passManager/base.html" %}
+{% extends 'passManager/base.html' %}
 {% load static %}
 {% block title %}
   Devices
-{% endblock title %}
+{% endblock %}
 {% block script %}
   <link rel="stylesheet" href="{% static 'passManager/devices.css' %}" />
-{% endblock script %}
+{% endblock %}
 {% block content %}
   <div class="heading">
     <h2>DEVICES</h2>
@@ -28,17 +28,21 @@
           </td>
           <td>{{ instance.os }}</td>
           <td>
-            <form method="POST" action="{% url 'devices' %}">
-              {% csrf_token %}
-              <input type="hidden" name="uid" value="{{ instance.uid }}">
-              <button class="button" id="Selector" role="button" type="submit">Terminate</button>
-            </form>
+            {% if not instance.type %}
+              <form method="POST" action="{% url 'devices' %}">
+                {% csrf_token %}
+                <input type="hidden" name="uid" value="{{ instance.uid }}" />
+                <button class="button" id="Selector" role="button" type="submit">Terminate</button>
+              </form>
+            {% else %}
+              Please Logout from extension
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
     </table>
   </div>
-{% endblock content %}
+{% endblock %}
 {% block fscript %}
-  <script src="{% static 'passManager/devices.js'%}"></script>
-{% endblock fscript %}
+  <script src="{% static 'passManager/devices.js' %}"></script>
+{% endblock %}
