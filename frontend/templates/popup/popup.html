@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Password Manager Extension</title>
     <script src="../../js/popup/jquery.js"></script>
-    <link rel="stylesheet" href="../../styles/popup/popup.css">
-</head>
+    <link rel="stylesheet" href="../../styles/popup/popup.css" />
+  </head>
 
-<body>
+  <body>
     <div class="popup-container">
-        <div class="navbar">
-            <div class="title">
-                <p>BitSafe</p>
-            </div>
+      <div class="navbar">
+        <div class="title">
+          <p>BitSafe</p>
         </div>
+      </div>
 
-        <div class="content">
-            <h1 id="welcome">Welcome to BitSafe</h1>
-            <p id="welbelow">Your password manager extension!</p>
-            <div class="options">
-                <div class="option">
-                    <h3 id="passgtxt">Password Generator</h3>
-                    <p id="welbelow">Strengthen Your Security. <br>Try our Password Generator Now!</p>
-                    <button id="passwordGeneratorBtn">Generate Password</button>
-                </div>
-                <div class="option">
-                    <h3 id="signintxt">Sign In</h3>
-                    <p id="welbelow">Authenticate Your Digital Identity</p>
-                    <button id="signInBtn">Sign In</button>
-                    <p style="font-size: small;">New Account? <a href="http://127.0.0.1:8000/auth/" target="_blank">Register here</a></p>                </div>
-            </div>
-            <p>Learn more at <a href="https://yoursite.com">BitSafe</a></p>
+      <div class="content">
+        <h1 id="welcome">Welcome to BitSafe</h1>
+        <p id="welbelow">Your password manager extension!</p>
+        <div class="options">
+          <div class="option">
+            <h3 id="passgtxt">Password Generator</h3>
+            <p id="welbelow">
+              Strengthen Your Security. <br />Try our Password Generator Now!
+            </p>
+            <button id="passwordGeneratorBtn">Generate Password</button>
+          </div>
+          <div class="option">
+            <h3 id="signintxt">Sign In</h3>
+            <p id="welbelow">Authenticate Your Digital Identity</p>
+            <button id="signInBtn">Sign In</button>
+            <p style="font-size: small">
+              New Account?
+              <a href="http://127.0.0.1:8000/auth/" target="_blank"
+                >Register here</a
+              >
+            </p>
+          </div>
         </div>
+        <p>Learn more at <a href="https://yoursite.com">BitSafe</a></p>
+      </div>
     </div>
 
     <script src="../../js/popup/popup.js"></script>
-</body>
-
+  </body>
 </html>

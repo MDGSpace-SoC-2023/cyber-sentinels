@@ -4,11 +4,8 @@ $(function () {
 
     var username = $("#login__username").val();
     var password = $("#login__password").val();
-
-    authenticateUserAPI(username, password)
+    authenticateUserAPI(username, password, true, "asdf", "asdf")
       .then(function (response) {
-        console.log("API Response:", response);
-
         if (response && response.token) {
           localStorage.setItem("token", response.token);
           window.location.href = "basic.html";
@@ -23,22 +20,38 @@ $(function () {
   });
 });
 
-function authenticateUserAPI(username, password) {
-  var apiEndpoint = "http://127.0.01:8000/auth/login/";
+function authenticateUserAPI(username, password, loginType, browser, os) {
+  var csrfEndpoint = "http://127.0.0.1:8000/auth/csrf/";
+  var apiEndpoint = "http://127.0.0.1:8000/auth/login/";
 
-  return fetch(apiEndpoint, {
-    method: "POST",
+  return fetch(csrfEndpoint, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }),
   })
     .then((response) => {
-      console.log("HTTP Status Code:", response.status);
+      if (!response.ok) {
+        throw new Error("Failed to fetch CSRF token");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      var csrfToken = data.csrf;
+
+      return fetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({ username, password, loginType, os, browser }),
+      });
+    })
+    .then((response) => {
       return response.json();
     })
     .then((response) => {
-      console.log("API Response:", response);
       return response;
     })
     .catch((error) => {

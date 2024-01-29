@@ -4,7 +4,6 @@ var popupUrl = token
   ? "../../templates/popup/basic.html"
   : "../../templates/popup/popup.html";
 
-console.log("popupUrl:", popupUrl);
 fetch(chrome.runtime.getURL(popupUrl))
   .then((response) => response.text())
   .then((html) => {
@@ -15,6 +14,8 @@ fetch(chrome.runtime.getURL(popupUrl))
         loadScript("../../js/popup/basic.js");
       } else if (popupUrl === "../../templates/popup/autocap.html") {
         loadScript("../../js/popup/autocap.js");
+      } else if (popupUrl === "../../templates/popup/listview.html") {
+        loadScript("../../js/popup/listview.js");
       } else {
         loadScript("../../js/popup/popup.js");
       }

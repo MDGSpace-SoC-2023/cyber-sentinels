@@ -150,11 +150,7 @@ const SUBMIT_FIELDS = {
 };
 
 function autofillCredentials(username, password) {
-  console.log("autofillCredentials called");
-  console.log(document.getElementsByTagName("input"));
-  console.log([...document.getElementsByTagName("input")]);
   const allFields = [...document.getElementsByTagName("input")];
-  console.log(allFields);
   allFields.forEach((field) => {
     const lowerCaseName = field.name.toLowerCase();
     const lowerCasePlaceholder = field.placeholder.toLowerCase();
@@ -184,25 +180,11 @@ function autofillCredentials(username, password) {
     }
   });
 }
-console.log("BitSafe_cs.js loaded");
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "backendDataFetched") {
-    const username = message.data[0].username;
-    const password = message.data[0].encrypted_password;
-    console.log("username:", username);
-    console.log("password:", password);
-  }
-});
 
 function onDOMContentLoaded() {
-  console.log("onDOMContentLoaded called");
   var loginButton = document.querySelector(SUBMIT_FIELDS.selectors.join(", "));
-
   if (loginButton) {
-    console.log(loginButton);
-    loginButton.addEventListener("click", function () {
-      console.log("login button clicked");
+    loginButton.addEventListener("click", function (event) {
       const usernameInput = document.querySelector(
         USERNAME_FIELDS.selectors.join(", ")
       );
@@ -211,10 +193,7 @@ function onDOMContentLoaded() {
       );
       const username = usernameInput.value;
       const password = passwordInput.value;
-      console.log("username:", username);
-      console.log("password:", password);
 
-      console.log("createPassword called");
       chrome.runtime.sendMessage({
         type: "credentials",
         data: {
@@ -222,7 +201,6 @@ function onDOMContentLoaded() {
           password: password,
         },
       });
-      console.log("credentials sent to background.js");
     });
   } else {
     console.error("Login button not found.");
@@ -231,11 +209,19 @@ function onDOMContentLoaded() {
 
 const tabUrl = window.location.href;
 
-console.log("Sending tab URL:", tabUrl);
+const hasLoginButton = document.querySelector(
+  SUBMIT_FIELDS.selectors.join(", ")
+);
+const hasPasswordFields = document.querySelector(
+  PASSWORD_FIELDS.selectors.join(", ")
+);
+
 chrome.runtime.sendMessage({
   source: "contentScript",
   action: "tabUrlFetched",
   url: tabUrl,
+  hasLoginButton: hasLoginButton,
+  hasPasswordFields: hasPasswordFields,
 });
 
 onDOMContentLoaded();

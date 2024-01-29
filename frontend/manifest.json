@@ -6,16 +6,29 @@
   "action": {
     "default_popup": "templates/popup/popup.html"
   },
-  "permissions": ["identity", "storage", "activeTab", "tabs", "*://*/*", "https://www.instagram.com/*", "http://127.0.0.1:8000/*"],
+  "permissions": [
+    "identity",
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
   "background": {
     "service_worker": "bs.js"
-    
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["cs.js", "crypto-js.min.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "cs.js",
+        "crypto-js.min.js"
+      ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }

@@ -21,7 +21,8 @@ togglePasswordOpen.addEventListener("click", function () {
 const cancelButton = document.getElementById("cancelButton");
 
 cancelButton.addEventListener("click", function () {
-  window.location.href = "listview.html";
+  var targetDomain = document.getElementById("domain").value;
+  window.location.href = `listview.html?target_domain=${targetDomain}`;
 });
 
 const token = localStorage.getItem("token");
@@ -29,13 +30,21 @@ chrome.runtime.sendMessage({ token: token });
 
 async function createPassword(event) {
   event.preventDefault();
+  var response3 = await fetch("http://127.0.0.1:8000/auth/csrf/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  var data2 = await response3.json();
+  const csrfToken = data2.csrf;
   var domain = document.querySelector("#domain").value;
   var username = document.querySelector("#username").value;
   var password = document.querySelector("#passwordField").value;
   var sync = document.querySelector("#sync").checked;
   var notes = document.querySelector("#customText").value;
   var response = await fetch("http://127.0.0.1:8000/auth/master", {
-    method: 'GET',
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
@@ -44,14 +53,18 @@ async function createPassword(event) {
   var data = await response.json();
   const hashedMasterPassword = data.hashedMasterPassword;
   const salt = data.salt;
-  const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
+  const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, {
+    keySize: 256 / 32,
+    iterations: 10000,
+  });
   const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
   var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
   fetch(`http://127.0.0.1:8000/create/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${token}`
+      Authorization: `Token ${token}`,
+      "X-CSRFToken": csrfToken,
     },
     body: JSON.stringify({
       domain_name: domain,
@@ -70,7 +83,8 @@ async function createPassword(event) {
       }
     })
     .catch((error) => console.log(error));
-  window.location.href = "listview.html";
+  var targetDomain = document.getElementById("domain").value;
+  window.location.href = `listview.html?target_domain=${targetDomain}`;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -88,7 +102,7 @@ chrome.runtime.onMessage.addListener(function (
   message,
   sender,
   sendResponse
-) { });
+) {});
 
 const savebtn = document.getElementById("saveButton");
 savebtn.addEventListener("click", createPassword);
