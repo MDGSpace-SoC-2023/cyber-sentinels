@@ -4,7 +4,9 @@ $(function () {
 
     var username = $("#login__username").val();
     var password = $("#login__password").val();
-    authenticateUserAPI(username, password, true, "asdf", "asdf")
+    os = getOs();
+    browser = getBrowser();
+    authenticateUserAPI(username, password, true, browser, os)
       .then(function (response) {
         if (response && response.token) {
           localStorage.setItem("token", response.token);
@@ -64,3 +66,11 @@ const backButton = document.getElementById("Backbtn");
 backButton.addEventListener("click", () => {
   window.location.href = "popup.html";
 });
+
+function getBrowser() {
+  return platform.name.toString();
+}
+
+function getOs() {
+  return platform.os.toString();
+}

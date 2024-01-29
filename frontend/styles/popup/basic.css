@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+
 .popup-container {
     width: 400px;
     font-family: Arial, sans-serif;
@@ -8,6 +9,10 @@
     color: #ffe66b;
     border: 2px solid #111;
     transform: scale(1.05);
+}
+
+#manage {
+    color: #222;
 }
 
 .logout-button {
@@ -137,13 +142,4 @@
 .popup-container button:hover {
     background-color: #111;
     color: #ffe66b;
-}
-
-.popup-container a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.popup-container a:hover {
-    text-decoration: underline;
 }

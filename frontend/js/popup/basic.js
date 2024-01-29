@@ -1,10 +1,43 @@
+const token = localStorage.getItem("token");
 document.addEventListener("DOMContentLoaded", function () {
-  const logoutBtn = document.getElementById("logoutBtn");
-
   logoutBtn.addEventListener("click", function () {
-    localStorage.removeItem("token");
-
-    window.location.href = "../../templates/popup/popup.html";
+    fetch("http://127.0.0.1:8000/auth/csrf/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch CSRF token");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        localStorage.removeItem("token");
+        const csrfToken = data.csrf;
+        fetch("http:127.0.0.1:8000/auth/logout/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+            Authorization: `Token ${token}`,
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Logout successful:", data);
+            window.location.href = "../../templates/popup/popup.html";
+          })
+          .catch((error) => {
+            console.error("Logout failed:", error);
+          });
+      });
   });
 });
 
@@ -22,3 +55,10 @@ passwordGeneratorBtn.addEventListener("click", () => {
       console.error("Error fetching genpass.html:", error);
     });
 });
+
+// function redirecttoManageAcc() {
+//   window.location.href = 'http://127.0.0.1:8000/';
+// }
+
+// var mngbtn=document.getElementById("manageAccountBtn");
+// mngbtn.addEventListener("click",redirecttoManageAcc);

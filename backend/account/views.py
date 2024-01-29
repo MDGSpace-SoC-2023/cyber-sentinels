@@ -25,6 +25,14 @@ from django.middleware import csrf as django_csrf
 
 
 @require_GET
+def capture(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
+    auto_capture = ProfileSettings.objects.get(user=request.user).autoCapture
+    return JsonResponse({"capture": auto_capture})
+
+@require_GET
 def get_master_password(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Unauthorized"}, status=401)

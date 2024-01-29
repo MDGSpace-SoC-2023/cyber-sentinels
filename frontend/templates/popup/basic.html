@@ -4,11 +4,11 @@
     <title>Password Manager Extension</title>
     <link rel="stylesheet" href="../../styles/popup/basic.css" />
     <script src="../../js/popup/jquery.js"></script>
-
     <style>
       .manage-account-button {
         text-align: center;
         margin-top: 20px;
+        text-decoration: none;
       }
       
       .manage-account-button button {
@@ -24,13 +24,25 @@
         font-family: 'Silkscreen', sans-serif;
       }
       
-      .manage-account-button button:hover {
+      .manage-account-button button:hover !important {
         background-color: #000;
+        color: white;
+        text-decoration: none;
+      }
+      
+      #manageAccountBtn {
+        text-decoration: none;
+      }
+      #manageAccountBtn a {
+        text-decoration: none;
+        color: #ffe66b;
+      }
+      #manageAccountBtn a:hover {
+        text-decoration: none;
         color: white;
       }
     </style>
   </head>
-
   <body>
     <div class="popup-container">
       <div class="navbar">
@@ -42,25 +54,24 @@
           <button id="logoutBtn">Logout</button>
         </div>
       </div>
-
       <div class="content">
         <h1 id="welcome">Welcome to BitSafe</h1>
         <div class="options">
           <div class="option">
             <h3 id="passgtxt">Password Generator</h3>
             <p id="welbelow">
-              Strengthen Your Security. <br />Try our Password Generator Now!
+              Strengthen Your Security.
+              <br />
+              Try our Password Generator Now!
             </p>
             <button id="passwordGeneratorBtn">Generate Password</button>
           </div>
         </div>
       </div>
-
       <div class="manage-account-button">
-        <button id="manageAccountBtn">Manage Your Account</button>
+        <button id="manageAccountBtn"><a id="manage" href="http://127.0.0.1:8000/" target="_blank">Manage Your Account</a></button>
       </div>
     </div>
-
     <script src="../../js/popup/basic.js"></script>
   </body>
 </html>
