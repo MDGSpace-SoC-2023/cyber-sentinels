@@ -102,7 +102,7 @@ chrome.runtime.onMessage.addListener(function (
   message,
   sender,
   sendResponse
-) {});
+) { });
 
 const savebtn = document.getElementById("saveButton");
 savebtn.addEventListener("click", createPassword);

@@ -22,7 +22,7 @@ body {
   transform: scale(1.05);
 }
 
-#customText{
+#customText {
   flex: 1;
   padding: 8px;
   border-radius: 3px;
@@ -82,7 +82,6 @@ input[type="checkbox"] {
 
 #passwordField {
   width: 169px;
-  /* Adjust the width as needed */
 }
 
 .material-icons-outlined.eye-icon {
@@ -99,7 +98,6 @@ input[type="checkbox"] {
 }
 
 #done.material-icons-outlined {
-  /* Specific style for the 'done' icon */
   font-size: 35px;
 }
 
@@ -110,13 +108,10 @@ input[type="checkbox"] {
   margin-top: 15px;
 }
 
-
-
 h2 {
   text-align: center;
   font-family: 'Silkscreen', sans-serif;
 }
-
 
 .toggler-wrapper {
   display: block;

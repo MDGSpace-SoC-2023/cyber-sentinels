@@ -1,5 +1,5 @@
 token = localStorage.getItem.token;
-var cnt=0;
+var cnt = 0;
 async function fetchpassuge() {
     var response = await fetch("http://127.0.0.1:8000/view/", {
         method: "GET",
@@ -191,24 +191,6 @@ async function fetchpassuge() {
     runRemainingCode();
 }
 fetchpassuge();
-// fetch("http://127.0.0.1:8000/view/", {
-//     method: "GET",
-//     headers: {
-//         "Content-Type": "application/json",
-//         Authorization: "Token ${token}",
-//     },
-// })
-//     .then((response) => {
-//         return response.json();
-//     })
-// .then(async (jsonData) => {
-
-// });
-// runRemainingCode();
-// })
-//     .catch ((error) => {
-//     console.log("Error:", error);
-// });
 /**
      * Parse a password string into a numeric value.
      * This function evaluates password strength based on various criteria.
@@ -257,10 +239,10 @@ let scoreToData = (score) => {
     }
 };
 function runRemainingCode() {
-    if(cnt==0){
-        var usr=document.getElementsByClassName("UsrnmeNPasswrds")[0];
-        var text=document.createElement('h3');
-        text.textContent="No password is being reused.";
+    if (cnt == 0) {
+        var usr = document.getElementsByClassName("UsrnmeNPasswrds")[0];
+        var text = document.createElement('h3');
+        text.textContent = "No password is being reused.";
         text.classList.add("head");
         usr.appendChild(text);
     }
@@ -465,26 +447,4 @@ async function updatePassword(event) {
     } catch (error) {
         console.log("Error:", error);
     }
-    // fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
-    //     method: "PUT",
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'X-CSRFToken': csrfToken,
-    //         'Authorization': `Token ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //         username: username,
-    //         encrypted_password: encryptedData,
-    //         sync: sync,
-    //         notes: notes,
-    //         device_identifier: "asdfasd"
-    //     }),
-    // }).then(response => {
-    //     if (!response.ok) {
-    //         return response.json().then(errors => {
-    //             throw new Error(JSON.stringify(errors));
-    //         });
-    //     }
-    //     window.location.href = 'http://127.0.0.1:8000/usage';
-    // }).catch(error => console.log(error));
 }

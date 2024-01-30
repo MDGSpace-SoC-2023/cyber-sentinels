@@ -17,7 +17,7 @@ body {
   font-family: 'Silkscreen', sans-serif;
 }
 
-#customText{
+#customText {
   flex: 1;
   padding: 8px;
   border-radius: 3px;
@@ -67,7 +67,6 @@ input[type="text"],
 input[type="password"],
 input[type="checkbox"] {
   flex: 1;
-  /* Take remaining space */
   padding: 8px;
   border-radius: 3px;
   background-color: #555;

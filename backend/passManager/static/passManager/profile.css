@@ -12,7 +12,6 @@ body {
     color: white;
 }
 
-
 .hidden-button {
     display: none;
 }
@@ -167,7 +166,6 @@ body {
 }
 
 .settings {
-    /* border: 1px solid white; */
     height: 60%;
     width: 40%;
     height: 75%;
@@ -199,13 +197,6 @@ body {
     font-size: 18px;
     padding: 3%;
 }
-
-/* .updatebtn input {
-    font-size: 25px;
-    text-align: center;
-    margin-top: 5%;
-    margin-left: 30%;
-} */
 
 .settng {
     margin-left: 5px;
@@ -342,14 +333,14 @@ h1[welcome-name="N"] {
     transition: opacity 0.25s ease;
 }
 
-#timer{
-    display:none;
+#timer {
+    display: none;
     background-color: #18181b;
-    color:white;
-    height:30px;
-    border-radius:10px;
-    padding:1%;
+    color: white;
+    height: 30px;
+    border-radius: 10px;
+    padding: 1%;
     text-align: center;
-    margin-left:auto;
+    margin-left: auto;
     margin-right: auto;
 }

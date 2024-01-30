@@ -85,7 +85,7 @@ async function checkBreaches(jsonData) {
             Authorization: `Token ${token}`,
         },
     });
-    var cnt=0;
+    var cnt = 0;
     var data = await response.json();
     hashedMasterPassword = data.hashedMasterPassword;
     salt = data.salt;
@@ -97,7 +97,7 @@ async function checkBreaches(jsonData) {
         const password = decryptedData;
         var result = await checkPassword(password);
         if (result) {
-            cnt=cnt+1;
+            cnt = cnt + 1;
             var divElement = document.createElement('div');
             divElement.classList.add('drkwebntfcation');
             var usernameParagraph = document.createElement('p');
@@ -152,13 +152,13 @@ async function checkBreaches(jsonData) {
             divCont.appendChild(divElement);
         }
     }
-    var head=document.getElementsByClassName("head")[0];
-    if(cnt==0){
-        head.textContent="All of your passwords are safe.";
-        head.style.color="#555";
-        head.style.top="30%";
-    }else{
-        head.textContent="The following usernames have their passwords breached."
+    var head = document.getElementsByClassName("head")[0];
+    if (cnt == 0) {
+        head.textContent = "All of your passwords are safe.";
+        head.style.color = "#555";
+        head.style.top = "30%";
+    } else {
+        head.textContent = "The following usernames have their passwords breached."
     }
     runremaining();
 }
@@ -253,14 +253,6 @@ async function updatePassword(event) {
             Authorization: `Token ${token}`,
         },
     });
-    // fetch("http://127.0.0.1:8000/auth/master", {
-    //     method: 'GET',
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Token ${token}`,
-    //     },
-    // })
-    //.then(response => response.json())
     var data = await response.json();
     const hashedMasterPassword = data.hashedMasterPassword;
     const salt = data.salt;
@@ -292,36 +284,6 @@ async function updatePassword(event) {
     } catch (error) {
         console.log("Error:", error);
     }
-    // .then(data => {
-    //     const hashedMasterPassword = data.hashedMasterPassword;
-    //     const salt = data.salt;
-    //     const decryptionKey = CryptoJS.PBKDF2(hashedMasterPassword, salt, { keySize: 256 / 32, iterations: 10000 });
-    //     const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
-    //     var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
-    //     fetch(`http://127.0.0.1:8000/${updateId}/update/`, {
-    //         method: "PUT",
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'X-CSRFToken': csrfToken,
-    //             'Authorization': `Token ${token}`,
-    //         },
-    //         body: JSON.stringify({
-    //             username: username,
-    //             encrypted_password: encryptedData,
-    //             sync: sync,
-    //             notes: notes,
-    //             device_identifier: deviceId
-    //         }),
-    //     }).then(response => {
-    //         if (!response.ok) {
-    //             return response.json().then(errors => {
-    //                 throw new Error(JSON.stringify(errors));
-    //             });
-    //         }
-    //         window.location.href = 'http://127.0.0.1:8000/monitor';
-    //     }).catch(error => console.log(error));
-    // })
-    // .catch(error => console.error('Error:', error));
 }
 function generateDeviceId() {
     const fingerprint = [

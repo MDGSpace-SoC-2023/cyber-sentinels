@@ -168,7 +168,7 @@ input:focus {
     list-style: none;
 }
 
-#captchaError{
+#captchaError {
     margin-top: 6px;
     margin-bottom: 6px;
     color: red;

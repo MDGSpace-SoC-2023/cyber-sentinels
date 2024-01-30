@@ -55,10 +55,3 @@ passwordGeneratorBtn.addEventListener("click", () => {
       console.error("Error fetching genpass.html:", error);
     });
 });
-
-// function redirecttoManageAcc() {
-//   window.location.href = 'http://127.0.0.1:8000/';
-// }
-
-// var mngbtn=document.getElementById("manageAccountBtn");
-// mngbtn.addEventListener("click",redirecttoManageAcc);

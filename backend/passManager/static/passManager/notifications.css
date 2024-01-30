@@ -215,7 +215,6 @@ body {
 
 .message p {
     font-family: 'Open Sans', sans-serif;
-    /* padding-bottom: 2%;*/
 }
 
 input[type="date"] {
@@ -376,10 +375,10 @@ h3 {
     color: #ffe66b;
 }
 
-.head{
+.head {
     color: #555;
     position: relative;
-    text-align:center;
-    top:30%;
+    text-align: center;
+    top: 30%;
     font-family: "Silkscreen", sans-serif;
 }

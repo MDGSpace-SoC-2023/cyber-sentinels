@@ -14,16 +14,6 @@ async function verifyToken() {
     var data = await response.json();
     console.log('Verification result:', data);
     return data.result;
-    // return fetch('http://127.0.0.1:8000/auth/verify/', payload)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log('Verification result:', data);
-    //         return data.result;
-    //     })
-    //     .catch(error => {
-    //         console.error('Verification failed:', error);
-    //         return false;
-    //     });
 }
 
 async function verifyAndLogout() {

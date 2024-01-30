@@ -212,8 +212,7 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
   }
 
   if (message.token) {
-    chrome.storage.local.set({ token: message.token }, function () {});
-
+    chrome.storage.local.set({ token: message.token }, function () { });
     return true;
   }
 });
@@ -239,7 +238,7 @@ async function handleMessage(request, sender, sendResponse) {
       username: request.data.username,
       password: request.data.password,
     };
-    var response1=await fetch("http://127.0.0.1:8000/auth/capture/", {
+    var response1 = await fetch("http://127.0.0.1:8000/auth/capture/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -248,7 +247,7 @@ async function handleMessage(request, sender, sendResponse) {
     });
     var data1 = await response1.json();
     console.log(data1);
-    if(!data1.capture){
+    if (!data1.capture) {
       return;
     }
     try {
@@ -299,7 +298,7 @@ async function handleMessage(request, sender, sendResponse) {
 
       chrome.storage.local.set(
         { storedCredentials: storedCredentials },
-        function () {}
+        function () { }
       );
     } catch (error) {
       console.error("Error fetching backend data:", error);

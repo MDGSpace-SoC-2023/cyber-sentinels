@@ -1,77 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Password Manager Extension</title>
-    <link rel="stylesheet" href="../../styles/popup/basic.css" />
-    <script src="../../js/popup/jquery.js"></script>
-    <style>
-      .manage-account-button {
-        text-align: center;
-        margin-top: 20px;
-        text-decoration: none;
-      }
-      
-      .manage-account-button button {
-        padding: 10px 0;
-        font-size: 16px;
-        border-radius: 5px;
-        background-color: #555;
-        color: #ffe66b;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        transition: background-color 0.3s, color 0.3s;
-        font-family: 'Silkscreen', sans-serif;
-      }
-      
-      .manage-account-button button:hover !important {
-        background-color: #000;
-        color: white;
-        text-decoration: none;
-      }
-      
-      #manageAccountBtn {
-        text-decoration: none;
-      }
-      #manageAccountBtn a {
-        text-decoration: none;
-        color: #ffe66b;
-      }
-      #manageAccountBtn a:hover {
-        text-decoration: none;
-        color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="popup-container">
-      <div class="navbar">
-        <div class="title">
-          <img class="logo" src="../../assets/logo.JPG" alt="logo" height="250" width="240" />
-          <p>BitSafe</p>
-        </div>
-        <div class="logout-button">
-          <button id="logoutBtn">Logout</button>
-        </div>
+
+<head>
+  <title>Password Manager Extension</title>
+  <link rel="stylesheet" href="../../styles/popup/basic.css" />
+  <script src="../../js/popup/jquery.js"></script>
+  <style>
+    .manage-account-button {
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+    }
+
+    .manage-account-button button {
+      padding: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      background-color: #555;
+      color: #ffe66b;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s, color 0.3s;
+      font-family: 'Silkscreen', sans-serif;
+    }
+
+    .manage-account-button button:hover {
+      background-color: #000 !important;
+      color: white !important;
+      text-decoration: none !important;
+    }
+
+    #manageAccountBtn {
+      text-decoration: none;
+    }
+
+    #manageAccountBtn a {
+      text-decoration: none;
+      color: #ffe66b;
+    }
+
+    #manageAccountBtn a:hover {
+      text-decoration: none;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="popup-container">
+    <div class="navbar">
+      <div class="title">
+        <img class="logo" src="../../assets/logo.JPG" alt="logo" height="250" width="240" />
+        <p>BitSafe</p>
       </div>
-      <div class="content">
-        <h1 id="welcome">Welcome to BitSafe</h1>
-        <div class="options">
-          <div class="option">
-            <h3 id="passgtxt">Password Generator</h3>
-            <p id="welbelow">
-              Strengthen Your Security.
-              <br />
-              Try our Password Generator Now!
-            </p>
-            <button id="passwordGeneratorBtn">Generate Password</button>
-          </div>
-        </div>
-      </div>
-      <div class="manage-account-button">
-        <button id="manageAccountBtn"><a id="manage" href="http://127.0.0.1:8000/" target="_blank">Manage Your Account</a></button>
+      <div class="logout-button">
+        <button id="logoutBtn">Logout</button>
       </div>
     </div>
-    <script src="../../js/popup/basic.js"></script>
-  </body>
+    <div class="content">
+      <h1 id="welcome">Welcome to BitSafe</h1>
+      <div class="options">
+        <div class="option">
+          <h3 id="passgtxt">Password Generator</h3>
+          <p id="welbelow">
+            Strengthen Your Security.
+            <br />
+            Try our Password Generator Now!
+          </p>
+          <button id="passwordGeneratorBtn">Generate Password</button>
+        </div>
+      </div>
+    </div>
+    <div class="manage-account-button">
+      <button id="manageAccountBtn"><a id="manage" href="http://127.0.0.1:8000/" target="_blank">Manage Your
+          Account</a></button>
+    </div>
+  </div>
+  <script src="../../js/popup/basic.js"></script>
+</body>
+
 </html>

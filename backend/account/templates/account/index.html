@@ -1,120 +1,85 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js"></script>
-        <link rel="stylesheet" href="{% static 'account/index.css' %}">
-        <title>Auth</title>
-    </head>
-    <body>
-        <div class="container" id="container">
-            <div class="form-container sign-up-container">
-                <form method="post"
-                      action="http://127.0.0.1:8000/auth/register/"
-                      id="registerForm">
-                    {% csrf_token %}
-                    <h1>Create Account</h1>
-                    <br>
-                    <input type="text"
-                           placeholder="Name"
-                           id="first_name"
-                           name="first_name"
-                           required />
-                    <input type="text"
-                           placeholder="Username"
-                           id="username"
-                           name="username"
-                           autocomplete="username"
-                           required />
-                    <input type="email"
-                           placeholder="Email"
-                           id="email"
-                           name="email"
-                           autocomplete="email"
-                           required />
-                    <input type="password"
-                           placeholder="Password"
-                           class="passwordField"
-                           id="password1"
-                           name="password"
-                           autocomplete="new-password" />
-                    <input type="password"
-                           placeholder="Confirm Password"
-                           class="passwordField"
-                           id="password2"
-                           name="password2"
-                           autocomplete="current-password" />
-                    <ul id="errorlistRegister">
-                    </ul>
-                    <button onclick="registerUser(event)">Create Account</button>
-                </form>
-            </div>
-            <div class="form-container sign-in-container">
-                <form method="post"
-                      action="http://127.0.0.1:8000/auth/login/"
-                      id="loginForm"
-                      onsubmit="return get_action(this);">
-                    {% csrf_token %}
-                    <h1>Login</h1>
-                    <input type="text"
-                           placeholder="Username or Email"
-                           autocomplete="username"
-                           name="username"
-                           id="user" />
-                    <input type="password"
-                           placeholder="Password"
-                           class="passwordField"
-                           id="passwordField"
-                           autocomplete="new-password"
-                           name="password" />
-                    <ul id="errorlistLogin">
-                    </ul>
-                    <a href="{% url 'password_reset' %}">Forgot your password?</a>
-                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                    <div class="g-recaptcha"
-                         data-sitekey="6Lel4Z4UAAAAAOa8LO1Q9mqKRUiMYl_00o5mXJrR"
-                         id="recaptchaContainer"></div>
-                    <span id="captchaError" class="error-message"></span>
-                    <button id="Loginbtn" onclick="loginUser(event)">Login</button>
-                </form>
-            </div>
-            <div class="overlay-container">
-                <div class="overlay">
-                    <div class="overlay-panel overlay-left">
-                        <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
-                        <button class="ghost" id="signIn">Login</button>
-                    </div>
-                    <div class="overlay-panel overlay-right">
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter your personal details and start journey with us</p>
-                        <button class="ghost" id="signUp">Register</button>
-                    </div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js"></script>
+    <link rel="stylesheet" href="{% static 'account/index.css' %}">
+    <title>Auth</title>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="post" action="http://127.0.0.1:8000/auth/register/" id="registerForm">
+                {% csrf_token %}
+                <h1>Create Account</h1>
+                <br>
+                <input type="text" placeholder="Name" id="first_name" name="first_name" required />
+                <input type="text" placeholder="Username" id="username" name="username" autocomplete="username"
+                    required />
+                <input type="email" placeholder="Email" id="email" name="email" autocomplete="email" required />
+                <input type="password" placeholder="Password" class="passwordField" id="password1" name="password"
+                    autocomplete="new-password" />
+                <input type="password" placeholder="Confirm Password" class="passwordField" id="password2"
+                    name="password2" autocomplete="current-password" />
+                <ul id="errorlistRegister">
+                </ul>
+                <button onclick="registerUser(event)">Create Account</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form method="post" action="http://127.0.0.1:8000/auth/login/" id="loginForm"
+                onsubmit="return get_action(this);">
+                {% csrf_token %}
+                <h1>Login</h1>
+                <input type="text" placeholder="Username or Email" autocomplete="username" name="username" id="user" />
+                <input type="password" placeholder="Password" class="passwordField" id="passwordField"
+                    autocomplete="new-password" name="password" />
+                <ul id="errorlistLogin">
+                </ul>
+                <a href="{% url 'password_reset' %}">Forgot your password?</a>
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <div class="g-recaptcha" data-sitekey="6Lel4Z4UAAAAAOa8LO1Q9mqKRUiMYl_00o5mXJrR"
+                    id="recaptchaContainer"></div>
+                <span id="captchaError" class="error-message"></span>
+                <button id="Loginbtn" onclick="loginUser(event)">Login</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Login</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Register</button>
                 </div>
             </div>
         </div>
-        <script defer src="{% static 'account/index.js' %}"></script>
-        <script src='https://www.google.com/recaptcha/api.js'></script>
-        <script>
-    function get_action(form) 
-    {
-        var v = grecaptcha.getResponse();
-        if(v.length == 0)
-        {
-            document.getElementById('captcha').innerHTML="You can't leave Captcha Code empty";
-            return false;
+    </div>
+    <script defer src="{% static 'account/index.js' %}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        function get_action(form) {
+            var v = grecaptcha.getResponse();
+            if (v.length == 0) {
+                document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+                return false;
+            }
+            else {
+                document.getElementById('captcha').innerHTML = "Captcha completed";
+                return true;
+            }
         }
-        else
-        {
-            document.getElementById('captcha').innerHTML="Captcha completed";
-            return true; 
-        }
-    }
 
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>

@@ -146,7 +146,6 @@ input[type=checkbox] {
     box-shadow: 0 0 5px rgba(85, 85, 85, 0.7);
 }
 
-
 @media screen and (max-width: 400px) {
     .result-container {
         font-size: 14px;

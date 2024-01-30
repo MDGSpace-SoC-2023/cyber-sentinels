@@ -976,10 +976,10 @@ input#passwordField1[type="password"] {
     font-size: 14px;
 }
 
-.head{
+.head {
     color: #555;
     position: relative;
-    text-align:center;
-    top:30%;
+    text-align: center;
+    top: 30%;
     font-family: "Silkscreen", sans-serif;
 }

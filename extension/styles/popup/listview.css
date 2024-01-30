@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Silkscreen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-body{
+body {
   overflow: scroll !important;
   margin: 0%;
   padding: 0%;
@@ -17,9 +17,7 @@ body{
 
 .content {
   overflow-y: auto;
-  /* overflow: scroll; */
   color: #111;
-
 }
 
 .content::-webkit-scrollbar {
@@ -35,7 +33,6 @@ body{
 }
 
 .add-credentials-button {
-  /* bottom: 0%; */
   top: auto !important;
   position: fixed !important;
   width: 400px;
@@ -68,16 +65,16 @@ body{
 .dummy-text {
   font-family: 'Roboto', sans-serif;
   font-size: medium;
-  max-width: 90px; 
-  white-space: nowrap; 
+  max-width: 90px;
+  white-space: nowrap;
   overflow-x: auto;
-  overflow-y: hidden; 
+  overflow-y: hidden;
 
 }
 
 
 .dummy-text::-webkit-scrollbar {
-  width: 0; 
+  width: 0;
 }
 
 .dummy-text::-webkit-scrollbar-track {
@@ -110,7 +107,6 @@ body{
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Silkscreen', sans-serif;
-  /* overflow: scroll; */
 }
 
 .box {
@@ -143,7 +139,6 @@ body{
   flex-direction: row;
   align-items: center;
 }
-
 
 .icons img {
   width: 20px;
