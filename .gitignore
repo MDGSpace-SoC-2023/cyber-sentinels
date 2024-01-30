@@ -9,7 +9,6 @@ venv/
 
 # Database
 db.sqlite3
-migrations/
 
 # Static folder at project root
 /static/

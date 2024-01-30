@@ -73,13 +73,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://*",
     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
     "chrome-extension://hahidolbpmephflnciplmlilgpimecpc",
+    "chrome-extension://bnjkfjfkmjnmmcjiipfckdddaamopndp",
 ]
-# CORS_ALLOWED_ORIGINS = [
-#     "http://*",
-#     "http://127.0.0.1:8000",
-#     "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
-#     # "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl/*",
-# ]
+
 
 ALLOWED_HOSTS = ["*", "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl", "http://*"]
 

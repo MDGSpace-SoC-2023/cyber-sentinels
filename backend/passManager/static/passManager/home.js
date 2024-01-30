@@ -652,12 +652,10 @@ function generateDeviceId() {
   const fingerprint = [
     navigator.userAgent,
     navigator.language,
-    screen.colorDepth,
     navigator.hardwareConcurrency,
     navigator.serviceWorker,
     navigator.mediaCapabilities,
     new Date().getTimezoneOffset(),
-    screen.pixelDepth,
   ].join('');
   console.log(navigator.mediaCapabilities);
   const hashedId = hashString(fingerprint);

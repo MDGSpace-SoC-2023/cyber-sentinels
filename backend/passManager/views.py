@@ -2,7 +2,7 @@ import base64
 from .models import *
 from account.models import MasterHash, MultiToken, ProfileSettings
 from .serializers import *
-from django.db.models import Count
+from django.db.models import Q
 from datetime import timedelta
 from django.conf import settings
 from rest_framework.response import Response
@@ -23,8 +23,6 @@ from rest_framework.response import Response
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.fernet import Fernet
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
 
 def generate_key(secret, salt):
@@ -219,7 +217,7 @@ class PasswordListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         target_domain = self.request.query_params.get("target_domain")
-        usage = self.request.query_params.get("usage")
+        device = self.request.query_params.get("device")
         try:
             vault = PasswordVault.objects.get(user=user)
         except:
@@ -230,31 +228,16 @@ class PasswordListView(generics.ListAPIView):
             domains = Domain.objects.filter(vault=vault)
         else:
             domains = Domain.objects.filter(name=target_domain)
-        if not usage:
-            queryset = Password.objects.filter(domain__in=domains)
-            for instance in queryset:
-                instance.encrypted_password = decrypt_password(
-                    instance.encrypted_password, key
-                )
+        queryset = Password.objects.filter(domain__in=domains)
+        for instance in queryset:
+            instance.encrypted_password = decrypt_password(
+                instance.encrypted_password, key
+            )
+        if not device:
             return queryset
         else:
-            queryset = Password.objects.values("encrypted_password").annotate(
-                count=Count("encrypted_password")
-            )
-            duplicated_passwords = queryset.filter(count__gt=1)
-            instances_with_same_encrypted_password = Password.objects.filter(
-                encrypted_password__in=duplicated_passwords.values("encrypted_password")
-            )
-            instances_with_same_encrypted_password = (
-                instances_with_same_encrypted_password.annotate(
-                    count=Count("encrypted_password")
-                )
-            )
-            for instance in instances_with_same_encrypted_password:
-                instance.encrypted_password = decrypt_password(
-                    instance.encrypted_password, key
-                )
-            return instances_with_same_encrypted_password
+            queryset = queryset.filter(Q(sync=True) | Q(device_identifier=device))
+            return queryset
 
 
 class PasswordRetrieveView(generics.RetrieveAPIView):

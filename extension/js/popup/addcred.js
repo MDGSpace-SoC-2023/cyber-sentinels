@@ -20,6 +20,29 @@ togglePasswordOpen.addEventListener("click", function () {
 
 const cancelButton = document.getElementById("cancelButton");
 
+function generateDeviceId() {
+  const fingerprint = [
+    navigator.userAgent,
+    navigator.language,
+    navigator.hardwareConcurrency,
+    navigator.serviceWorker,
+    navigator.mediaCapabilities,
+    new Date().getTimezoneOffset(),
+  ].join('');
+  console.log(navigator.mediaCapabilities);
+  const hashedId = hashString(fingerprint);
+
+  return hashedId;
+}
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+  return hash.toString(16);
+}
+
 cancelButton.addEventListener("click", function () {
   var targetDomain = document.getElementById("domain").value;
   window.location.href = `listview.html?target_domain=${targetDomain}`;
@@ -59,6 +82,7 @@ async function createPassword(event) {
   });
   const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
   var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+  var deviceId = generateDeviceId();
   fetch(`http://127.0.0.1:8000/create/`, {
     method: "POST",
     headers: {
@@ -72,7 +96,7 @@ async function createPassword(event) {
       encrypted_password: encryptedData,
       sync: sync,
       notes: notes,
-      device_identifier: "asdfasd",
+      device_identifier: deviceId,
     }),
   })
     .then((response) => {

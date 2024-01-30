@@ -23,6 +23,29 @@ const togglePasswordOpen = document.getElementById(
   "togglePasswordVisibilityOpen"
 );
 
+function generateDeviceId() {
+  const fingerprint = [
+    navigator.userAgent,
+    navigator.language,
+    navigator.hardwareConcurrency,
+    navigator.serviceWorker,
+    navigator.mediaCapabilities,
+    new Date().getTimezoneOffset(),
+  ].join('');
+  console.log(navigator.mediaCapabilities);
+  const hashedId = hashString(fingerprint);
+
+  return hashedId;
+}
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+  return hash.toString(16);
+}
+
 const passwordField = document.getElementById("passwordField");
 
 togglePasswordClosed.addEventListener("click", function () {
@@ -108,6 +131,13 @@ async function updateData() {
   });
   const secretKey = decryptionKey.toString(CryptoJS.enc.Hex);
   var encryptedData = CryptoJS.AES.encrypt(password, secretKey).toString();
+  var deviceId;
+  if (document.getElementById("sync").checked) {
+    deviceId = userDataAtIndex.device_identifier;
+  } else {
+    deviceId = generateDeviceId();
+  }
+
   const updatedData = {
     id: userId,
     user: userDataAtIndex.user,
@@ -116,7 +146,7 @@ async function updateData() {
     username: document.getElementById("username").value,
     notes: document.getElementById("customText").value,
     updated_at: userDataAtIndex.updated_at,
-    device_identifier: userDataAtIndex.device_identifier,
+    device_identifier: deviceId,
     domain: {
       id: userDataAtIndex.domain.id,
       name: userDataAtIndex.domain.name,

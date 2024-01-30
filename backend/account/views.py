@@ -92,19 +92,11 @@ def register_user(request):
 @api_view(["GET"])
 def csrf_view(request):
     csrf_token = django_csrf.get_token(request)
-    print(csrf_token)
     return JsonResponse({"csrf": csrf_token})
 
 
 @api_view(["POST"])
 def user_login(request):
-    # print(request.headers)
-    # csrf_token = csrf.get_token(request)
-    # response = HttpResponse("Response content")
-    # response["X-CSRFToken"] = csrf_token
-    # print(request.headers)
-    # if request.user.is_authenticated:
-    #     return redirect("home")
     if request.method == "POST":
         username = request.data.get("username")
         password = request.data.get("password")

@@ -157,13 +157,38 @@ chrome.storage.local.get("token", function (data) {
   token = data.token;
 });
 
+function generateDeviceId() {
+  const fingerprint = [
+    navigator.userAgent,
+    navigator.language,
+    navigator.hardwareConcurrency,
+    navigator.serviceWorker,
+    navigator.mediaCapabilities,
+    new Date().getTimezoneOffset(),
+  ].join('');
+  console.log(navigator.mediaCapabilities);
+  const hashedId = hashString(fingerprint);
+
+  return hashedId;
+}
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+  return hash.toString(16);
+}
+
 chrome.runtime.onMessage.addListener(async (message, sender) => {
   if (
     message.source === "contentScript" &&
     message.action === "tabUrlFetched"
   ) {
+    deviceID = generateDeviceId();
+    console.log(deviceID);
     targetDomain = extractValueFromUrl(message.url);
-    backendUrl = `http://127.0.0.1:8000/view?target_domain=${targetDomain}`;
+    backendUrl = `http://127.0.0.1:8000/view?target_domain=${targetDomain}&device=${deviceID}`;
     const hasPasswordFields = message.hasPasswordFields;
     if (
       message.url.includes("login") ||
