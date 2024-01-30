@@ -55,7 +55,7 @@ Start the Django development server using the following command:
 ```shell
 python manage.py runserver
 ```
-Visit http://localhost:8000 in your web browser to access the extension locally.
+Visit http://127.0.0.1:8000/ in your web browser to access the extension locally.
 
 **Browser Extension Installation:**
 
@@ -93,7 +93,7 @@ Start the server
   python manage.py runserver
 ```
 
-Navigate to the localhost:8000.
+Navigate to http://127.0.0.1:8000/.
 
 After cloning the repository, follow these steps to set up the browser extension:
 
@@ -103,9 +103,9 @@ After cloning the repository, follow these steps to set up the browser extension
 
     3. Load the unpacked extension:
 
-        a. Navigate to the "frontend" folder in the cloned repository, which contains the `manifest.json` file.
+        a. Navigate to the "extension" folder in the cloned repository, which contains the `manifest.json` file.
 
-        b. Select the "frontend" folder and load it as an unpacked extension.
+        b. Select the "extension" folder and load it as an unpacked extension.
 
 Now, you can start working with the extension.
 
