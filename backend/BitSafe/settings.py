@@ -71,13 +71,11 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_TRUSTED_ORIGINS = [
     "http://*",
-    "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl",
-    "chrome-extension://hahidolbpmephflnciplmlilgpimecpc",
-    "chrome-extension://bnjkfjfkmjnmmcjiipfckdddaamopndp",
+    # Add your chrome extension id here 
+    # 'chrome-extension://<id>',
 ]
 
-
-ALLOWED_HOSTS = ["*", "chrome-extension://ipelggkpgofojjnhkchnhjoahhcekgdl", "http://*"]
+ALLOWED_HOSTS = ["*", "http://*"]
 
 ROOT_URLCONF = "BitSafe.urls"
 

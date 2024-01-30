@@ -66,6 +66,15 @@ Load the extension in your browser by following these steps:
      3. Choose to load an unpacked extension.
      4. Select the extension folder within your project directory.
 
+Setup settings.py:
+
+     1. Navigate to the backend/BitSafe/ directory.
+     2. Use a text editor to open the settings.py file.
+     3. Scroll down or use the search function in your text editor to locate the CSRF_TRUSTED_ORIGINS setting. It's   typically around line 75.
+     4. Launch Google Chrome and navigate to the "Extensions" page. You can do this by typing chrome://extensions/ in the address bar and pressing Enter.
+     5. Locate the extension id in the Bitsafe extension.
+     6. Add the Chrome extension ID to the CSRF_TRUSTED_ORIGINS list as per the format in the comment there.
+
 Now, the extension is ready for use. Customize the settings and enjoy a secure password management experience!
 
 ## Dependencies
