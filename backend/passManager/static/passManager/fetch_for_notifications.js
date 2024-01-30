@@ -69,13 +69,13 @@ async function fetchnoti() {
         domainParagraph.appendChild(domainLink);
         const textParagraph = document.createElement('p');
         if (element.status == "Created") {
-            textParagraph.textContent = "Your password for this domain and password has been added successfully.";
+            textParagraph.textContent = "Your password for this domain has been added successfully.";
         } else if (element.status == "Updated") {
-            textParagraph.textContent = "Your password for this domain and password has been updated successfully.";
+            textParagraph.textContent = "Your password for this domain has been updated successfully.";
         } else if (element.status == "Deleted") {
-            textParagraph.textContent = "Your password for this domain and password has been deleted successfully.";
+            textParagraph.textContent = "Your password for this domain has been deleted successfully.";
         } else {
-            textParagraph.textContent = "Your password for this domain and password has been deprecated.Please change this for security purposes.";
+            textParagraph.textContent = "Your password for this domain has been deprecated.Please change this for security purposes.";
         }
         messageDiv.appendChild(usernameParagraph);
         messageDiv.appendChild(domainParagraph);
