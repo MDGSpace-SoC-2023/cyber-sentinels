@@ -70,7 +70,7 @@ Setup settings.py:
 
      1. Navigate to the backend/BitSafe/ directory.
      2. Use a text editor to open the settings.py file.
-     3. Scroll down or use the search function in your text editor to locate the CSRF_TRUSTED_ORIGINS setting. It's   typically around line 75.
+     3. Scroll down to locate the CSRF_TRUSTED_ORIGINS setting. It's typically around line 75.
      4. Launch Google Chrome and navigate to the "Extensions" page. You can do this by typing chrome://extensions/ in the address bar and pressing Enter.
      5. Locate the extension id in the Bitsafe extension.
      6. Add the Chrome extension ID to the CSRF_TRUSTED_ORIGINS list as per the format in the comment there.
@@ -151,11 +151,11 @@ Simplifies the login process by automatically populating login credentials on we
 
 ## Screenshots
 
-![Dashboard](https://imgtr.ee/images/2024/01/29/fb929ca7fb219d64748e8a97fe82f493.png)
+![Dashboard](images/dashboard.png)
 ------------
-![ExtensionHome](https://imgtr.ee/images/2024/01/29/b84ce673cd97568e6c842f924fd8786f.png)
+![ExtensionHome](images/popup.png)
 ------------
-![ExtensionList](https://imgtr.ee/images/2024/01/29/f63cde6798bb109e56d7fbfb82e824df.png)
+![ExtensionList](images/listview.png)
 
 ## HaveIBeenPwned API 
 
@@ -210,9 +210,13 @@ checkPasswordExposure(userPassword);
 
 ## Authors
 
-- [**Ritwik Durga**](https://www.github.com/ritwikdurga)
-- [**Chukka Nithin**](https://www.github.com/nithinchukka)
 - [**Abhijit Chunduri**](https://www.github.com/abhijitch1)
+- [**Chukka Nithin**](https://www.github.com/nithinchukka)
+- [**Ritwik Durga**](https://www.github.com/ritwikdurga)
+
+## Reference
+
+- [**BitSafe-CyberSentinels**](https://youtu.be/I69uAi8x0xU?si=1yRjdMh3HXHznDRc)
 
 ## FAQ
 
